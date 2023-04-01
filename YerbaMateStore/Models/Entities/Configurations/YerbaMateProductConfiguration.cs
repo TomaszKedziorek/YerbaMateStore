@@ -14,7 +14,6 @@ public class YerbaMateProductConfiguration : IEntityTypeConfiguration<YerbaMateP
     builder.Property(p => p.Weight).IsRequired().HasMaxLength(10);
     builder.Property(p => p.Price).IsRequired().HasPrecision(10, 2);
     builder.Property(p => p.DiscountPrice).HasPrecision(10, 2);
-    builder.Property(p => p.Country).IsRequired();
     builder.HasOne(c => c.Country).WithMany(p => p.Products).HasForeignKey(c => c.CountryId);
   }
 }
