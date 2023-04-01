@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using YerbaMateStore.Models.DataAccess;
+
 namespace YerbaMateStore;
 
 public class Program
@@ -8,9 +11,15 @@ public class Program
 
     // Add services to the container.
     builder.Services.AddControllersWithViews();
+    //Allow Razor Pages
     var mvcBuilder = builder.Services.AddRazorPages();
+    //Allow refresz cshtml,css,js at runtime
     if (builder.Environment.IsDevelopment())
       mvcBuilder.AddRazorRuntimeCompilation();
+
+    string connectionString = builder.Configuration.GetConnectionString("YerbaMateStoreDbConnsectionString");
+    ServerVersion serverVersion = ServerVersion.AutoDetect(connectionString);
+    builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(connectionString, serverVersion));
 
     var app = builder.Build();
 
