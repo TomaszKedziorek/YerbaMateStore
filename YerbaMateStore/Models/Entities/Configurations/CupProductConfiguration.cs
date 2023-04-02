@@ -16,6 +16,6 @@ public class CupProductConfiguration : IEntityTypeConfiguration<CupProduct>
     builder.HasOne(c => c.Country).WithMany(p => p.CupProducts).HasForeignKey(c => c.CountryId)
            .OnDelete(DeleteBehavior.Restrict);
 
-    builder.HasMany(i => i.Images).WithOne().HasForeignKey(i => i.ProductId);
+    builder.HasMany(i => i.Images).WithOne(i => i.Product).HasForeignKey(i => i.ProductId);
   }
 }

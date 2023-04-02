@@ -17,6 +17,6 @@ public class BombillaProductConfiguration : IEntityTypeConfiguration<BombillaPro
     builder.HasOne(c => c.Country).WithMany(p => p.BombillaProducts).HasForeignKey(c => c.CountryId)
            .OnDelete(DeleteBehavior.Restrict); ;
 
-    builder.HasMany(i => i.Images).WithOne().HasForeignKey(i => i.ProductId);
+    builder.HasMany(i => i.Images).WithOne(i => i.Product).HasForeignKey(i => i.ProductId);
   }
 }
