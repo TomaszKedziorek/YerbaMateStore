@@ -9,5 +9,6 @@ public class Country
   [RegularExpression(@"^[a-z]+$", ErrorMessage = "Use small letters only please!")]
   public string? CountryIsoAlfa2Code { get; set; }
 
-  public List<YerbaMateProduct>? Products { get; set; } = new List<YerbaMateProduct>();
+  public List<YerbaMateProduct>? YerbaMateProducts { get; set; } = new List<YerbaMateProduct>();
+  public List<BombillaProduct>? BombillaProducts { get; set; } = new List<BombillaProduct>();
 }

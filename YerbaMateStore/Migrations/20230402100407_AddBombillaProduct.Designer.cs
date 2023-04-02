@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using YerbaMateStore.Models.DataAccess;
 
@@ -10,9 +11,10 @@ using YerbaMateStore.Models.DataAccess;
 namespace YerbaMateStore.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230402100407_AddBombillaProduct")]
+    partial class AddBombillaProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,6 +94,9 @@ namespace YerbaMateStore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<bool>("Additives")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("Brand")
                         .IsRequired()
                         .HasMaxLength(30)
@@ -112,9 +117,6 @@ namespace YerbaMateStore.Migrations
                     b.Property<double?>("DiscountPrice")
                         .HasPrecision(10, 2)
                         .HasColumnType("double");
-
-                    b.Property<bool>("HasAdditives")
-                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -151,9 +153,9 @@ namespace YerbaMateStore.Migrations
             modelBuilder.Entity("YerbaMateStore.Models.Entities.YerbaMateProduct", b =>
                 {
                     b.HasOne("YerbaMateStore.Models.Entities.Country", "Country")
-                        .WithMany("YerbaMateProducts")
+                        .WithMany("Products")
                         .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Country");
@@ -163,7 +165,7 @@ namespace YerbaMateStore.Migrations
                 {
                     b.Navigation("BombillaProducts");
 
-                    b.Navigation("YerbaMateProducts");
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }
