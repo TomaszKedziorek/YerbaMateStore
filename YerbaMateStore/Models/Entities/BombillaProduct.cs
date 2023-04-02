@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+
 namespace YerbaMateStore.Models.Entities;
 
 public class BombillaProduct
@@ -12,6 +14,7 @@ public class BombillaProduct
   public double? DiscountPrice { get; set; }
 
   public int CountryId { get; set; }
+  [ValidateNever]
   public Country Country { get; set; }
 
   public List<BombillaImage> Images { get; set; } = new List<BombillaImage>();

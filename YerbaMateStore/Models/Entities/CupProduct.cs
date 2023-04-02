@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+
 namespace YerbaMateStore.Models.Entities;
 
 public class CupProduct
@@ -11,6 +13,7 @@ public class CupProduct
   public double? DiscountPrice { get; set; }
 
   public int CountryId { get; set; }
+  [ValidateNever]
   public Country Country { get; set; }
 
   public List<CupImage> Images { get; set; } = new List<CupImage>();
