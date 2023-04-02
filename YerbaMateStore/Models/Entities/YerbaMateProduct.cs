@@ -15,4 +15,6 @@ public class YerbaMateProduct
 
   public int CountryId { get; set; }
   public Country Country { get; set; }
+
+  public List<Image> Images { get; set; } = new List<Image>();
 }

@@ -15,9 +15,8 @@ public class BombillaProductConfiguration : IEntityTypeConfiguration<BombillaPro
     builder.Property(p => p.Price).IsRequired().HasPrecision(10, 2);
     builder.Property(p => p.DiscountPrice).HasPrecision(10, 2);
     builder.HasOne(c => c.Country).WithMany(p => p.BombillaProducts).HasForeignKey(c => c.CountryId)
-           .OnDelete(DeleteBehavior.Restrict);;
+           .OnDelete(DeleteBehavior.Restrict); ;
 
-    // builder.Property(i => i.ImageUrls).IsRequired();
-    // builder.Ignore(i => i.ImageUrls);
+    builder.HasMany(i => i.Images).WithOne().HasForeignKey(i => i.ProductId);
   }
 }

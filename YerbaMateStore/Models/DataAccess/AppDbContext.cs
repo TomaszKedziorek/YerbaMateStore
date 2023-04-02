@@ -9,6 +9,7 @@ public class AppDbContext : DbContext
   public DbSet<BombillaProduct> BombillaProducts { get; set; }
   public DbSet<CupProduct> CupProducts { get; set; }
   public DbSet<Country> Countries { get; set; }
+  public DbSet<Image> Images { get; set; }
   public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
   {
   }
