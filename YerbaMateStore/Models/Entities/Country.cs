@@ -11,4 +11,5 @@ public class Country
 
   public List<YerbaMateProduct>? YerbaMateProducts { get; set; } = new List<YerbaMateProduct>();
   public List<BombillaProduct>? BombillaProducts { get; set; } = new List<BombillaProduct>();
+  public List<CupProduct>? CupProducts { get; set; } = new List<CupProduct>();
 }

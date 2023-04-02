@@ -7,6 +7,7 @@ public class AppDbContext : DbContext
 {
   public DbSet<YerbaMateProduct> YerbaMateProducts { get; set; }
   public DbSet<BombillaProduct> BombillaProducts { get; set; }
+  public DbSet<CupProduct> CupProducts { get; set; }
   public DbSet<Country> Countries { get; set; }
   public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
   {
