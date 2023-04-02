@@ -1,3 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+using YerbaMateStore.Models.DataAccess;
+using YerbaMateStore.Models.Utilities;
+
 namespace YerbaMateStore;
 
 public class Program
@@ -8,9 +12,16 @@ public class Program
 
     // Add services to the container.
     builder.Services.AddControllersWithViews();
+    //Allow Razor Pages
     var mvcBuilder = builder.Services.AddRazorPages();
+    //Allow refresz cshtml,css,js at runtime
     if (builder.Environment.IsDevelopment())
       mvcBuilder.AddRazorRuntimeCompilation();
+
+    string connectionString = builder.Configuration.GetConnectionString("YerbaMateStoreDbConnsectionString");
+    ServerVersion serverVersion = ServerVersion.AutoDetect(connectionString);
+    builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(connectionString, serverVersion));
+    builder.Services.AddScoped<CountrySeeder>();
 
     var app = builder.Build();
 
@@ -21,6 +32,9 @@ public class Program
       // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
       app.UseHsts();
     }
+    IServiceScope scope = app.Services.CreateScope();
+    CountrySeeder countrySeeder = scope.ServiceProvider.GetRequiredService<CountrySeeder>();
+    countrySeeder.Seed();
 
     app.UseHttpsRedirection();
     app.UseStaticFiles();
