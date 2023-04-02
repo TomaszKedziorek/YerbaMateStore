@@ -22,12 +22,21 @@
         <div class="collapse navbar-collapse" id="navbarColor02">
           <ul class="navbar-nav me-auto">
             <li class="nav-item">
-              <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home
+              <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Index">Home
                 <span class="visually-hidden">(current)</span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+              <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" asp-area="Admin" asp-controller="YerbaMateProduct" asp-action="Index">Yerba Mate</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" asp-area="Admin" asp-controller="BombillaProduct" asp-action="Index">Bombille</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" asp-area="Admin" asp-controller="CupProduct" asp-action="Index">Naczynia</a>
             </li>
             @* <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true"
