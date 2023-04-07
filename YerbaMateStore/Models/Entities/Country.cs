@@ -9,7 +9,7 @@ public class Country
   [RegularExpression(@"^[a-z]+$", ErrorMessage = "Use small letters only please!")]
   public string? CountryIsoAlfa2Code { get; set; }
 
-  public List<YerbaMateProduct> YerbaMateProducts { get; set; } = new List<YerbaMateProduct>();
-  public List<BombillaProduct> BombillaProducts { get; set; } = new List<BombillaProduct>();
-  public List<CupProduct> CupProducts { get; set; } = new List<CupProduct>();
+  public List<YerbaMate> YerbaMate { get; set; } = new List<YerbaMate>();
+  public List<Bombilla> Bombilla { get; set; } = new List<Bombilla>();
+  public List<Cup> Cup { get; set; } = new List<Cup>();
 }

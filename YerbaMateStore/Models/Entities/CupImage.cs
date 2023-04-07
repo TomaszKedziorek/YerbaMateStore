@@ -1,6 +1,6 @@
 namespace YerbaMateStore.Models.Entities;
 
-public class CupImage : Image<CupProduct>
+public class CupImage : Image<Cup>
 {
 
 }

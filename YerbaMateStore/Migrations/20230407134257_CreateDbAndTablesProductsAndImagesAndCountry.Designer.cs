@@ -11,8 +11,8 @@ using YerbaMateStore.Models.DataAccess;
 namespace YerbaMateStore.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230402121121_CreateDbProductTablesAndImageTables")]
-    partial class CreateDbProductTablesAndImageTables
+    [Migration("20230407134257_CreateDbAndTablesProductsAndImagesAndCountry")]
+    partial class CreateDbAndTablesProductsAndImagesAndCountry
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,27 +21,7 @@ namespace YerbaMateStore.Migrations
                 .HasAnnotation("ProductVersion", "6.0.15")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("YerbaMateStore.Models.Entities.BombillaImage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Url")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("BombillaImages");
-                });
-
-            modelBuilder.Entity("YerbaMateStore.Models.Entities.BombillaProduct", b =>
+            modelBuilder.Entity("YerbaMateStore.Models.Entities.Bombilla", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -85,7 +65,27 @@ namespace YerbaMateStore.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("BombillaProducts");
+                    b.ToTable("Bombilla");
+                });
+
+            modelBuilder.Entity("YerbaMateStore.Models.Entities.BombillaImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("BombillaImages");
                 });
 
             modelBuilder.Entity("YerbaMateStore.Models.Entities.Country", b =>
@@ -108,27 +108,7 @@ namespace YerbaMateStore.Migrations
                     b.ToTable("Countries");
                 });
 
-            modelBuilder.Entity("YerbaMateStore.Models.Entities.CupImage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Url")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("CupImages");
-                });
-
-            modelBuilder.Entity("YerbaMateStore.Models.Entities.CupProduct", b =>
+            modelBuilder.Entity("YerbaMateStore.Models.Entities.Cup", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -169,10 +149,10 @@ namespace YerbaMateStore.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("CupProducts");
+                    b.ToTable("Cup");
                 });
 
-            modelBuilder.Entity("YerbaMateStore.Models.Entities.YerbaMateImage", b =>
+            modelBuilder.Entity("YerbaMateStore.Models.Entities.CupImage", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -189,10 +169,10 @@ namespace YerbaMateStore.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("YerbaMateImages");
+                    b.ToTable("CupImages");
                 });
 
-            modelBuilder.Entity("YerbaMateStore.Models.Entities.YerbaMateProduct", b =>
+            modelBuilder.Entity("YerbaMateStore.Models.Entities.YerbaMate", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -240,12 +220,43 @@ namespace YerbaMateStore.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("YerbaMateProducts");
+                    b.ToTable("YerbaMate");
+                });
+
+            modelBuilder.Entity("YerbaMateStore.Models.Entities.YerbaMateImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("YerbaMateImages");
+                });
+
+            modelBuilder.Entity("YerbaMateStore.Models.Entities.Bombilla", b =>
+                {
+                    b.HasOne("YerbaMateStore.Models.Entities.Country", "Country")
+                        .WithMany("Bombilla")
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Country");
                 });
 
             modelBuilder.Entity("YerbaMateStore.Models.Entities.BombillaImage", b =>
                 {
-                    b.HasOne("YerbaMateStore.Models.Entities.BombillaProduct", "Product")
+                    b.HasOne("YerbaMateStore.Models.Entities.Bombilla", "Product")
                         .WithMany("Images")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -254,10 +265,10 @@ namespace YerbaMateStore.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("YerbaMateStore.Models.Entities.BombillaProduct", b =>
+            modelBuilder.Entity("YerbaMateStore.Models.Entities.Cup", b =>
                 {
                     b.HasOne("YerbaMateStore.Models.Entities.Country", "Country")
-                        .WithMany("BombillaProducts")
+                        .WithMany("Cup")
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -267,7 +278,7 @@ namespace YerbaMateStore.Migrations
 
             modelBuilder.Entity("YerbaMateStore.Models.Entities.CupImage", b =>
                 {
-                    b.HasOne("YerbaMateStore.Models.Entities.CupProduct", "Product")
+                    b.HasOne("YerbaMateStore.Models.Entities.Cup", "Product")
                         .WithMany("Images")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -276,10 +287,10 @@ namespace YerbaMateStore.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("YerbaMateStore.Models.Entities.CupProduct", b =>
+            modelBuilder.Entity("YerbaMateStore.Models.Entities.YerbaMate", b =>
                 {
                     b.HasOne("YerbaMateStore.Models.Entities.Country", "Country")
-                        .WithMany("CupProducts")
+                        .WithMany("YerbaMate")
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -289,7 +300,7 @@ namespace YerbaMateStore.Migrations
 
             modelBuilder.Entity("YerbaMateStore.Models.Entities.YerbaMateImage", b =>
                 {
-                    b.HasOne("YerbaMateStore.Models.Entities.YerbaMateProduct", "Product")
+                    b.HasOne("YerbaMateStore.Models.Entities.YerbaMate", "Product")
                         .WithMany("Images")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -298,37 +309,26 @@ namespace YerbaMateStore.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("YerbaMateStore.Models.Entities.YerbaMateProduct", b =>
-                {
-                    b.HasOne("YerbaMateStore.Models.Entities.Country", "Country")
-                        .WithMany("YerbaMateProducts")
-                        .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Country");
-                });
-
-            modelBuilder.Entity("YerbaMateStore.Models.Entities.BombillaProduct", b =>
+            modelBuilder.Entity("YerbaMateStore.Models.Entities.Bombilla", b =>
                 {
                     b.Navigation("Images");
                 });
 
             modelBuilder.Entity("YerbaMateStore.Models.Entities.Country", b =>
                 {
-                    b.Navigation("BombillaProducts");
+                    b.Navigation("Bombilla");
 
-                    b.Navigation("CupProducts");
+                    b.Navigation("Cup");
 
-                    b.Navigation("YerbaMateProducts");
+                    b.Navigation("YerbaMate");
                 });
 
-            modelBuilder.Entity("YerbaMateStore.Models.Entities.CupProduct", b =>
+            modelBuilder.Entity("YerbaMateStore.Models.Entities.Cup", b =>
                 {
                     b.Navigation("Images");
                 });
 
-            modelBuilder.Entity("YerbaMateStore.Models.Entities.YerbaMateProduct", b =>
+            modelBuilder.Entity("YerbaMateStore.Models.Entities.YerbaMate", b =>
                 {
                     b.Navigation("Images");
                 });

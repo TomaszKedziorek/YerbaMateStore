@@ -1,6 +1,6 @@
 namespace YerbaMateStore.Models.Entities;
 
-public class YerbaMateImage : Image<YerbaMateProduct>
+public class YerbaMateImage : Image<YerbaMate>
 {
 
 }

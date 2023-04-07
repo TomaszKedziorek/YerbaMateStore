@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace YerbaMateStore.Models.Entities;
 
-public class YerbaMateProduct
+public class YerbaMate
 {
   public int Id { get; set; }
   public string Name { get; set; }

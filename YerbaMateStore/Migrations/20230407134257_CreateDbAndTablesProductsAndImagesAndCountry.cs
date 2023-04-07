@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace YerbaMateStore.Migrations
 {
-    public partial class CreateDbProductTablesAndImageTables : Migration
+    public partial class CreateDbAndTablesProductsAndImagesAndCountry : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -30,7 +30,7 @@ namespace YerbaMateStore.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "BombillaProducts",
+                name: "Bombilla",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -50,9 +50,9 @@ namespace YerbaMateStore.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BombillaProducts", x => x.Id);
+                    table.PrimaryKey("PK_Bombilla", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BombillaProducts_Countries_CountryId",
+                        name: "FK_Bombilla_Countries_CountryId",
                         column: x => x.CountryId,
                         principalTable: "Countries",
                         principalColumn: "Id",
@@ -61,7 +61,7 @@ namespace YerbaMateStore.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "CupProducts",
+                name: "Cup",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -80,9 +80,9 @@ namespace YerbaMateStore.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CupProducts", x => x.Id);
+                    table.PrimaryKey("PK_Cup", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CupProducts_Countries_CountryId",
+                        name: "FK_Cup_Countries_CountryId",
                         column: x => x.CountryId,
                         principalTable: "Countries",
                         principalColumn: "Id",
@@ -91,7 +91,7 @@ namespace YerbaMateStore.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "YerbaMateProducts",
+                name: "YerbaMate",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -113,9 +113,9 @@ namespace YerbaMateStore.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_YerbaMateProducts", x => x.Id);
+                    table.PrimaryKey("PK_YerbaMate", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_YerbaMateProducts_Countries_CountryId",
+                        name: "FK_YerbaMate_Countries_CountryId",
                         column: x => x.CountryId,
                         principalTable: "Countries",
                         principalColumn: "Id",
@@ -137,9 +137,9 @@ namespace YerbaMateStore.Migrations
                 {
                     table.PrimaryKey("PK_BombillaImages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BombillaImages_BombillaProducts_ProductId",
+                        name: "FK_BombillaImages_Bombilla_ProductId",
                         column: x => x.ProductId,
-                        principalTable: "BombillaProducts",
+                        principalTable: "Bombilla",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -159,9 +159,9 @@ namespace YerbaMateStore.Migrations
                 {
                     table.PrimaryKey("PK_CupImages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CupImages_CupProducts_ProductId",
+                        name: "FK_CupImages_Cup_ProductId",
                         column: x => x.ProductId,
-                        principalTable: "CupProducts",
+                        principalTable: "Cup",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -181,13 +181,18 @@ namespace YerbaMateStore.Migrations
                 {
                     table.PrimaryKey("PK_YerbaMateImages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_YerbaMateImages_YerbaMateProducts_ProductId",
+                        name: "FK_YerbaMateImages_YerbaMate_ProductId",
                         column: x => x.ProductId,
-                        principalTable: "YerbaMateProducts",
+                        principalTable: "YerbaMate",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bombilla_CountryId",
+                table: "Bombilla",
+                column: "CountryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_BombillaImages_ProductId",
@@ -195,8 +200,8 @@ namespace YerbaMateStore.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BombillaProducts_CountryId",
-                table: "BombillaProducts",
+                name: "IX_Cup_CountryId",
+                table: "Cup",
                 column: "CountryId");
 
             migrationBuilder.CreateIndex(
@@ -205,19 +210,14 @@ namespace YerbaMateStore.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CupProducts_CountryId",
-                table: "CupProducts",
+                name: "IX_YerbaMate_CountryId",
+                table: "YerbaMate",
                 column: "CountryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_YerbaMateImages_ProductId",
                 table: "YerbaMateImages",
                 column: "ProductId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_YerbaMateProducts_CountryId",
-                table: "YerbaMateProducts",
-                column: "CountryId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -232,13 +232,13 @@ namespace YerbaMateStore.Migrations
                 name: "YerbaMateImages");
 
             migrationBuilder.DropTable(
-                name: "BombillaProducts");
+                name: "Bombilla");
 
             migrationBuilder.DropTable(
-                name: "CupProducts");
+                name: "Cup");
 
             migrationBuilder.DropTable(
-                name: "YerbaMateProducts");
+                name: "YerbaMate");
 
             migrationBuilder.DropTable(
                 name: "Countries");
