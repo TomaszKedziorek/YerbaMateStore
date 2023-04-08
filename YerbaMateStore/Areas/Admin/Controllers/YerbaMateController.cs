@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using YerbaMateStore.Models.Entities;
 using YerbaMateStore.Models.Repository.IRepository;
+using YerbaMateStore.Models.ViewModels;
 
 namespace YerbaMateStore.Areas.Admin.Controllers;
 

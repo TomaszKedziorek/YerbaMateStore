@@ -1,0 +1,98 @@
+@model YerbaMateStore.Models.ViewModels.YerbaMateViewModel
+@{
+  bool productExist = Model.YerbaMate.Id != 0 ? true : false;
+  ViewData["Title"] = productExist ? "Update Product: Yerba Mate" : "Create Product: Yerba Mate";
+}
+
+<form method="post" asp-controller="YerbaMate" asp-action="Upsert" enctype="multipart/form-data">
+  <dir class="row mt-4 mx-5 p-3">
+    <div class="col-10">
+
+      <div class="row ">
+        <div class="col-12">
+          <h2 class="text-success">@(ViewData["Title"])</h2>
+          <hr>
+        </div>
+        @* <div asp-validation-summary="All"></div> *@
+        <input asp-for="@Model.YerbaMate.Id" hidden>
+        <div class="col-6 mb-3">
+          <label asp-for="@Model.YerbaMate.Name" class="form-label"></label>
+          <input asp-for="@Model.YerbaMate.Name" class="form-control">
+          <span asp-validation-for="@Model.YerbaMate.Name" class="text-danger"></span>
+        </div>
+
+        <div class="col-6 mb-3">
+          <label asp-for="@Model.YerbaMate.Brand" class="form-label"></label>
+          <input asp-for="@Model.YerbaMate.Brand" class="form-control">
+          <span asp-validation-for="@Model.YerbaMate.Brand" class="text-danger"></span>
+        </div>
+
+        <div class="col-3 mb-3">
+          <label asp-for="@Model.YerbaMate.CountryId" class="form-label"></label>
+          <select asp-for="@Model.YerbaMate.CountryId" asp-items="@Model.CountryList" class="form-select">
+            <option disabled selected>--Select Country--</option>
+          </select>
+          <span asp-validation-for="@Model.YerbaMate.CountryId" class="text-danger"></span>
+        </div>
+
+        <div class="col-3 mb-3">
+          <label asp-for="@Model.YerbaMate.Weight" class="form-label"></label>
+          <input asp-for="@Model.YerbaMate.Weight" class="form-control">
+          <span asp-validation-for="@Model.YerbaMate.Weight" class="text-danger"></span>
+        </div>
+
+        <div class="col-6 mb-3">
+          <label asp-for="@Model.YerbaMate.Composition" class="form-label"></label>
+          <input asp-for="@Model.YerbaMate.Composition" class="form-control">
+          <span asp-validation-for="@Model.YerbaMate.Composition" class="text-danger"></span>
+        </div>
+
+        <div class="col-12 mb-3">
+          <label asp-for="@Model.YerbaMate.HasAdditives" class="form-check-label"></label>
+          <input type="checkbox" asp-for="@Model.YerbaMate.HasAdditives" class="form-check-input"></input>
+          <span asp-validation-for="@Model.YerbaMate.HasAdditives" class="text-danger"></span>
+        </div>
+
+        <div class="col-12 mb-3">
+          <label asp-for="@Model.YerbaMate.Description" class="form-label"></label>
+          <textarea asp-for="@Model.YerbaMate.Description" class="form-control" rows="3"></textarea>
+          <span asp-validation-for="@Model.YerbaMate.Description" class="text-danger"></span>
+        </div>
+
+        <div class="col-6 mb-3">
+          <label asp-for="@Model.YerbaMate.Price" class="form-label"></label>
+          <input asp-for="@Model.YerbaMate.Price" class="form-control">
+          <span asp-validation-for="@Model.YerbaMate.Price" class="text-danger"></span>
+        </div>
+
+        <div class="col-6 mb-3">
+          <label asp-for="@Model.YerbaMate.DiscountPrice" class="form-label"></label>
+          <input asp-for="@Model.YerbaMate.DiscountPrice" class="form-control">
+          <span asp-validation-for="@Model.YerbaMate.DiscountPrice" class="text-danger"></span>
+        </div>
+
+        <div class="col-12 mb-3">
+          @if (productExist)
+          {
+            <button type="submit" class="btn btn-primary create-category-btn me-1">Update</button>
+          }
+          else
+          {
+            <button type="submit" class="btn btn-success create-category-btn me-1">Create</button>
+          }
+          <a asp-controller="YerbaMate" asp-action="Index" class="btn btn-secondary create-category-btn ms-1">Back to
+            list</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-2">
+
+    </div>
+  </dir>
+</form>
+
+@section Scripts{
+  <partial name="_ValidationScriptsPartial.cshtml" />
+  <script src="https://cdn.tiny.cloud/1/n94ifuzvl80pchikopiwgz2esrw8n28dwcywvpejlqrregfp/tinymce/5/tinymce.min.js"
+    referrerpolicy="origin"></script>
+}
