@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using YerbaMateStore.Models.Entities;
 using YerbaMateStore.Models.Repository.IRepository;
 
 namespace YerbaMateStore.Areas.Admin.Controllers;
@@ -18,4 +19,41 @@ public class YerbaMateController : Controller
   {
     return View();
   }
+
+  [HttpGet]
+  public IActionResult Upsert(int? id)
+  {
+    YerbaMateViewModel productVM = new YerbaMateViewModel(_unitOfWork, null, id);
+    return View(productVM);
+  }
+
+  [HttpPost]
+  [ValidateAntiForgeryToken]
+  public IActionResult Upsert(YerbaMateViewModel productVM)
+  {
+    if (ModelState.IsValid)
+    {
+      if (productVM.YerbaMate.Id == 0)
+        _unitOfWork.YerbaMate.Add(productVM.YerbaMate);
+      else
+        _unitOfWork.YerbaMate.Update(productVM.YerbaMate);
+      _unitOfWork.Save();
+      return RedirectToAction(nameof(Index));
+    }
+    else
+    {
+      productVM = new YerbaMateViewModel(_unitOfWork, productVM.YerbaMate);
+      return View(productVM);
+    }
+  }
+
+  #region API CALLS
+  [HttpGet]
+  public IActionResult GetAll()
+  {
+    IEnumerable<YerbaMate>? productList = _unitOfWork.YerbaMate.GetAll();
+    return Json(new { data = productList });
+  }
+
+  #endregion
 }
