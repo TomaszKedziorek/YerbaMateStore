@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using YerbaMateStore.Models.DataAccess;
+using YerbaMateStore.Models.Repository;
+using YerbaMateStore.Models.Repository.IRepository;
 using YerbaMateStore.Models.Utilities;
 
 namespace YerbaMateStore;
@@ -22,6 +24,7 @@ public class Program
     ServerVersion serverVersion = ServerVersion.AutoDetect(connectionString);
     builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(connectionString, serverVersion));
     builder.Services.AddScoped<CountrySeeder>();
+    builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
     var app = builder.Build();
 
