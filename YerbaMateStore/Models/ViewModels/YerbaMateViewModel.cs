@@ -13,6 +13,9 @@ public class YerbaMateViewModel
 
   [ValidateNever]
   public IEnumerable<SelectListItem> CountryList { get; set; }
+  public YerbaMateViewModel()
+  {
+  }
 
   public YerbaMateViewModel(IUnitOfWork unitOfWork, YerbaMate? product = null, int? id = null)
   {
