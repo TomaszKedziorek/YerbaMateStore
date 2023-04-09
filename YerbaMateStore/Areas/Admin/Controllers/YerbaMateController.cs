@@ -35,15 +35,21 @@ public class YerbaMateController : Controller
     if (ModelState.IsValid)
     {
       if (productVM.YerbaMate.Id == 0)
+      {
         _unitOfWork.YerbaMate.Add(productVM.YerbaMate);
+      }
       else
+      {
         _unitOfWork.YerbaMate.Update(productVM.YerbaMate);
+      }
       _unitOfWork.Save();
+      TempData["success"] = "Product updated successfully!";
       return RedirectToAction(nameof(Index));
     }
     else
     {
       productVM = new YerbaMateViewModel(_unitOfWork, productVM.YerbaMate);
+      TempData["error"] = "Product updated failed!";
       return View(productVM);
     }
   }
