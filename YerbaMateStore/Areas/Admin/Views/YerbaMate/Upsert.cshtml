@@ -1,4 +1,6 @@
 @model YerbaMateStore.Models.ViewModels.YerbaMateViewModel
+@section HeadArea{
+}
 @{
   bool productExist = Model.YerbaMate.Id != 0 ? true : false;
   ViewData["Title"] = productExist ? "Update Product: Yerba Mate" : "Create Product: Yerba Mate";
@@ -6,7 +8,7 @@
 
 <form method="post" asp-controller="YerbaMate" asp-action="Upsert" enctype="multipart/form-data">
   <dir class="row mt-4 mx-5 p-3">
-    <div class="col-10">
+    <div class="col-8">
 
       <div class="row ">
         <div class="col-12">
@@ -85,7 +87,24 @@
         </div>
       </div>
     </div>
-    <div class="col-2">
+
+    <div class="col-4">
+      <div class="container">
+
+        <div class="row ">
+
+          <div class="row">
+            <div class="col-12"></div>
+            <label asp-for="@Model.YerbaMate.Images" class="form-label"></label>
+            <input type="file" name="files" class="form-control uploadImages" multiple />
+            <span asp-validation-for="@Model.YerbaMate.Images" class="text-danger"></span>
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
 
     </div>
   </dir>

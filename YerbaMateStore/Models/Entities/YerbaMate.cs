@@ -22,6 +22,6 @@ public class YerbaMate
   public int CountryId { get; set; }
   [ValidateNever]
   public Country Country { get; set; }
-
-  public List<YerbaMateImage> Images { get; set; } = new List<YerbaMateImage>();
+  [ValidateNever]
+  public List<YerbaMateImage> Images { get; set; }
 }
