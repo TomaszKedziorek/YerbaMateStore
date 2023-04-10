@@ -6,3 +6,18 @@ div .swal2-icon-content {
   opacity: 0.92 !important;
   font-size: 1rem;
 }
+
+/* .slick-arrow {
+  color: #000000 !important;
+  background: red!important;
+} */
+
+.slick-prev:before {
+  color: red !important;
+  background-color: #eee;
+}
+
+.slick-next:before {
+  color: red !important;
+  background-color: #eee;
+}
