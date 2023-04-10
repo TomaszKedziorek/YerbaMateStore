@@ -52,7 +52,7 @@ public class YerbaMateController : Controller
         foreach (IFormFile file in files)
         {
           string extension = Path.GetExtension(file.FileName);
-          string fileName = Guid.NewGuid().ToString() + extension;
+          string fileName = Guid.NewGuid().ToString();
           char separation = Path.DirectorySeparatorChar;
           string productPath = @$"images{separation}products{separation}product-{productVM.YerbaMate.Id}";
           string finalPath = Path.Combine(wwwRootPath, productPath);
@@ -67,7 +67,7 @@ public class YerbaMateController : Controller
           YerbaMateImage productImage = new()
           {
             ProductId = productVM.YerbaMate.Id,
-            ImageUrl = @$"{separation}{productPath}{separation}{fileName}.{extension}",
+            ImageUrl = @$"{separation}{productPath}{separation}{fileName}{extension}",
           };
           if (productVM.YerbaMate.Images == null)
             productVM.YerbaMate.Images = new List<YerbaMateImage>();
