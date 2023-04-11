@@ -1,3 +1,5 @@
+using YerbaMateStore.Models.Entities;
+
 namespace YerbaMateStore.Models.Repository.IRepository;
 
 public interface IUnitOfWork
@@ -5,6 +7,6 @@ public interface IUnitOfWork
 
   ICountryRepository Countries { get; }
   IYerbaMateRepository YerbaMate { get; }
-  IYerbaMateImageRepository YerbaMateImage { get; }
+  IImageRepository<YerbaMateImage> YerbaMateImage { get; }
   void Save();
 }

@@ -4,7 +4,7 @@ using YerbaMateStore.Models.Repository.IRepository;
 
 namespace YerbaMateStore.Models.DataAccess.Repository;
 
-public class YerbaMateImageRepository : Repository<YerbaMateImage>, IYerbaMateImageRepository
+public class YerbaMateImageRepository : Repository<YerbaMateImage>, IImageRepository<YerbaMateImage>
 {
   private readonly AppDbContext _dbContext;
 
