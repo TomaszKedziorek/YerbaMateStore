@@ -88,6 +88,30 @@ public class YerbaMateController : Controller
     }
   }
 
+  // [HttpPost]
+  public IActionResult DeleteImage(int imageId)
+  {
+    var imageToDelete = _unitOfWork.YerbaMateImage.GetFirstOrDefault(i => i.Id == imageId);
+    int productId = imageToDelete.ProductId;
+    if (imageToDelete != null)
+    {
+      if (!string.IsNullOrEmpty(imageToDelete.ImageUrl))
+      {
+        string productImageDbPath = imageToDelete.ImageUrl.Trim('/');
+        string imagePath = Path.Combine(_hostEnvironment.WebRootPath, productImageDbPath);
+        if (System.IO.File.Exists(imagePath))
+        {
+          System.IO.File.Delete(imagePath);
+        }
+      }
+      _unitOfWork.YerbaMateImage.Remove(imageToDelete);
+      _unitOfWork.Save();
+      TempData["success"] = "Deleted succesfully!";
+    }
+    return RedirectToAction(nameof(Upsert), new { id = productId });
+  }
+
+
   #region API CALLS
   [HttpGet]
   public IActionResult GetAll()
@@ -96,5 +120,31 @@ public class YerbaMateController : Controller
     return Json(new { data = productList });
   }
 
+  [HttpDelete]
+  // [ValidateAntiForgeryToken]
+  public IActionResult DeleteImage2(int imageId)
+  {
+    var imageToDelete = _unitOfWork.YerbaMateImage.GetFirstOrDefault(i => i.Id == imageId);
+    int productId = imageToDelete.ProductId;
+    if (imageToDelete != null)
+    {
+      if (!string.IsNullOrEmpty(imageToDelete.ImageUrl))
+      {
+        string productImageDbPath = imageToDelete.ImageUrl.Trim('/');
+        string imagePath = Path.Combine(_hostEnvironment.WebRootPath, productImageDbPath);
+        if (System.IO.File.Exists(imagePath))
+        {
+          System.IO.File.Delete(imagePath);
+        }
+      }
+      _unitOfWork.YerbaMateImage.Remove(imageToDelete);
+      _unitOfWork.Save();
+      return Json(new { success = true, message = "Delete Successful!" });
+    }
+    else
+    {
+      return Json(new { success = false, message = "Error while deleting!" });
+    }
+  }
   #endregion
 }
