@@ -13,11 +13,11 @@ div .swal2-icon-content {
 } */
 
 .slick-prev:before {
-  color: red !important;
-  background-color: #eee;
+  color: black !important;
+  background-color: #ffffff;
 }
 
 .slick-next:before {
-  color: red !important;
-  background-color: #eee;
+  color: black !important;
+  background-color: #ffffff;
 }

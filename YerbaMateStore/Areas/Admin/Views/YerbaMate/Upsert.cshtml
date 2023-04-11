@@ -90,25 +90,25 @@
       </div>
     </div>
 
-    <div class="col-4">
+    <div class="col-4 mt-5">
       <div class="container">
         <div class="row">
           @if (Model.YerbaMate.Images != null)
           {
-            <div id="carousel-related-product">
+            <div id="carousel-related-product" class="">
               @foreach (var image in Model.YerbaMate.Images)
               {
-                @* <div class="product-wap card rounded-0">
-            <div class="card rounded-0">
-            <div class="card-body">
-            <img src="@image.ImageUrl" alt="">
-            </div>
-            </div>
+                @* <div class="border m-1 p-1">
+            <img class="card-img rounded-0 img-fluid" src="@image.ImageUrl">
+            <a asp-controller="YerbaMate" asp-action="DeleteImage" class="btn btn-danger"></a>
             </div> *@
-                <div class="p-2">
-                  <div class="product-wap card rounded-0">
-                    <div class="card rounded-0">
-                      <img class="card-img rounded-0 img-fluid" src="@image.ImageUrl">
+                <div class="card mb-4 product-wap rounded-0 m-1">
+                  <div class="card rounded-0">
+                    <img class="card-img rounded-0 img-fluid" src="@image.ImageUrl">
+                    <div
+                      class="card-img-overlay rounded-0 product-overlay d-flex align-items-start justify-content-end p-1">
+                      <a asp-action="DeleteImage" asp-asp-route-imageId="@image.Id" class="btn btn-danger"><i
+                          class="bi bi-trash3-fill"></i></a>
                     </div>
                   </div>
                 </div>
@@ -118,9 +118,9 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="row mt-5">
         <div class="col-12"></div>
-        <label asp-for="@Model.YerbaMate.Images" class="form-label"></label>
+        @* <label asp-for="@Model.YerbaMate.Images" class="form-label"></label> *@
         <input type="file" name="files" class="form-control uploadImages" multiple />
         <span asp-validation-for="@Model.YerbaMate.Images" class="text-danger"></span>
       </div>
@@ -136,16 +136,7 @@
   <partial name="_ValidationScriptsPartial.cshtml" />
   <script src="https://cdn.tiny.cloud/1/n94ifuzvl80pchikopiwgz2esrw8n28dwcywvpejlqrregfp/tinymce/5/tinymce.min.js"
     referrerpolicy="origin"></script>
-
   <!-- Start Slider Script -->
   <script src="/js/zayTemplateJs/slick.min.js"></script>
-  <script>
-    $('#carousel-related-product').slick({
-      infinite: true,
-      arrows:true,
-      slidesToShow: 3,
-      slidesToScroll: 3,
-      dots: true,
-    });
-  </script>
+  <script src="/js/upsertProduct.js"></script>
 }
