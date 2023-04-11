@@ -34,6 +34,10 @@ public class YerbaMateController : Controller
   [ValidateAntiForgeryToken]
   public IActionResult Upsert(YerbaMateViewModel productVM, List<IFormFile> files)
   {
+    if (productVM.YerbaMate.Id == 0 && (files.Count == 0 || files == null))
+    {
+      ModelState.AddModelError("YerbaMate.Images", "At least one picture is required.");
+    }
     if (ModelState.IsValid)
     {
       if (productVM.YerbaMate.Id == 0)
@@ -88,7 +92,7 @@ public class YerbaMateController : Controller
     }
   }
 
-  // [HttpPost]
+  [HttpGet]
   public IActionResult DeleteImage(int imageId)
   {
     var imageToDelete = _unitOfWork.YerbaMateImage.GetFirstOrDefault(i => i.Id == imageId);
@@ -118,33 +122,6 @@ public class YerbaMateController : Controller
   {
     IEnumerable<YerbaMate>? productList = _unitOfWork.YerbaMate.GetAll();
     return Json(new { data = productList });
-  }
-
-  [HttpDelete]
-  // [ValidateAntiForgeryToken]
-  public IActionResult DeleteImage2(int imageId)
-  {
-    var imageToDelete = _unitOfWork.YerbaMateImage.GetFirstOrDefault(i => i.Id == imageId);
-    int productId = imageToDelete.ProductId;
-    if (imageToDelete != null)
-    {
-      if (!string.IsNullOrEmpty(imageToDelete.ImageUrl))
-      {
-        string productImageDbPath = imageToDelete.ImageUrl.Trim('/');
-        string imagePath = Path.Combine(_hostEnvironment.WebRootPath, productImageDbPath);
-        if (System.IO.File.Exists(imagePath))
-        {
-          System.IO.File.Delete(imagePath);
-        }
-      }
-      _unitOfWork.YerbaMateImage.Remove(imageToDelete);
-      _unitOfWork.Save();
-      return Json(new { success = true, message = "Delete Successful!" });
-    }
-    else
-    {
-      return Json(new { success = false, message = "Error while deleting!" });
-    }
   }
   #endregion
 }
