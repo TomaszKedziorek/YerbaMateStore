@@ -123,5 +123,33 @@ public class YerbaMateController : Controller
     IEnumerable<YerbaMate>? productList = _unitOfWork.YerbaMate.GetAll();
     return Json(new { data = productList });
   }
+
+  [HttpDelete]
+  public IActionResult Delete(int? id)
+  {
+    YerbaMate? product = _unitOfWork.YerbaMate.GetFirstOrDefault(p => p.Id == id);
+
+    if (product == null)
+    {
+      return Json(new { success = false, message = "Error while deleting!" });
+    }
+    string wwwRootPath = _hostEnvironment.WebRootPath;
+    char separation = Path.DirectorySeparatorChar;
+    string productPath = @$"images{separation}products{separation}product-{id}";
+    string finalPath = Path.Combine(wwwRootPath, productPath);
+    if (Directory.Exists(finalPath))
+    {
+      string[] paths = Directory.GetFiles(finalPath);
+      foreach (var path in paths)
+      {
+        System.IO.File.Delete(path);
+      }
+      Directory.Delete(finalPath);
+    }
+
+    _unitOfWork.YerbaMate.Remove(product);
+    _unitOfWork.Save();
+    return Json(new { success = true, message = "Delete Successful!" });
+  }
   #endregion
 }
