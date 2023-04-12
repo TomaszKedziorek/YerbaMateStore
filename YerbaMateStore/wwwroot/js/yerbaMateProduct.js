@@ -14,7 +14,12 @@ function loadDataTable() {
       { "data": "name", "width": "15%" },
       { "data": "brand", "width": "15%" },
       { "data": "weight", "width": "10%" },
-      { "data": "price", "width": "10%" },
+      {
+        "data": "price", "width": "10%", "render":
+          function (data) {
+            return data + " zł";
+          }
+      },
       {
         "data": "id",
         "width": "15%",
