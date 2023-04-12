@@ -65,13 +65,13 @@
 
         <div class="col-md-6 col-12 mb-3">
           <label asp-for="@Model.YerbaMate.Price" class="form-label"></label>
-          <input asp-for="@Model.YerbaMate.Price" class="form-control">
+          <input asp-for="@Model.YerbaMate.Price" class="form-control" type="number" step="0.01" min="0.01">
           <span asp-validation-for="@Model.YerbaMate.Price" class="text-danger"></span>
         </div>
 
         <div class="col-md-6 col-12 mb-3">
           <label asp-for="@Model.YerbaMate.DiscountPrice" class="form-label"></label>
-          <input asp-for="@Model.YerbaMate.DiscountPrice" class="form-control">
+          <input asp-for="@Model.YerbaMate.DiscountPrice" class="form-control" type="number" step="0.01" min="0.01">
           <span asp-validation-for="@Model.YerbaMate.DiscountPrice" class="text-danger"></span>
         </div>
 
