@@ -26,27 +26,27 @@ public class YerbaMateController : Controller
   [HttpGet]
   public IActionResult Upsert(int? id)
   {
-    YerbaMateViewModel productVM = new YerbaMateViewModel(_unitOfWork, null, id);
+    ProductViewModel<YerbaMate> productVM = new ProductViewModel<YerbaMate>(_unitOfWork, null, id);
     return View(productVM);
   }
 
   [HttpPost]
   [ValidateAntiForgeryToken]
-  public IActionResult Upsert(YerbaMateViewModel productVM, List<IFormFile> files)
+  public IActionResult Upsert(ProductViewModel<YerbaMate> productVM, List<IFormFile> files)
   {
-    if (productVM.YerbaMate.Id == 0 && (files.Count == 0 || files == null))
+    if (productVM.Product.Id == 0 && (files.Count == 0 || files == null))
     {
-      ModelState.AddModelError("YerbaMate.Images", "At least one picture is required.");
+      ModelState.AddModelError("Product.Images", "At least one picture is required.");
     }
     if (ModelState.IsValid)
     {
-      if (productVM.YerbaMate.Id == 0)
+      if (productVM.Product.Id == 0)
       {
-        _unitOfWork.YerbaMate.Add(productVM.YerbaMate);
+        _unitOfWork.YerbaMate.Add(productVM.Product);
       }
       else
       {
-        _unitOfWork.YerbaMate.Update(productVM.YerbaMate);
+        _unitOfWork.YerbaMate.Update(productVM.Product);
       }
       _unitOfWork.Save();
 
@@ -58,7 +58,7 @@ public class YerbaMateController : Controller
           string extension = Path.GetExtension(file.FileName);
           string fileName = Guid.NewGuid().ToString();
           char separation = Path.DirectorySeparatorChar;
-          string productPath = @$"images{separation}products{separation}product-{productVM.YerbaMate.Id}";
+          string productPath = @$"images{separation}products{separation}product-{productVM.Product.Id}";
           string finalPath = Path.Combine(wwwRootPath, productPath);
           if (!Directory.Exists(finalPath))
             Directory.CreateDirectory(finalPath);
@@ -70,15 +70,15 @@ public class YerbaMateController : Controller
 
           YerbaMateImage productImage = new()
           {
-            ProductId = productVM.YerbaMate.Id,
+            ProductId = productVM.Product.Id,
             ImageUrl = @$"{separation}{productPath}{separation}{fileName}{extension}",
           };
-          if (productVM.YerbaMate.Images == null)
-            productVM.YerbaMate.Images = new List<YerbaMateImage>();
+          if (productVM.Product.Images == null)
+            productVM.Product.Images = new List<YerbaMateImage>();
 
-          productVM.YerbaMate.Images.Add(productImage);
+          productVM.Product.Images.Add(productImage);
         }
-        _unitOfWork.YerbaMate.Update(productVM.YerbaMate);
+        _unitOfWork.YerbaMate.Update(productVM.Product);
         _unitOfWork.Save();
       }
       TempData["success"] = "Product updated successfully!";
@@ -86,7 +86,7 @@ public class YerbaMateController : Controller
     }
     else
     {
-      productVM = new YerbaMateViewModel(_unitOfWork, productVM.YerbaMate);
+      productVM = new ProductViewModel<YerbaMate>(_unitOfWork, productVM.Product);
       TempData["error"] = "Product updated failed!";
       return View(productVM);
     }
