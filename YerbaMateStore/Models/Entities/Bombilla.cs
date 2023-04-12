@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace YerbaMateStore.Models.Entities;
@@ -9,13 +10,19 @@ public class Bombilla
   public string Length { get; set; }
   public string Material { get; set; }
   public string Description { get; set; }
+  [Display(Name = "Is   Unscrewed?")]
   public bool IsUnscrewed { get; set; }
+  [Range(0.01, 1000000)]
   public double Price { get; set; }
+  [Range(0.01, 1000000)]
+  [Display(Name = "Discount Price")]
   public double? DiscountPrice { get; set; }
 
+  [Display(Name = "Country")]
   public int CountryId { get; set; }
   [ValidateNever]
   public Country Country { get; set; }
 
-  public List<BombillaImage> Images { get; set; } = new List<BombillaImage>();
+  [ValidateNever]
+  public List<BombillaImage> Images { get; set; }
 }

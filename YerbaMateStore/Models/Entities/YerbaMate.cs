@@ -14,8 +14,10 @@ public class YerbaMate
   [Display(Name = "Has Additives?")]
   public bool HasAdditives { get; set; }
   public string Weight { get; set; }
+  [Range(0.01, 1000000)]
   public double Price { get; set; }
   [Display(Name = "Discount Price")]
+  [Range(0.01, 1000000)]
   public double? DiscountPrice { get; set; }
 
   [Display(Name = "Country")]

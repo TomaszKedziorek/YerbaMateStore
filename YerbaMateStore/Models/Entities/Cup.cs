@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace YerbaMateStore.Models.Entities;
@@ -9,12 +10,17 @@ public class Cup
   public string Volume { get; set; }
   public string Material { get; set; }
   public string Description { get; set; }
+  [Range(0.01, 1000000)]
   public double Price { get; set; }
+  [Range(0.01, 1000000)]
+  [Display(Name = "Discount Price")]
   public double? DiscountPrice { get; set; }
 
+  [Display(Name = "Country")]
   public int CountryId { get; set; }
   [ValidateNever]
   public Country Country { get; set; }
 
-  public List<CupImage> Images { get; set; } = new List<CupImage>();
+  [ValidateNever]
+  public List<CupImage> Images { get; set; }
 }
