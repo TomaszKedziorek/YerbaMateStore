@@ -26,6 +26,7 @@ public class YerbaMateRepository : Repository<YerbaMate>, IYerbaMateRepository
       porducFromDb.Weight = product.Weight;
       porducFromDb.Price = product.Price;
       porducFromDb.DiscountPrice = product.DiscountPrice;
+      porducFromDb.Images = product.Images;
     }
   }
 }

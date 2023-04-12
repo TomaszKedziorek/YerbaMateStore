@@ -31,7 +31,7 @@ public class YerbaMateViewModel
     }
     else
     {
-      this.YerbaMate = _unitOfWork.YerbaMate.GetFirstOrDefault(p => p.Id == id);
+      this.YerbaMate = _unitOfWork.YerbaMate.GetFirstOrDefault(p => p.Id == id, includeProperties: "Images");
     }
   }
 }

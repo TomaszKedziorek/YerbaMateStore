@@ -6,3 +6,29 @@ div .swal2-icon-content {
   opacity: 0.92 !important;
   font-size: 1rem;
 }
+
+/* .slick-arrow {
+  color: #000000 !important;
+  background: red!important;
+} */
+
+.slick-prev:before {
+  color: black !important;
+  background-color: #ffffff;
+}
+
+.slick-next:before {
+  color: black !important;
+  background-color: #ffffff;
+}
+
+.slick-track {
+  display: flex;
+}
+
+.slick-track .slick-slide {
+  display: flex;
+  height: auto;
+  align-items: center !important;
+  justify-content: center !important;
+}
