@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using YerbaMateStore.Models;
+using YerbaMateStore.Models.ViewModels;
 
 namespace YerbaMateStore.Controllers;
 [Area("Customer")]

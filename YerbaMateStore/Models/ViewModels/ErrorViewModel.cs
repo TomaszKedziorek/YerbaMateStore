@@ -1,4 +1,4 @@
-namespace YerbaMateStore.Models;
+namespace YerbaMateStore.Models.ViewModels;
 
 public class ErrorViewModel
 {
