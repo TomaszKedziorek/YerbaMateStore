@@ -85,15 +85,8 @@ public class YerbaMateController : Controller
     int productId = imageToDelete.ProductId;
     if (imageToDelete != null)
     {
-      if (!string.IsNullOrEmpty(imageToDelete.ImageUrl))
-      {
-        string productImageDbPath = imageToDelete.ImageUrl.Trim('/');
-        string imagePath = Path.Combine(_hostEnvironment.WebRootPath, productImageDbPath);
-        if (System.IO.File.Exists(imagePath))
-        {
-          System.IO.File.Delete(imagePath);
-        }
-      }
+      ProductManager<YerbaMate> productManager = new(_hostEnvironment);
+      productManager.DeleteFile(imageToDelete);
       _unitOfWork.YerbaMateImage.Remove(imageToDelete);
       _unitOfWork.Save();
       TempData["success"] = "Deleted succesfully!";

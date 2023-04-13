@@ -6,9 +6,9 @@ namespace YerbaMateStore.Models.Managers;
 public class ProductManager<T> where T : class, new()
 {
   private readonly string wwwRootPath;
-  private ProductViewModel<T> ProductVM { get; set; }
+  private ProductViewModel<T>? ProductVM { get; set; }
 
-  public ProductManager(IWebHostEnvironment hostEnvironment, ProductViewModel<T> productVM)
+  public ProductManager(IWebHostEnvironment hostEnvironment, ProductViewModel<T>? productVM = null)
   {
     wwwRootPath = hostEnvironment.WebRootPath;
     ProductVM = productVM;
@@ -30,9 +30,22 @@ public class ProductManager<T> where T : class, new()
     {
       file.CopyTo(fileStream);
     }
-    
+
     productImage.ProductId = Convert.ToInt32(Id);
     productImage.ImageUrl = @$"{separation}{productPath}{separation}{fileName}{extension}";
+  }
+
+  public void DeleteFile(Image<T> imageToDelete)
+  {
+    if (!string.IsNullOrEmpty(imageToDelete.ImageUrl))
+    {
+      string productImageDbPath = imageToDelete.ImageUrl.Trim('/');
+      string imagePath = Path.Combine(wwwRootPath, productImageDbPath);
+      if (System.IO.File.Exists(imagePath))
+      {
+        System.IO.File.Delete(imagePath);
+      }
+    }
   }
 }
 
