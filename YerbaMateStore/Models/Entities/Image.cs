@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace YerbaMateStore.Models.Entities;
 
-public abstract class Image<T> where T : class
+public abstract class Image<T> where T : class, new()
 {
   public int Id { get; set; }
   public string ImageUrl { get; set; }

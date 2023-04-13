@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using YerbaMateStore.Models.Entities;
+using YerbaMateStore.Models.Managers;
 using YerbaMateStore.Models.Repository.IRepository;
 using YerbaMateStore.Models.ViewModels;
 
@@ -50,33 +51,18 @@ public class YerbaMateController : Controller
       }
       _unitOfWork.Save();
 
-      string wwwRootPath = _hostEnvironment.WebRootPath;
       if (files != null)
       {
+        ProductManager<YerbaMate> productManager = new(_hostEnvironment, productVM);
+        if (productVM.Product.Images == null)
+        {
+          productVM.Product.Images = new List<YerbaMateImage>();
+        }
         foreach (IFormFile file in files)
         {
-          string extension = Path.GetExtension(file.FileName);
-          string fileName = Guid.NewGuid().ToString();
-          char separation = Path.DirectorySeparatorChar;
-          string productPath = @$"images{separation}products{separation}product-{productVM.Product.Id}";
-          string finalPath = Path.Combine(wwwRootPath, productPath);
-          if (!Directory.Exists(finalPath))
-            Directory.CreateDirectory(finalPath);
-
-          using (var fileStream = new FileStream(Path.Combine(finalPath, fileName + extension), FileMode.Create))
-          {
-            file.CopyTo(fileStream);
-          }
-
-          YerbaMateImage productImage = new()
-          {
-            ProductId = productVM.Product.Id,
-            ImageUrl = @$"{separation}{productPath}{separation}{fileName}{extension}",
-          };
-          if (productVM.Product.Images == null)
-            productVM.Product.Images = new List<YerbaMateImage>();
-
-          productVM.Product.Images.Add(productImage);
+          Image<YerbaMate> productImage = new YerbaMateImage();
+          productManager.SaveFile(ref productImage, file);
+          productVM.Product.Images.Add((YerbaMateImage)productImage);
         }
         _unitOfWork.YerbaMate.Update(productVM.Product);
         _unitOfWork.Save();
