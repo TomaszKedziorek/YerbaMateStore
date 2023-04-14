@@ -47,5 +47,23 @@ public class ProductManager<T> where T : class, new()
       }
     }
   }
+
+  public void DeleteFiles(int? id)
+  {
+    char separation = Path.DirectorySeparatorChar;
+    string productDirectoryName = typeof(T).Name;
+    string productPath = @$"images{separation}products{separation}{productDirectoryName}-{id}";
+    string finalPath = Path.Combine(wwwRootPath, productPath);
+    if (Directory.Exists(finalPath))
+    {
+      string[] filePaths = Directory.GetFiles(finalPath);
+      foreach (var filePath in filePaths)
+      {
+        System.IO.File.Delete(filePath);
+      }
+      Directory.Delete(finalPath);
+    }
+  }
+
 }
 

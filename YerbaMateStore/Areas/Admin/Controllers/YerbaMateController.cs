@@ -95,7 +95,7 @@ public class YerbaMateController : Controller
   }
 
 
-  #region API CALLS
+  //API CALLS
   [HttpGet]
   public IActionResult GetAll()
   {
@@ -112,23 +112,13 @@ public class YerbaMateController : Controller
     {
       return Json(new { success = false, message = "Error while deleting!" });
     }
-    string wwwRootPath = _hostEnvironment.WebRootPath;
-    char separation = Path.DirectorySeparatorChar;
-    string productPath = @$"images{separation}products{separation}product-{id}";
-    string finalPath = Path.Combine(wwwRootPath, productPath);
-    if (Directory.Exists(finalPath))
+    else
     {
-      string[] paths = Directory.GetFiles(finalPath);
-      foreach (var path in paths)
-      {
-        System.IO.File.Delete(path);
-      }
-      Directory.Delete(finalPath);
+      ProductManager<YerbaMate> productManager = new(_hostEnvironment);
+      productManager.DeleteFiles(id);
+      _unitOfWork.YerbaMate.Remove(product);
+      _unitOfWork.Save();
+      return Json(new { success = true, message = "Delete Successful!" });
     }
-
-    _unitOfWork.YerbaMate.Remove(product);
-    _unitOfWork.Save();
-    return Json(new { success = true, message = "Delete Successful!" });
   }
-  #endregion
 }
