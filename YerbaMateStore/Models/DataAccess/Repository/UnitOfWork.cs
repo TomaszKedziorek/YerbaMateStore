@@ -14,6 +14,9 @@ public class UnitOfWork : IUnitOfWork
   public IBombillaRepository Bombilla { get; private set; }
 
   public IImageRepository<BombillaImage> BombillaImage { get; private set; }
+  public ICupRepository Cup { get; private set; }
+
+  public IImageRepository<CupImage> CupImage { get; private set; }
 
   public UnitOfWork(AppDbContext dbContext)
   {
@@ -23,6 +26,8 @@ public class UnitOfWork : IUnitOfWork
     YerbaMateImage = new YerbaMateImageRepository(dbContext);
     Bombilla = new BombillaRepository(dbContext);
     BombillaImage = new BombillaImageRepository(dbContext);
+    Cup = new CupRepository(dbContext);
+    CupImage = new CupImageRepository(dbContext);
   }
 
   public void Save()
