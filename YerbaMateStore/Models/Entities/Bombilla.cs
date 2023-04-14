@@ -18,11 +18,6 @@ public class Bombilla
   [Display(Name = "Discount Price")]
   public double? DiscountPrice { get; set; }
 
-  [Display(Name = "Country")]
-  public int CountryId { get; set; }
-  [ValidateNever]
-  public Country Country { get; set; }
-
   [ValidateNever]
   public List<BombillaImage> Images { get; set; }
 }

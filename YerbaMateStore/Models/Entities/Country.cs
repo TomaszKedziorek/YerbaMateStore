@@ -10,6 +10,4 @@ public class Country
   public string? CountryIsoAlfa2Code { get; set; }
 
   public List<YerbaMate> YerbaMate { get; set; } = new List<YerbaMate>();
-  public List<Bombilla> Bombilla { get; set; } = new List<Bombilla>();
-  public List<Cup> Cup { get; set; } = new List<Cup>();
 }
