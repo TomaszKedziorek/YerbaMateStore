@@ -11,6 +11,9 @@ public class UnitOfWork : IUnitOfWork
   public ICountryRepository Countries { get; private set; }
   public IImageRepository<YerbaMateImage> YerbaMateImage { get; private set; }
 
+  public IBombillaRepository Bombilla { get; private set; }
+
+  public IImageRepository<BombillaImage> BombillaImage { get; private set; }
 
   public UnitOfWork(AppDbContext dbContext)
   {
@@ -18,6 +21,8 @@ public class UnitOfWork : IUnitOfWork
     YerbaMate = new YerbaMateRepository(dbContext);
     Countries = new CountryRepository(dbContext);
     YerbaMateImage = new YerbaMateImageRepository(dbContext);
+    Bombilla = new BombillaRepository(dbContext);
+    BombillaImage = new BombillaImageRepository(dbContext);
   }
 
   public void Save()
