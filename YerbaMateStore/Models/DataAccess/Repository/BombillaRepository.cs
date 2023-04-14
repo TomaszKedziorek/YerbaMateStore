@@ -25,7 +25,6 @@ public class BombillaRepository : Repository<Bombilla>, IBombillaRepository
       porducFromDb.Length = product.Length;
       porducFromDb.Price = product.Price;
       porducFromDb.DiscountPrice = product.DiscountPrice;
-      porducFromDb.CountryId = product.CountryId;
       porducFromDb.Images = product.Images;
     }
   }
