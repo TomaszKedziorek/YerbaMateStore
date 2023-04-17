@@ -6,21 +6,22 @@ using YerbaMateStore.Models.ViewModels;
 
 namespace YerbaMateStore.Controllers;
 [Area("Customer")]
-public class HomeController : Controller
+public class YerbaMateController : Controller
 {
-  private readonly ILogger<HomeController> _logger;
   private readonly IUnitOfWork _unitOfWork;
 
-  public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork)
+  public YerbaMateController(IUnitOfWork unitOfWork)
   {
-    _logger = logger;
     _unitOfWork = unitOfWork;
   }
 
+  [HttpGet]
   public IActionResult Index()
   {
-    return View();
+    IEnumerable<YerbaMate> productList = _unitOfWork.YerbaMate.GetAll(includeProperties: "Images");
+    return View(productList);
   }
+
 
   public IActionResult Privacy()
   {
