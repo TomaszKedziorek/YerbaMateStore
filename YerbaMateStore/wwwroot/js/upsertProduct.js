@@ -20,9 +20,9 @@ $(document).ready(function () {
           slidesToScroll: 2,
           infinite: true,
           dots: true,
-          arrows:false
+          arrows: false
         }
-      }, 
+      },
       {
         breakpoint: 900,
         settings: {

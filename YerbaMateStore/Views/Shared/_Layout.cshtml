@@ -75,7 +75,7 @@ https://templatemo.com/tm-559-zay-shop
       <div class="align-self-center collapse navbar-collapse flex-fill  d-lg-flex justify-content-lg-between"
         id="templatemo_main_nav">
         <div class="flex-fill">
-          <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
+          <ul class="nav navbar-nav d-flex justify-content-start mx-lg-auto">
             <li class="nav-item">
               <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
             </li>
@@ -83,9 +83,15 @@ https://templatemo.com/tm-559-zay-shop
               <a class="nav-link" asp-area="Customer" asp-controller="YerbaMate" asp-action="Index">Yerba Mate</a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" asp-area="Customer" asp-controller="Bombilla" asp-action="Index">Bombilla</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" asp-area="Customer" asp-controller="Cup" asp-action="Index">Gourds/Cups</a>
+            </li>
+            <li class="nav-item">
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true"
-                aria-expanded="false">Content Management</a>
+                aria-expanded="false">Management</a>
               <div class="dropdown-menu">
                 <a class="nav-link" asp-area="Admin" asp-controller="YerbaMate" asp-action="Index">Yerba Mate</a>
                 <a class="nav-link" asp-area="Admin" asp-controller="Bombilla" asp-action="Index">Bombilla</a>
@@ -145,9 +151,9 @@ https://templatemo.com/tm-559-zay-shop
         <div class="col-md-4 pt-5">
           <h2 class="h2 text-light border-bottom pb-3 border-light">Products</h2>
           <ul class="list-unstyled text-light footer-link-list">
-            <li><a class="text-decoration-none" href="#">Yerba Mate</a></li>
-            <li><a class="text-decoration-none" href="#">Bombilla</a></li>
-            <li><a class="text-decoration-none" href="#">Gourds and Mates</a></li>
+            <li><a class="text-decoration-none" asp-area="Customer" asp-controller="YerbaMate" asp-action="Index">Yerba Mate</a></li>
+            <li><a class="text-decoration-none" asp-area="Customer" asp-controller="Bombilla" asp-action="Index">Bombilla</a></li>
+            <li><a class="text-decoration-none" asp-area="Customer" asp-controller="Cup" asp-action="Index">Gourds and Cups</a></li>
           </ul>
         </div>
 

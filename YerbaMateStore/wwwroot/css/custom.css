@@ -7,11 +7,6 @@ div .swal2-icon-content {
   font-size: 1rem;
 }
 
-/* .slick-arrow {
-  color: #000000 !important;
-  background: red!important;
-} */
-
 .slick-prev:before {
   color: black !important;
   background-color: transparent;
@@ -33,3 +28,12 @@ div .swal2-icon-content {
   justify-content: center !important;
 }
 
+.slickCarouselImg {
+  height: 150px !important;
+  width: auto !important;
+}
+
+.homeIndexCategoriesImg {
+  height: 300px !important;
+  width: auto !important;
+}
