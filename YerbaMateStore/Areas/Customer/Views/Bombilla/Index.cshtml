@@ -1,0 +1,148 @@
+@model YerbaMateStore.Models.ViewModels.BombillaProductsViewModel
+@section HeadArea{
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/css/flag-icons.min.css" />
+}
+@{
+  ViewData["Title"] = "Bombilla - " + Model.Filter;
+}
+<!-- Start Content -->
+<div class="container py-3 mt-4 mx-md-3 mx-lg-5 p-3">
+  <div class="row ">
+    <div class="col-12">
+      <h2 class="text-success">@ViewData["Title"]</h2>
+      <hr>
+    </div>
+  </div>
+  <div class="row">
+
+    <div class="col-2">
+      <h1 class="h2 pb-4">Categories</h1>
+      <ul class="list-unstyled templatemo-accordion">
+        <li class="pb-1">
+          <a class="collapse d-flex justify-content-between h3 text-decoration-none">
+            Length <i class="bi bi-chevron-compact-down"></i>
+          </a>
+          <ul class="collapse show list-unstyled pl-3">
+            @foreach (var length in Model.LengthList)
+            {
+              <li class="ms-2">
+                <a class="text-decoration-none d-flex justify-content-between" asp-controller="Bombilla"
+                asp-action="Index" asp-route-length="@length">
+                  <span>@length</span>
+                </a>
+              </li>
+            }
+          </ul>
+        </li>
+        <li class="pb-1">
+          <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">
+            Material <i class="bi bi-chevron-compact-down"></i>
+          </a>
+          <ul class="collapse show list-unstyled pl-3">
+            @foreach (var material in Model.MaterialList)
+            {
+              <li class="ms-2">
+                <a class="text-decoration-none d-flex justify-content-between" asp-controller="Bombilla"
+                asp-action="Index" asp-route-material="@material">
+                  <span>@material</span>
+                </a>
+              </li>
+            }
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <div class="col-lg-10">
+      <div class="row">
+        <div class="col-12">
+          <ul class="list-inline shop-top-menu pb-3 pt-1">
+            <li class="list-inline-item">
+              <a class="text-dark text-decoration-none mr-3 btn btn-outline-success" asp-controller="Bombilla"
+                asp-action="Index" asp-route-type="all">All</a>
+            </li>
+            <li class="list-inline-item">
+              <a class="text-dark text-decoration-none mr-3 btn btn-outline-success" asp-controller="Bombilla"
+                asp-action="Index" asp-route-type="unscrewed">Unscrewed</a>
+            </li>
+            <li class="list-inline-item">
+              <a class="text-dark text-decoration-none btn btn-outline-success" asp-controller="Bombilla"
+                asp-action="Index" asp-route-type="noUnscrewed">Not Unscrewed</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="row d-flex">
+        @if (Model.ProductList.Count() == 0)
+        {
+          <div class="col-12 alert alert-dark" role="alert">
+            No products found.
+          </div>
+        }
+        else
+        {
+          @foreach (var product in Model.ProductList)
+          {
+            <div class="col-6 col-sm-4 col-md-3">
+              <div class="card mb-4 product-wap rounded-0">
+                <div class="card rounded-0">
+                  <img class="card-img rounded-0 img-fluid mx-auto d-block slickCarouselImg"
+                    src="@product.Images.First().ImageUrl">
+                  <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                    <a class="btn btn-success btn-md text-white mt-2" style="z-index: 2;position: relative;"><i
+                        class="bi bi-cart-plus-fill"></i>
+                    </a>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <a asp-area="Customer" asp-controller="Bombilla" asp-action="Details" asp-route-productId="@product.Id"
+                    class="h3 text-decoration-none fw-bold stretched-link">@product.Name</a>
+                  <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+                    <li>@product.Length</li>
+                  </ul>
+                  <ul class="w-100 list-unstyled d-flex justify-content-evenly mb-0">
+                    @if (product.DiscountPrice != null)
+                    {
+                      <li class="text-center text-danger mb-0">
+                        <h4><strike>@product.Price.ToString("0.00") zł</strike></h4>
+                      </li>
+                      <li class="text-center text-success mb-0 fw-bold">
+                        <h4>
+                          @(((double)product.DiscountPrice).ToString("0.00")) zł
+                        </h4>
+                      </li>
+                    }
+                    else
+                    {
+                      <li class="text-center text-success mb-0 fw-bold">
+                        <h4>@product.Price.ToString("0.00") zł</h4>
+                      </li>
+                    }
+                  </ul>
+                </div>
+              </div>
+            </div>
+          }
+        }
+      </div>
+
+      <div div="row">
+        <ul class="pagination pagination-lg justify-content-end">
+          <li class="page-item disabled">
+            <a class="page-link active rounded-0 mr-3 shadow-sm border-top-0 border-left-0" href="#" tabindex="-1">1</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link rounded-0 mr-3 shadow-sm border-top-0 border-left-0 text-dark" href="#">2</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link rounded-0 shadow-sm border-top-0 border-left-0 text-dark" href="#">3</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- End Content -->
+
