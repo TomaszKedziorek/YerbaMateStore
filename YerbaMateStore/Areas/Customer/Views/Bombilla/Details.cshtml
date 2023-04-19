@@ -1,0 +1,122 @@
+@using YerbaMateStore.Models.Entities
+@model YerbaMateStore.Models.ViewModels.ShopProductViewModel<Bombilla>
+
+@section HeadArea{
+  <link rel="stylesheet" type="text/css" href="/css/zayTemplateCss/slick.min.css">
+  <link rel="stylesheet" type="text/css" href="/css/zayTemplateCss/slick-theme.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/css/flag-icons.min.css" />
+}
+
+<section class="bg-light">
+  <div class="container pb-5 mx-0 mx-md-3 mx-lg-5 p-3">
+    <div class="row mt-4">
+      <div class="col-5">
+        <div class="card mb-3">
+          <img class="card-img img-fluid mx-auto d-block" src="@Model.Product.Images.First().ImageUrl"
+            alt="Card image cap" id="product-detail" style="height: 480px; width: auto;">
+        </div>
+        <div class="row">
+          <div class="product-links-wap">
+            <div id="carousel-related-product" class="mb-3">
+              @foreach (var image in Model.Product.Images)
+              {
+                <div class="card mb-4 product-wap rounded-0 m-lg-1">
+                  <div class="card rounded-0">
+                    <a href="#">
+                      <img class="card-img rounded-0 img-fluid mx-auto d-block slickCarouselImg" src="@image.ImageUrl">
+                    </a>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- col end -->
+      <div class="col-7">
+        <div class="card">
+          <div class="card-body">
+            <h1 class="h2">@Model.Product.Name</h1>
+            <p>
+              @if (Model.Product.DiscountPrice != null)
+              {
+                <span class="h4 text-success fw-bold">@(((double)Model.Product.DiscountPrice).ToString("0.00"))
+                  zł</span>
+                <span class="h5 text-danger"><strike>@Model.Product.Price.ToString("0.00") zł</strike></span>
+              }
+              else
+              {
+                <span class="h4 text-success">@Model.Product.Price.ToString("0.00") zł</span>
+              }
+            </p>
+            <ul class="list-inline mb-0">
+              <li class="list-inline-item">
+                <h6>Length:</h6>
+              </li>
+              <li class="list-inline-item">
+                <p class="text-dark mb-0">@Model.Product.Length </p>
+              </li>
+            </ul>
+            <ul class="list-inline mb-0">
+              <li class="list-inline-item">
+                <h6>Description:</h6>
+              </li>
+              <li class="list-inline-item">
+                <p class="text-dark mb-0">@Html.Raw(Model.Product.Description)</p>
+              </li>
+            </ul>
+            <ul class="list-inline mb-0">
+              <li class="list-inline-item">
+                <h6>Material:</h6>
+              </li>
+              <li class="list-inline-item">
+                <p class="text-dark mb-0">@Model.Product.Material</p>
+              </li>
+            </ul>
+            <ul class="list-inline mb-0">
+              <li class="list-inline-item">
+                <h6>Unscrewed:</h6>
+              </li>
+              <li class="list-inline-item">
+                <p class="text-dark mb-0">@(Model.Product.IsUnscrewed ? "yes" : "no")</p>
+              </li>
+            </ul>
+
+            <form action="">
+              <input type="hidden" name="productId" asp-for="@Model.Product.Id">
+              <div class="row">
+                <div class="col-auto">
+                  <ul class="list-inline pb-3">
+                    <li class="list-inline-item text-right">
+                      Quantity
+                      <input type="hidden" name="quanity" id="product-quanity" value="1">
+                    </li>
+                    <li class="list-inline-item"><span class="btn btn-success" id="btn-minus">-</span></li>
+                    <li class="list-inline-item"><span class="badge bg-secondary" id="var-value">1</span></li>
+                    <li class="list-inline-item"><span class="btn btn-success" id="btn-plus">+</span></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="row pb-3 justify-content-center">
+                <div class="col-5 d-grid">
+                  <button type="submit" class="btn btn-success btn-lg">Add To
+                    Cart</button>
+                </div>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+@section Scripts{
+  @* <partial name="_ValidationScriptsPartial.cshtml" /> *@
+  <!-- Start Slider Script -->
+  <script src="/js/zayTemplateJs/slick.min.js"></script>
+  <script src="/js/slickCarousel.js"></script>
+}

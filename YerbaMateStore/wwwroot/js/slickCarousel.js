@@ -1,15 +1,10 @@
 $(document).ready(function () {
-  tinymce.init({
-    selector: 'textarea',
-    plugins: 'advlist autolink lists link image charmap print preview hr anchor pagebreak',
-    toolbar_mode: 'floating',
-  });
   $('#carousel-related-product').slick({
     infinite: true,
     vertical: false,
     autoplay: true,
-    slidesToShow: 2,
-    slidesToScroll: 2,
+    slidesToShow: 3,
+    slidesToScroll: 3,
     dots: true,
     arrows: true,
     responsive: [
@@ -20,9 +15,9 @@ $(document).ready(function () {
           slidesToScroll: 2,
           infinite: true,
           dots: true,
-          arrows: false
+          arrows:false
         }
-      },
+      }, 
       {
         breakpoint: 900,
         settings: {
