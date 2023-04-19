@@ -113,7 +113,7 @@
                   </div>
                 </div>
                 <div class="card-body">
-                  <a asp-area="Customer" asp-controller="YerbaMate" asp-action="Details"
+                  <a asp-area="Customer" asp-controller="YerbaMate" asp-action="Details" asp-route-productId="@product.Id"
                     class="h3 text-decoration-none fw-bold stretched-link">@product.Brand - @product.Name</a>
                   <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
                     <li>@product.Brand</li>

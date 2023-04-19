@@ -14,12 +14,12 @@ div .swal2-icon-content {
 
 .slick-prev:before {
   color: black !important;
-  background-color: #ffffff;
+  background-color: transparent;
 }
 
 .slick-next:before {
   color: black !important;
-  background-color: #ffffff;
+  background-color: transparent;
 }
 
 .slick-track {
@@ -32,3 +32,4 @@ div .swal2-icon-content {
   align-items: center !important;
   justify-content: center !important;
 }
+
