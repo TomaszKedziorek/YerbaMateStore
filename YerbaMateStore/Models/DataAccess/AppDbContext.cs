@@ -14,6 +14,8 @@ public class AppDbContext : IdentityDbContext<IdentityUser>
   public DbSet<YerbaMateImage> YerbaMateImages { get; set; }
   public DbSet<BombillaImage> BombillaImages { get; set; }
   public DbSet<CupImage> CupImages { get; set; }
+  public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+
   public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
   {
   }
