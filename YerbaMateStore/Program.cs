@@ -29,14 +29,13 @@ public class Program
     builder.Services.AddIdentity<IdentityUser, IdentityRole>()
                     .AddDefaultTokenProviders()
                     .AddEntityFrameworkStores<AppDbContext>();
-    builder.Services.AddScoped<CountrySeeder>();
     builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
     builder.Services.AddScoped<IDbInitializer, DbInitializer>();
     builder.Services.AddSingleton<IEmailSender, EmailSender>();
 
     AdminData adminData = builder.Configuration.GetSection("AdminData").Get<AdminData>();
     builder.Services.AddSingleton(adminData);
-    
+
 
     var app = builder.Build();
 
@@ -47,15 +46,13 @@ public class Program
       // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
       app.UseHsts();
     }
-    IServiceScope scope = app.Services.CreateScope();
-    CountrySeeder countrySeeder = scope.ServiceProvider.GetRequiredService<CountrySeeder>();
-    countrySeeder.Seed();
+
+    SeedDatabase(app);
 
     app.UseHttpsRedirection();
     app.UseStaticFiles();
     app.UseAuthentication();
     app.UseRouting();
-    SeedDatabase(app);
 
     app.UseAuthorization();
     app.MapRazorPages();

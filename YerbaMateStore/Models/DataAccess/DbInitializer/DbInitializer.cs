@@ -9,30 +9,34 @@ public class DbInitializer : IDbInitializer
 {
   private readonly UserManager<IdentityUser> _userManager;
   private readonly RoleManager<IdentityRole> _roleManager;
-  private readonly AppDbContext _appDbContext;
+  private readonly AppDbContext _dbContext;
   private readonly AdminData _adminData;
+  private readonly CountrySeeder _countrySeeder;
 
   public DbInitializer(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager,
-                       AppDbContext appDbContext, AdminData adminData)
+                       AppDbContext dbContext, AdminData adminData)
   {
     _userManager = userManager;
     _roleManager = roleManager;
-    _appDbContext = appDbContext;
+    _dbContext = dbContext;
     _adminData = adminData;
+    _countrySeeder = new(dbContext);
   }
 
   public void Initialize()
   {
     try
     {
-      if (_appDbContext.Database.GetPendingMigrations().Count() > 0)
+      if (_dbContext.Database.GetPendingMigrations().Count() > 0)
       {
-        _appDbContext.Database.Migrate();
+        _dbContext.Database.Migrate();
       }
     }
     catch (Exception e)
     {
     }
+    _countrySeeder.Seed();
+
     if (!_roleManager.RoleExistsAsync(StaticDetails.Role_Admin).GetAwaiter().GetResult())
     {
       _roleManager.CreateAsync(new IdentityRole(StaticDetails.Role_Admin)).GetAwaiter().GetResult();
@@ -49,7 +53,7 @@ public class DbInitializer : IDbInitializer
         PhoneNumber = "678 345 129",
       };
       _userManager.CreateAsync(admin, _adminData.Password).GetAwaiter().GetResult();
-      ApplicationUser user = _appDbContext.ApplicationUsers.FirstOrDefault(u => u.Email == _adminData.Email);
+      ApplicationUser user = _dbContext.ApplicationUsers.FirstOrDefault(u => u.Email == _adminData.Email);
       _userManager.AddToRoleAsync(user, StaticDetails.Role_Admin).GetAwaiter().GetResult();
     }
     return;

@@ -1,7 +1,7 @@
 using YerbaMateStore.Models.DataAccess;
 using YerbaMateStore.Models.Entities;
 
-namespace YerbaMateStore.Models.Utilities;
+namespace YerbaMateStore.Models.DataAccess.DbInitializer;
 
 public class CountrySeeder
 {
