@@ -4,6 +4,8 @@ using YerbaMateStore.Models.Repository;
 using YerbaMateStore.Models.Repository.IRepository;
 using YerbaMateStore.Models.Utilities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using YerbaMateStore.Models.DataAccess.DbInitializer;
 
 namespace YerbaMateStore;
 
@@ -29,6 +31,8 @@ public class Program
                     .AddEntityFrameworkStores<AppDbContext>();
     builder.Services.AddScoped<CountrySeeder>();
     builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+    builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+    builder.Services.AddSingleton<IEmailSender, EmailSender>();
 
     var app = builder.Build();
 
@@ -47,6 +51,7 @@ public class Program
     app.UseStaticFiles();
     app.UseAuthentication();
     app.UseRouting();
+    SeedDatabase(app);
 
     app.UseAuthorization();
     app.MapRazorPages();
@@ -55,5 +60,14 @@ public class Program
         pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
 
     app.Run();
+  }
+
+  static void SeedDatabase(WebApplication app)
+  {
+    using (var scope = app.Services.CreateScope())
+    {
+      var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+      dbInitializer.Initialize();
+    }
   }
 }
