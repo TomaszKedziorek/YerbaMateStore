@@ -34,6 +34,10 @@ public class Program
     builder.Services.AddScoped<IDbInitializer, DbInitializer>();
     builder.Services.AddSingleton<IEmailSender, EmailSender>();
 
+    AdminData adminData = builder.Configuration.GetSection("AdminData").Get<AdminData>();
+    builder.Services.AddSingleton(adminData);
+    
+
     var app = builder.Build();
 
     // Configure the HTTP request pipeline.
