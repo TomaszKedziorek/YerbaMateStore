@@ -37,3 +37,9 @@ div .swal2-icon-content {
   height: 300px !important;
   width: auto !important;
 }
+
+#_nav_top * {
+  font-size: 0.98em !important;
+  padding-top: 0;
+  padding-bottom: 0;
+}
