@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using YerbaMateStore.Models.Entities;
 
 namespace YerbaMateStore.Models.DataAccess;
 
-public class AppDbContext : DbContext
+public class AppDbContext : IdentityDbContext<IdentityUser>
 {
   public DbSet<YerbaMate> YerbaMate { get; set; }
   public DbSet<Bombilla> Bombilla { get; set; }
@@ -17,7 +19,7 @@ public class AppDbContext : DbContext
   }
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
-    // new AddressConfiguration().Configure(modelBuilder.Entity<Address>());
+    base.OnModelCreating(modelBuilder);
     modelBuilder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);
   }
 }

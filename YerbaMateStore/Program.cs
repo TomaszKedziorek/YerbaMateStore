@@ -3,6 +3,7 @@ using YerbaMateStore.Models.DataAccess;
 using YerbaMateStore.Models.Repository;
 using YerbaMateStore.Models.Repository.IRepository;
 using YerbaMateStore.Models.Utilities;
+using Microsoft.AspNetCore.Identity;
 
 namespace YerbaMateStore;
 
@@ -23,6 +24,7 @@ public class Program
     string connectionString = builder.Configuration.GetConnectionString("YerbaMateStoreDbConnsectionString");
     ServerVersion serverVersion = ServerVersion.AutoDetect(connectionString);
     builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(connectionString, serverVersion));
+    builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<AppDbContext>();
     builder.Services.AddScoped<CountrySeeder>();
     builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -41,11 +43,11 @@ public class Program
 
     app.UseHttpsRedirection();
     app.UseStaticFiles();
-
+    app.UseAuthentication();
     app.UseRouting();
 
     app.UseAuthorization();
-
+    app.MapRazorPages();
     app.MapControllerRoute(
         name: "default",
         pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
