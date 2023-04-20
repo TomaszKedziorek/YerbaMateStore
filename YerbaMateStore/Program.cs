@@ -24,7 +24,9 @@ public class Program
     string connectionString = builder.Configuration.GetConnectionString("YerbaMateStoreDbConnsectionString");
     ServerVersion serverVersion = ServerVersion.AutoDetect(connectionString);
     builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(connectionString, serverVersion));
-    builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<AppDbContext>();
+    builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+                    .AddDefaultTokenProviders()
+                    .AddEntityFrameworkStores<AppDbContext>();
     builder.Services.AddScoped<CountrySeeder>();
     builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
