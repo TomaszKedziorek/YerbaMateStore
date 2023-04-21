@@ -15,10 +15,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using YerbaMateStore.Models.Entities;
+using YerbaMateStore.Models.Utilities;
 
 namespace YerbaMateStore.Areas.Identity.Pages.Account
 {
@@ -112,11 +115,23 @@ namespace YerbaMateStore.Areas.Identity.Pages.Account
       public string PostalCode { get; set; }
       [Display(Name = "Phone Nmber")]
       public string PhoneNumber { get; set; }
+      public string Role { get; set; }
+      [ValidateNever]
+      public IEnumerable<SelectListItem> RoleList { get; set; }
+
     }
 
 
     public async Task OnGetAsync(string returnUrl = null)
     {
+      Input = new InputModel()
+      {
+        RoleList = _roleManager.Roles.Select(r => r.Name).Select(x => new SelectListItem
+        {
+          Text = x,
+          Value = x
+        })
+      };
       ReturnUrl = returnUrl;
       ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
     }
@@ -144,6 +159,15 @@ namespace YerbaMateStore.Areas.Identity.Pages.Account
         if (result.Succeeded)
         {
           _logger.LogInformation("User created a new account with password.");
+
+          if (Input.Role == null)
+          {
+            await _userManager.AddToRoleAsync(user, StaticDetails.Role_Individual);
+          }
+          else
+          {
+            await _userManager.AddToRoleAsync(user, Input.Role);
+          }
 
           var userId = await _userManager.GetUserIdAsync(user);
           var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

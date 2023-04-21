@@ -12,7 +12,9 @@
     <div class="row justify-content-center">
       <div class="col-12 justify-content-center">
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+
           <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
           <div class="mb-2 row justify-content-center">
             <label asp-for="Input.Name" class="col-sm-2 col-form-label"></label>
             <div class="col-sm-8">
@@ -20,6 +22,7 @@
               <span asp-validation-for="Input.Name" class="text-danger"></span>
             </div>
           </div>
+
           <div class="mb-2 row justify-content-center">
             <label asp-for="Input.Email" class="col-sm-2 col-form-label"></label>
             <div class="col-sm-8">
@@ -27,17 +30,19 @@
               <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
           </div>
+
           <div class="mb-2 row justify-content-center">
             <label asp-for="Input.Password" class="col-sm-2 col-form-label"></label>
             <div class="col-sm-8">
               <div class="input-group mb-1">
                 <input asp-for="Input.Password" class="form-control rounded-0" type="password" id="inputPassword">
-                <span class="input-group-text bg-white rounded-0 p-0" id="basic-addon1"><i class="bi bi-eye-slash px-3 py-1"
-                    id="eyeIconPassword"></i></span>
+                <span class="input-group-text bg-white rounded-0 p-0" id="basic-addon1"><i
+                    class="bi bi-eye-slash px-3 py-1" id="eyeIconPassword"></i></span>
               </div>
               <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
           </div>
+
           <div class="mb-2 row justify-content-center">
             <label asp-for="Input.ConfirmPassword" class="col-sm-2 col-form-label"></label>
             <div class="col-sm-8">
@@ -46,11 +51,21 @@
                 <span class="input-group-text bg-white rounded-0 p-0" id="basic-addon1">
                   <i class="bi bi-eye-slash px-3 py-1" id="eyeIconConfirm"></i>
                 </span>
-                
               </div>
               <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
           </div>
+
+          <div class="mb-2 row justify-content-center">
+            <label asp-for="Input.Role" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-8">
+              <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select">
+                <option disabled selected>-Select Role-</option>
+              </select>
+              <span asp-validation-for="Input.Role" class="text-danger"></span>
+            </div>
+          </div>
+
           <div class="mb-2 row justify-content-center">
             <div class="col-sm-2"></div>
             <div class="col-sm-8">
