@@ -6,14 +6,14 @@
   ViewData["Title"] = isAdmin ? "Register - Admin Portal" : "Register";
 }
 
-<section class="bg-light">
-  <div class="container pb-5 mx-0 mx-md-3 mx-lg-5 p-3">
+<section class="bg-light d-flex justify-content-center">
+  <div class="container-lg pb-5 p-3">
     <h1 class="text-success">@ViewData["Title"]</h1>
-    <h2>Create a new account.</h2>
+    <h2>Create a new account</h2>
     <hr />
 
     <div class="row justify-content-center">
-      <div class="col-12 justify-content-center">
+      <div class="col-12">
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
 
           <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -126,12 +126,16 @@
           <div class="mb-2 row justify-content-center">
             <div class="col-sm-2"></div>
             <div class="col-sm-8">
-              <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-success">Register</button>
               @if (!isAdmin)
               {
+                <button id="registerSubmit" type="submit" class="w-50 btn btn-lg btn-success">Register</button>
                 <div class="my-2">
                   <span>Already have an account? <a asp-area="Identity" asp-page="/Account/Login">Log in!</a></span>
                 </div>
+              }
+              else
+              {
+                <button id="registerSubmit" type="submit" class="w-50 btn btn-lg btn-success">Create</button>
               }
             </div>
           </div>
