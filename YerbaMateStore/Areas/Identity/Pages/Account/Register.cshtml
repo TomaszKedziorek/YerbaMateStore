@@ -1,12 +1,15 @@
 ﻿@page
+@using YerbaMateStore.Models.Utilities
 @model RegisterModel
 @{
-  ViewData["Title"] = "Register";
+  bool isAdmin = User.IsInRole(StaticDetails.Role_Admin) ? true : false;
+  ViewData["Title"] = isAdmin ? "Register - Admin Portal" : "Register";
 }
 
 <section class="bg-light">
   <div class="container pb-5 mx-0 mx-md-3 mx-lg-5 p-3">
     <h1 class="text-success">@ViewData["Title"]</h1>
+    <h2>Create a new account.</h2>
     <hr />
 
     <div class="row justify-content-center">
@@ -55,16 +58,18 @@
               <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
           </div>
-
-          <div class="mb-2 row justify-content-center">
-            <label asp-for="Input.Role" class="col-sm-2 col-form-label"></label>
-            <div class="col-sm-8">
-              <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select">
-                <option disabled selected>-Select Role-</option>
-              </select>
-              <span asp-validation-for="Input.Role" class="text-danger"></span>
+          @if (isAdmin)
+          {
+            <div class="mb-2 row justify-content-center">
+              <label asp-for="Input.Role" class="col-sm-2 col-form-label"></label>
+              <div class="col-sm-8">
+                <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select">
+                  <option disabled selected>-Select Role for User-</option>
+                </select>
+                <span asp-validation-for="Input.Role" class="text-danger"></span>
+              </div>
             </div>
-          </div>
+          }
 
           <div class="mb-2 row justify-content-center">
             <div class="col-sm-2"></div>
@@ -122,9 +127,12 @@
             <div class="col-sm-2"></div>
             <div class="col-sm-8">
               <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-success">Register</button>
-              <div class="my-2">
-                <span>Already have an account? <a asp-area="Identity" asp-page="/Account/Login">Log in!</a></span>
-              </div>
+              @if (!isAdmin)
+              {
+                <div class="my-2">
+                  <span>Already have an account? <a asp-area="Identity" asp-page="/Account/Login">Log in!</a></span>
+                </div>
+              }
             </div>
           </div>
         </form>

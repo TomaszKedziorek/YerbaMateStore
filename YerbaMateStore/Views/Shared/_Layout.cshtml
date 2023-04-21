@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@using YerbaMateStore.Models.Utilities
+@{
+  bool isAdmin = User.IsInRole(StaticDetails.Role_Admin) ? true : false;
+  bool isEmployee = User.IsInRole(StaticDetails.Role_Employee) ? true : false;
+}
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -35,8 +40,35 @@ https://templatemo.com/tm-559-zay-shop
   <!-- Start Top Nav -->
   <nav class="navbar navbar-expand bg-dark navbar-light d-block" id="_nav_top">
     <div class="container text-light">
-      <div class="w-100 d-flex justify-content-end">
-        <partial name="_LoginPartial" />
+      <div class="w-100 d-flex justify-content-between">
+        <div class="d-flex ">
+          @if (isAdmin)
+          {
+            <a asp-area="Identity" asp-page="/Account/Register" class="text-decoration-none text-light">Create User</a>
+          }
+          @if (isAdmin || isEmployee)
+          {
+            <div class="flex-fill">
+              <ul class="nav navbar-nav d-flex">
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle text-light" data-bs-toggle="dropdown" href="#" role="button">Products
+                    Management</a>
+                  <div class="dropdown-menu ms-2">
+                    <a class="nav-link dropdown-item bg" asp-area="Admin" asp-controller="YerbaMate"
+                    asp-action="Index">Yerba Mate</a>
+                    <a class="nav-link dropdown-item" asp-area="Admin" asp-controller="Bombilla"
+                    asp-action="Index">Bombilla</a>
+                    <a class="nav-link dropdown-item" asp-area="Admin" asp-controller="Cup" asp-action="Index">Gourds -
+                      Mates</a>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          }
+        </div>
+        <div class="d-flex ">
+          <partial name="_LoginPartial" />
+        </div>
       </div>
     </div>
     </div>
@@ -76,19 +108,7 @@ https://templatemo.com/tm-559-zay-shop
             </li>
           </ul>
         </div>
-        <div class="flex-fill">
-          <ul class="nav navbar-nav d-flex justify-content-end mx-lg-3">
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true"
-                aria-expanded="false">Management</a>
-              <div class="dropdown-menu">
-                <a class="nav-link" asp-area="Admin" asp-controller="YerbaMate" asp-action="Index">Yerba Mate</a>
-                <a class="nav-link" asp-area="Admin" asp-controller="Bombilla" asp-action="Index">Bombilla</a>
-                <a class="nav-link" asp-area="Admin" asp-controller="Cup" asp-action="Index">Gourds - Mates</a>
-              </div>
-            </li>
-          </ul>
-        </div>
+
         <div class="navbar align-self-center d-flex">
           <a class="nav-icon position-relative text-decoration-none" href="#">
             <i class="bi bi-cart-check-fill text-dark mr-1"></i>
