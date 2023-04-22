@@ -28,7 +28,8 @@ public class Program
     builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(connectionString, serverVersion));
     builder.Services.AddIdentity<IdentityUser, IdentityRole>()
                     .AddDefaultTokenProviders()
-                    .AddEntityFrameworkStores<AppDbContext>();
+                    .AddEntityFrameworkStores<AppDbContext>()
+                    .AddDefaultUI();
     builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
     builder.Services.AddScoped<IDbInitializer, DbInitializer>();
     builder.Services.AddSingleton<IEmailSender, EmailSender>();
@@ -37,7 +38,12 @@ public class Program
     EmailSenderAccessData emailAccessData = builder.Configuration.GetSection("EmailSender").Get<EmailSenderAccessData>();
     builder.Services.AddSingleton(adminData);
     builder.Services.AddSingleton(emailAccessData);
-
+    builder.Services.ConfigureApplicationCookie(options =>
+    {
+      options.LoginPath = $"/Identity/Account/Login";
+      options.LogoutPath = $"/Identity/Account/Logout";
+      options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+    });
 
     var app = builder.Build();
 
