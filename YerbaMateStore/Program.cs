@@ -34,7 +34,9 @@ public class Program
     builder.Services.AddSingleton<IEmailSender, EmailSender>();
 
     AdminData adminData = builder.Configuration.GetSection("AdminData").Get<AdminData>();
+    EmailSenderAccessData emailAccessData = builder.Configuration.GetSection("EmailSender").Get<EmailSenderAccessData>();
     builder.Services.AddSingleton(adminData);
+    builder.Services.AddSingleton(emailAccessData);
 
 
     var app = builder.Build();
