@@ -1,12 +1,16 @@
 const togglePassword = document.querySelector('#eyeIconPassword');
-const toggleConfirm = document.querySelector('#eyeIconConfirm');
 const password = document.querySelector('#inputPassword');
+
+const toggleConfirm = document.querySelector('#eyeIconConfirm');
 const confirm = document.querySelector('#inputConfirm');
-const wewe = document.querySelector('#qwqwqwq');
+
+const toggleOldPassword = document.querySelector('#eyeIconOldPassword');
+const oldPassword = document.querySelector('#inputOldPassword');
 
 $(document).ready(function () {
   showHidePassword(togglePassword, password);
   showHidePassword(toggleConfirm, confirm);
+  showHidePassword(toggleOldPassword, oldPassword);
 })
 
 function showHidePassword(toodleIcon, element) {
