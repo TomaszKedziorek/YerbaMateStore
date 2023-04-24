@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using YerbaMateStore.Models.Entities;
+using YerbaMateStore.Models.Repository.IRepository;
 
 namespace YerbaMateStore.Areas.Identity.Pages.Account.Manage
 {
@@ -16,13 +18,12 @@ namespace YerbaMateStore.Areas.Identity.Pages.Account.Manage
   {
     private readonly UserManager<IdentityUser> _userManager;
     private readonly SignInManager<IdentityUser> _signInManager;
-
-    public IndexModel(
-        UserManager<IdentityUser> userManager,
-        SignInManager<IdentityUser> signInManager)
+    private readonly IUnitOfWork _unitOfwork;
+    public IndexModel(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IUnitOfWork unitOfwork)
     {
       _userManager = userManager;
       _signInManager = signInManager;
+      _unitOfwork = unitOfwork;
     }
 
     /// <summary>
@@ -58,18 +59,33 @@ namespace YerbaMateStore.Areas.Identity.Pages.Account.Manage
       [Phone]
       [Display(Name = "Phone number")]
       public string PhoneNumber { get; set; }
+      public string Name { get; set; }
+      [Display(Name = "Street Addres")]
+      public string StreetAddress { get; set; }
+      public string Country { get; set; }
+      public string City { get; set; }
+      public string State { get; set; }
+      [Display(Name = "Postal Code")]
+      public string PostalCode { get; set; }
     }
 
     private async Task LoadAsync(IdentityUser user)
     {
       var userName = await _userManager.GetUserNameAsync(user);
       var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+      ApplicationUser appUser = _unitOfwork.ApplicationUser.GetFirstOrDefault(u => u.Id == user.Id);
 
       Username = userName;
 
       Input = new InputModel
       {
-        PhoneNumber = phoneNumber
+        PhoneNumber = phoneNumber,
+        Country = appUser.Country,
+        City = appUser.City,
+        State = appUser.State,
+        StreetAddress = appUser.StreetAddress,
+        PostalCode = appUser.PostalCode,
+        Name = appUser.Name
       };
     }
 
@@ -98,17 +114,15 @@ namespace YerbaMateStore.Areas.Identity.Pages.Account.Manage
         await LoadAsync(user);
         return Page();
       }
-
-      var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-      if (Input.PhoneNumber != phoneNumber)
-      {
-        var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
-        if (!setPhoneResult.Succeeded)
-        {
-          StatusMessage = "Unexpected error when trying to set phone number.";
-          return RedirectToPage();
-        }
-      }
+      ApplicationUser appUser = _unitOfwork.ApplicationUser.GetFirstOrDefault(u => u.Id == user.Id);
+      appUser.Name = Input.Name;
+      appUser.PhoneNumber = Input.PhoneNumber;
+      appUser.StreetAddress = Input.StreetAddress;
+      appUser.Country = Input.Country;
+      appUser.City = Input.City;
+      appUser.State = Input.State;
+      appUser.PostalCode = Input.PostalCode;
+     _unitOfwork.Save();
 
       await _signInManager.RefreshSignInAsync(user);
       StatusMessage = "Your profile has been updated";
