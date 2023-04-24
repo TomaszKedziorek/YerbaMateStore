@@ -153,7 +153,6 @@ namespace YerbaMateStore.Areas.Identity.Pages.Account
         user.City = Input.City;
         user.State = Input.State;
         user.PostalCode = Input.PostalCode;
-        user.PhoneNumber = Input.PhoneNumber;
         var result = await _userManager.CreateAsync(user, Input.Password);
 
         if (result.Succeeded)
