@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using YerbaMateStore.Models.Utilities;
 
 namespace YerbaMateStore.Areas.Identity.Pages.Account.Manage
 {
@@ -55,6 +56,10 @@ namespace YerbaMateStore.Areas.Identity.Pages.Account.Manage
     ///     directly from your code. This API may change or be removed in future releases.
     /// </summary>
     public bool RequirePassword { get; set; }
+    public string Disabled { get; set; }
+    public string InfoMessage { get; set; }
+    public string AlertType { get; set; }
+
 
     public async Task<IActionResult> OnGet()
     {
@@ -63,6 +68,31 @@ namespace YerbaMateStore.Areas.Identity.Pages.Account.Manage
       {
         return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
       }
+
+      if (User.IsInRole(StaticDetails.Role_Admin))
+      {
+        var numberOfAdmins = _userManager.GetUsersInRoleAsync(StaticDetails.Role_Admin).GetAwaiter().GetResult().Count;
+        if (numberOfAdmins <= 1)
+        {
+          Disabled = "disabled";
+          InfoMessage = "You cannot delete your data because you are The Last Admins!";
+          AlertType = "alert-danger";
+        }
+        else
+        {
+          Disabled = "";
+          InfoMessage = "Deleting this data will permanently remove your account, and this cannot be recovered.";
+          AlertType = "alert-warning";
+        }
+      }
+      else
+      {
+        Disabled = "";
+        InfoMessage = "Deleting this data will permanently remove your account, and this cannot be recovered.";
+        AlertType = "alert-warning";
+      }
+
+
 
       RequirePassword = await _userManager.HasPasswordAsync(user);
       return Page();
