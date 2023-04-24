@@ -48,9 +48,16 @@ div .swal2-icon-content {
   /* color: #59ab6e !important; */
   background-color: #bcbcbc !important;
 }
+
+.nav-tabs {
+  border-bottom: solid 1px #59ab6e !important;
+}
+
 .nav-tabs .nav-link {
   color: black !important;
 }
+
 .nav-tabs .nav-link.active {
   background-color: #59ab6e !important;
+  border-bottom: #59ab6e !important;
 }
