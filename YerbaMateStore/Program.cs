@@ -44,7 +44,14 @@ public class Program
       options.LogoutPath = $"/Identity/Account/Logout";
       options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
     });
-
+    builder.Services.Configure<IdentityOptions>(options =>
+    {
+      // Password settings.
+      options.Password.RequireNonAlphanumeric = false;
+      // SignIn settings.
+      options.SignIn.RequireConfirmedEmail = true;
+      options.SignIn.RequireConfirmedAccount = true;
+    });
     var app = builder.Build();
 
     // Configure the HTTP request pipeline.
