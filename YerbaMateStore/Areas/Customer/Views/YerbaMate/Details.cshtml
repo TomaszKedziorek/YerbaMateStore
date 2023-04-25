@@ -1,5 +1,5 @@
 @using YerbaMateStore.Models.Entities
-@model YerbaMateStore.Models.ViewModels.ShopProductViewModel<YerbaMate>
+@model YerbaMateStore.Models.Entities.ShoppingCart<YerbaMate>
 
 @section HeadArea{
   <link rel="stylesheet" type="text/css" href="/css/zayTemplateCss/slick.min.css">
@@ -64,8 +64,8 @@
                 <h6>Country:</h6>
               </li>
               <li class="list-inline-item">
-                <p class="text-dark mb-0">@ViewData["CountryName"]
-                  <span class='fi fi-@ViewData["CountryCode"]'></span>
+                <p class="text-dark mb-0 ">@ViewData["CountryName"]
+                  <span class='fi fi-@ViewData["CountryCode"] h4'></span>
                 </p>
               </li>
             </ul>
@@ -100,7 +100,7 @@
                 <div class="col-auto">
                   <ul class="list-inline pb-3">
                     <li class="list-inline-item text-right">
-                      Quantity
+                      <h6>Quantity</h6>
                       <input type="hidden" name="quanity" id="product-quanity" value="1">
                     </li>
                     <li class="list-inline-item"><span class="btn btn-success" id="btn-minus">-</span></li>
@@ -112,8 +112,7 @@
               <div class="row pb-3 justify-content-center">
                 <div class="col-12 mb-3">
                   <button type="submit" class="btn btn-success create-category-btn me-1 w-25">Add To Cart</button>
-                  <a asp-controller="YerbaMate" asp-action="Index"
-                    class="btn btn-secondary create-category-btn  w-25">
+                  <a asp-controller="YerbaMate" asp-action="Index" class="btn btn-secondary create-category-btn  w-25">
                     Back to list
                   </a>
                 </div>

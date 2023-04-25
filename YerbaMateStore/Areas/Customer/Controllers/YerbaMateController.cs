@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Linq.Expressions;
+using System.Reflection;
+using Microsoft.AspNetCore.Mvc;
 using YerbaMateStore.Models.Entities;
+using YerbaMateStore.Models.Managers;
 using YerbaMateStore.Models.Repository.IRepository;
 using YerbaMateStore.Models.ViewModels;
 
@@ -24,11 +27,12 @@ public class YerbaMateController : Controller
   [HttpGet]
   public IActionResult Details(int productId)
   {
-    ShopProductViewModel<YerbaMate> productVM = new ShopProductViewModel<YerbaMate>(_unitOfWork, productId);
+    ShoppingCartManager<YerbaMate> manager = new(_unitOfWork);
+    ShoppingCart<YerbaMate> shoppingCart = manager.CreateShoppingCart<YerbaMate>(productId);
     Country country = _unitOfWork.YerbaMate.GetFirstOrDefault(p => p.Id == productId, includeProperties: "Country").Country;
     ViewData["CountryName"] = country.Name;
     ViewData["CountryCode"] = country.CountryIsoAlfa2Code;
-    return View(productVM);
+    return View(shoppingCart);
   }
 
 }
