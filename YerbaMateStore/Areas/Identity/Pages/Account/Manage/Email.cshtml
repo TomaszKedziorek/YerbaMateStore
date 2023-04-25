@@ -1,0 +1,57 @@
+﻿@page
+@model EmailModel
+@{
+  ViewData["Title"] = "Manage Email";
+  ViewData["ActivePage"] = ManageNavPages.Email;
+}
+
+<h3>@ViewData["Title"]</h3>
+<partial name="_StatusMessage" for="StatusMessage" />
+
+<form id="email-form" method="post">
+  <div asp-validation-summary="All" class="text-danger"></div>
+  @if (Model.IsEmailConfirmed)
+  {
+    <div class="mb-2 row justify-content-center">
+      <label asp-for="Email" class="col-sm-2 col-form-label"></label>
+      <div class="col-sm-8">
+        <div class="input-group">
+          <input asp-for=" Email" class="form-control rounded-0" disabled>
+          <div class="input-group-append">
+            <span class="h-100 input-group-text text-success font-weight-bold">✓</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+  else
+  {
+    <div class="mb-2 row justify-content-center">
+      <label asp-for="Email" class="col-sm-2 col-form-label"></label>
+      <div class="col-sm-8">
+        <input asp-for=" Email" class="form-control rounded-0" disabled>
+        <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail" class="btn btn-link">Send
+          verification email</button>
+      </div>
+    </div>
+  }
+
+  <div class="mb-2 row justify-content-center">
+    <label asp-for="Input.NewEmail" class="col-sm-2 col-form-label"></label>
+    <div class="col-sm-8">
+      <input asp-for="Input.NewEmail" class="form-control rounded-0" autocomplete="email">
+      <span asp-validation-for="Input.NewEmail" class="text-danger"></span>
+    </div>
+  </div>
+
+  <div class="mb-2 row justify-content-center">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
+      <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail" class="w-50 btn btn-lg btn-success">Change email</button>
+    </div>
+  </div>
+</form>
+
+@section Scripts {
+  <partial name="_ValidationScriptsPartial" />
+}

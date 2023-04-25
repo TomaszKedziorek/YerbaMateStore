@@ -17,6 +17,7 @@ public class UnitOfWork : IUnitOfWork
   public ICupRepository Cup { get; private set; }
 
   public IImageRepository<CupImage> CupImage { get; private set; }
+  public IApplicationUserRepository ApplicationUser { get; private set; }
 
   public UnitOfWork(AppDbContext dbContext)
   {
@@ -28,6 +29,7 @@ public class UnitOfWork : IUnitOfWork
     BombillaImage = new BombillaImageRepository(dbContext);
     Cup = new CupRepository(dbContext);
     CupImage = new CupImageRepository(dbContext);
+    ApplicationUser = new ApplicationUserRepository(dbContext);
   }
 
   public void Save()

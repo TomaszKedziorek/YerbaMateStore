@@ -12,5 +12,6 @@ public interface IUnitOfWork
   IImageRepository<BombillaImage> BombillaImage { get; }
   ICupRepository Cup { get; }
   IImageRepository<CupImage> CupImage { get; }
+  IApplicationUserRepository ApplicationUser { get; }
   void Save();
 }

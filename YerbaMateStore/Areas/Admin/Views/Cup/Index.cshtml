@@ -1,37 +1,41 @@
 @{
-  ViewData["Title"] = "Index";
+  ViewData["Title"] = "Gounrds-Mates List";
 }
 @section HeadArea{
   <link rel="stylesheet" href="//cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
 }
 
-<div class="row mt-4 mx-md-3 p-3 ">
-  <div class="row pt-4 p-0">
-    <div class="col-7 text-start ps-4">
-      <h2 class="text-success">Gounrds-Mates List</h2>
-    </div>
-    <div class="col-5 text-end p-0">
-      <a class="btn btn-success fw-bold" asp-asp-controller="Cup" asp-action="Upsert"><i
-          class="bi bi-plus-circle"></i>
-        &nbsp; Create New Product</a>
+<section class="bg-light d-flex justify-content-center">
+  <div class="container-lg pb-5 p-3">
+    <h1 class="text-success">@ViewData["Title"]</h1>
+    <hr />
+
+    <div class="row justify-content-center">
+      <div class="col-12">
+        <div class="row justify-content-end mb-3">
+          <div class="col-12 text-end">
+            <a class="btn btn-success fw-bold" asp-controller="Cup" asp-action="Upsert">
+              <i class="bi bi-plus-circle"></i>&nbsp; Create New Product
+            </a>
+          </div>
+        </div>
+        <table id="cupProductData" class="table table-bordered table-striped table-hover align-middle w-100">
+          <thead>
+            <tr class="table-secondary">
+              <th>Id</th>
+              <th>Name</th>
+              <th>Material</th>
+              <th>Volume</th>
+              <th>Price</th>
+              <th></th>
+            </tr>
+          </thead>
+
+        </table>
+      </div>
     </div>
   </div>
-  <br>
-
-  <table id="cupProductData" class="table table-bordered table-striped table-hover align-middle w-100">
-    <thead>
-      <tr class="table-secondary">
-        <th>Id</th>
-        <th>Name</th>
-        <th>Material</th>
-        <th>Volume</th>
-        <th>Price</th>
-        <th></th>
-      </tr>
-    </thead>
-
-  </table>
-</div>
+</section>
 @section Scripts{
   <script src="~/js/cupProduct.js"></script>
   <script src="~/js/deleteProduct.js"></script>

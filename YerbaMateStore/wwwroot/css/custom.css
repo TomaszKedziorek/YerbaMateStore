@@ -37,3 +37,27 @@ div .swal2-icon-content {
   height: 300px !important;
   width: auto !important;
 }
+
+#_nav_top * {
+  font-size: 0.98em !important;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.dropdown-menu>a:hover {
+  /* color: #59ab6e !important; */
+  background-color: #bcbcbc !important;
+}
+
+.nav-tabs {
+  border-bottom: solid 1px #59ab6e !important;
+}
+
+.nav-tabs .nav-link {
+  color: black !important;
+}
+
+.nav-tabs .nav-link.active {
+  background-color: #59ab6e !important;
+  border-bottom: #59ab6e !important;
+}

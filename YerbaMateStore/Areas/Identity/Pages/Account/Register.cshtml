@@ -1,0 +1,152 @@
+﻿@page
+@using YerbaMateStore.Models.Utilities
+@model RegisterModel
+@{
+  bool isAdmin = User.IsInRole(StaticDetails.Role_Admin) ? true : false;
+  ViewData["Title"] = isAdmin ? "Register - Admin Portal" : "Register";
+}
+
+<section class="bg-light d-flex justify-content-center">
+  <div class="container-lg pb-5 p-3">
+    <h1 class="text-success">@ViewData["Title"]</h1>
+    <h2>Create a new account</h2>
+    <hr />
+
+    <div class="row justify-content-center">
+      <div class="col-12">
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+
+          <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+          <div class="mb-2 row justify-content-center">
+            <label asp-for="Input.Name" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-8">
+              <input asp-for="Input.Name" class="form-control rounded-0">
+              <span asp-validation-for="Input.Name" class="text-danger"></span>
+            </div>
+          </div>
+
+          <div class="mb-2 row justify-content-center">
+            <label asp-for="Input.Email" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-8">
+              <input asp-for="Input.Email" class="form-control rounded-0">
+              <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+          </div>
+
+          <div class="mb-2 row justify-content-center">
+            <label asp-for="Input.Password" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-8">
+              <div class="input-group mb-1">
+                <input asp-for="Input.Password" class="form-control rounded-0" type="password" id="inputPassword">
+                <span class="input-group-text bg-white rounded-0 p-0" id="basic-addon1"><i
+                    class="bi bi-eye-slash px-3 py-1" id="eyeIconPassword"></i></span>
+              </div>
+              <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+          </div>
+
+          <div class="mb-2 row justify-content-center">
+            <label asp-for="Input.ConfirmPassword" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-8">
+              <div class="input-group mb-1">
+                <input asp-for="Input.ConfirmPassword" class="form-control rounded-0" type="password" id="inputConfirm">
+                <span class="input-group-text bg-white rounded-0 p-0" id="basic-addon1">
+                  <i class="bi bi-eye-slash px-3 py-1" id="eyeIconConfirm"></i>
+                </span>
+              </div>
+              <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+          </div>
+          @if (isAdmin)
+          {
+            <div class="mb-2 row justify-content-center">
+              <label asp-for="Input.Role" class="col-sm-2 col-form-label"></label>
+              <div class="col-sm-8">
+                <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select">
+                  <option disabled selected>-Select Role for User-</option>
+                </select>
+                <span asp-validation-for="Input.Role" class="text-danger"></span>
+              </div>
+            </div>
+          }
+          @if (!isAdmin)
+          {
+            <div class="mb-2 row justify-content-center">
+              <div class="col-sm-2"></div>
+              <div class="col-sm-8">
+                <input type="checkbox" id="shippingInfo" data-bs-toggle="collapse" href="#shippingInfoSection" />
+                <label for="shippingInfo">Add shipping information.</label>
+              </div>
+            </div>
+
+            <div class="collapse" id="shippingInfoSection">
+              <div class="mb-2 row justify-content-center">
+                <label asp-for="Input.Country" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-8">
+                  <input asp-for="Input.Country" class="form-control rounded-0">
+                  <span asp-validation-for="Input.Country" class="text-danger"></span>
+                </div>
+              </div>
+              <div class="mb-2 row justify-content-center">
+                <label asp-for="Input.City" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-8">
+                  <input asp-for="Input.City" class="form-control rounded-0">
+                  <span asp-validation-for="Input.City" class="text-danger"></span>
+                </div>
+              </div>
+              <div class="mb-2 row justify-content-center">
+                <label asp-for="Input.State" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-8">
+                  <input asp-for="Input.State" class="form-control rounded-0">
+                  <span asp-validation-for="Input.State" class="text-danger"></span>
+                </div>
+              </div>
+              <div class="mb-2 row justify-content-center">
+                <label asp-for="Input.StreetAddress" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-8">
+                  <input asp-for="Input.StreetAddress" class="form-control rounded-0">
+                  <span asp-validation-for="Input.StreetAddress" class="text-danger"></span>
+                </div>
+              </div>
+              <div class="mb-2 row justify-content-center">
+                <label asp-for="Input.PostalCode" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-8">
+                  <input asp-for="Input.PostalCode" class="form-control rounded-0">
+                  <span asp-validation-for="Input.PostalCode" class="text-danger"></span>
+                </div>
+              </div>
+              <div class="mb-2 row justify-content-center">
+                <label asp-for="Input.PhoneNumber" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-8">
+                  <input asp-for="Input.PhoneNumber" class="form-control rounded-0">
+                  <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                </div>
+              </div>
+            </div>
+          }
+          <div class="mb-2 row justify-content-center">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-8">
+              @if (!isAdmin)
+              {
+                <button id="registerSubmit" type="submit" class="w-50 btn btn-lg btn-success">Register</button>
+                <div class="my-2">
+                  <span>Already have an account? <a asp-area="Identity" asp-page="/Account/Login">Log in!</a></span>
+                </div>
+              }
+              else
+              {
+                <button id="registerSubmit" type="submit" class="w-50 btn btn-lg btn-success">Create</button>
+              }
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+@section Scripts {
+  <partial name="_ValidationScriptsPartial" />
+  <script src="/js/showHidePasswordEyeIcon.js"></script>
+}
