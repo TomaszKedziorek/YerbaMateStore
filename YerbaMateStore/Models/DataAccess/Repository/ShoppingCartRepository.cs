@@ -22,6 +22,17 @@ public class ShoppingCartRepository<T> : Repository<T>, IShoppingCartRepository<
     {
         shoppingCart
     });
-    // _dbContext.T.Update(shoppingCart);
+  }
+
+  public int DecrementQuantity(T shoppingCart, int count)
+  {
+    shoppingCart.Quantity -= count;
+    return shoppingCart.Quantity;
+  }
+
+  public int IncrementQuantity(T shoppingCart, int count)
+  {
+    shoppingCart.Quantity += count;
+    return shoppingCart.Quantity;
   }
 }

@@ -45,7 +45,17 @@ public class YerbaMateController : Controller
       ClaimsIdentity? claimsIdentity = (ClaimsIdentity)User.Identity;
       Claim? claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
       shoppingCart.ApplicationUserId = claim.Value;
-      _unitOfWork.YerbaMateShoppingCart.Add(shoppingCart);
+
+      var shoppingCartFromDb = _unitOfWork.YerbaMateShoppingCart.GetFirstOrDefault(i => i.ApplicationUserId == claim.Value && i.ProductId == shoppingCart.ProductId);
+      if (shoppingCartFromDb == null)
+      {
+        _unitOfWork.YerbaMateShoppingCart.Add(shoppingCart);
+      }
+      else
+      {
+        _unitOfWork.YerbaMateShoppingCart.IncrementQuantity(shoppingCartFromDb,shoppingCart.Quantity);
+      }
+
       _unitOfWork.Save();
 
       TempData["success"] = "Product added to cart!";
