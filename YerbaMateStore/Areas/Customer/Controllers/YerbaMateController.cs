@@ -27,12 +27,31 @@ public class YerbaMateController : Controller
   [HttpGet]
   public IActionResult Details(int productId)
   {
-    ShoppingCartManager<YerbaMate> manager = new(_unitOfWork);
-    YerbaMateShoppingCart shoppingCart = new(manager.CreateShoppingCartProduct(productId), productId);
+    ShoppingCartManager<YerbaMate, YerbaMateShoppingCart> manager = new(_unitOfWork);
+    YerbaMateShoppingCart shoppingCart = manager.CreateShoppingCart(productId);
     Country country = _unitOfWork.YerbaMate.GetFirstOrDefault(p => p.Id == productId, includeProperties: "Country").Country;
     ViewData["CountryName"] = country.Name;
     ViewData["CountryCode"] = country.CountryIsoAlfa2Code;
     return View(shoppingCart);
   }
 
+  [HttpPost]
+  [ValidateAntiForgeryToken]
+  public IActionResult Details(YerbaMateShoppingCart shoppingCart)
+  {
+    if (!ModelState.IsValid)
+    {
+      YerbaMateProductsViewModel YerbaMateVM = new(_unitOfWork);
+      return RedirectToAction(nameof(Index), YerbaMateVM);
+    }
+    else
+    {
+      ShoppingCartManager<YerbaMate, YerbaMateShoppingCart> manager = new(_unitOfWork);
+      shoppingCart = manager.CreateShoppingCart(shoppingCart.ProductId, shoppingCart.Quantity);
+      Country country = _unitOfWork.YerbaMate.GetFirstOrDefault(p => p.Id == shoppingCart.ProductId, includeProperties: "Country").Country;
+      ViewData["CountryName"] = country.Name;
+      ViewData["CountryCode"] = country.CountryIsoAlfa2Code;
+      return View(shoppingCart);
+    }
+  }
 }

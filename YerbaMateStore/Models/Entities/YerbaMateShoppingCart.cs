@@ -14,10 +14,11 @@ public class YerbaMateShoppingCart : ShoppingCart
   public YerbaMateShoppingCart()
   {
   }
-  
-  public YerbaMateShoppingCart(YerbaMate product, int productId)
+
+  public YerbaMateShoppingCart(YerbaMate product, int productId, int quantity = 1)
   {
     ProductId = productId;
     Product = product;
+    Quantity = quantity;
   }
 }

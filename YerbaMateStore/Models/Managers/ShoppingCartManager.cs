@@ -4,7 +4,7 @@ using YerbaMateStore.Models.Entities;
 using YerbaMateStore.Models.Repository.IRepository;
 
 namespace YerbaMateStore.Models.Managers;
-public class ShoppingCartManager<T> where T : class, new()
+public class ShoppingCartManager<T, F> where T : class, new() where F : ShoppingCart, new()
 {
   private readonly IUnitOfWork _unitOfWork;
 
@@ -12,7 +12,7 @@ public class ShoppingCartManager<T> where T : class, new()
   {
     _unitOfWork = unitOfWork;
   }
-  
+
   public T CreateShoppingCartProduct(int productId)
   {
     var param = Expression.Parameter(typeof(T), "e");
@@ -30,8 +30,19 @@ public class ShoppingCartManager<T> where T : class, new()
         "Images",
         true
     });
-    // ShoppingCart<T> shoppingCart = new((T)result, productId);
-    // return shoppingCart;
     return (T)result;
+  }
+
+  public F CreateShoppingCart(int productId, int quantity = 1)
+  {
+    F shoppingCart = new();
+    PropertyInfo[] properties = shoppingCart.GetType().GetProperties();
+    var scProductId = properties.First(p => p.Name == "ProductId");
+    var scProduct = properties.First(p => p.Name == "Product");
+    scProductId.SetValue(shoppingCart, productId);
+    scProduct.SetValue(shoppingCart, CreateShoppingCartProduct(productId));
+    shoppingCart.Quantity = quantity;
+
+    return shoppingCart;
   }
 }
