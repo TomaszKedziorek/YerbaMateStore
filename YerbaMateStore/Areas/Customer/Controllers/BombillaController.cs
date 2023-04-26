@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
 using YerbaMateStore.Models.Entities;
+using YerbaMateStore.Models.Managers;
 using YerbaMateStore.Models.Repository.IRepository;
 using YerbaMateStore.Models.ViewModels;
 
@@ -24,8 +26,40 @@ public class BombillaController : Controller
   [HttpGet]
   public IActionResult Details(int productId)
   {
-    ShopProductViewModel<Bombilla> productVM = new ShopProductViewModel<Bombilla>(_unitOfWork, productId);
-    return View(productVM);
+    ShoppingCartManager<Bombilla, BombillaShoppingCart> manager = new(_unitOfWork);
+    BombillaShoppingCart shoppingCart = manager.CreateShoppingCart(productId);
+    return View(shoppingCart);
   }
 
+  [HttpPost]
+  [ValidateAntiForgeryToken]
+  public IActionResult Details(BombillaShoppingCart shoppingCart)
+  {
+    if (ModelState.IsValid)
+    {
+      ClaimsIdentity? claimsIdentity = (ClaimsIdentity)User.Identity;
+      Claim? claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+      shoppingCart.ApplicationUserId = claim.Value;
+
+      var shoppingCartFromDb = _unitOfWork.BombillaShoppingCart.GetFirstOrDefault(i => i.ApplicationUserId == claim.Value && i.ProductId == shoppingCart.ProductId);
+      if (shoppingCartFromDb == null)
+      {
+        _unitOfWork.BombillaShoppingCart.Add(shoppingCart);
+      }
+      else
+      {
+        _unitOfWork.BombillaShoppingCart.IncrementQuantity(shoppingCartFromDb, shoppingCart.Quantity);
+      }
+
+      _unitOfWork.Save();
+
+      TempData["success"] = "Product added to cart!";
+      return RedirectToAction(nameof(Index));
+    }
+    else
+    {
+      TempData["error"] = "Something went wrong!";
+      return RedirectToAction(nameof(Details), new { productId = shoppingCart.ProductId });
+    }
+  }
 }
