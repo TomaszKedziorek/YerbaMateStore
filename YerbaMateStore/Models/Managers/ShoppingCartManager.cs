@@ -13,7 +13,7 @@ public class ShoppingCartManager<T, F> where T : class, new() where F : Shopping
     _unitOfWork = unitOfWork;
   }
 
-  public T CreateShoppingCartProduct(int productId)
+  private T CreateShoppingCartProduct(int productId)
   {
     var param = Expression.Parameter(typeof(T), "e");
     var prop = Expression.Property(param, "Id");
@@ -37,10 +37,11 @@ public class ShoppingCartManager<T, F> where T : class, new() where F : Shopping
   {
     F shoppingCart = new();
     PropertyInfo[] properties = shoppingCart.GetType().GetProperties();
-    var scProductId = properties.First(p => p.Name == "ProductId");
-    var scProduct = properties.First(p => p.Name == "Product");
-    scProductId.SetValue(shoppingCart, productId);
-    scProduct.SetValue(shoppingCart, CreateShoppingCartProduct(productId));
+    var ProductId = properties.First(p => p.Name == "ProductId");
+    var Product = properties.First(p => p.Name == "Product");
+    
+    ProductId.SetValue(shoppingCart, productId);
+    Product.SetValue(shoppingCart, CreateShoppingCartProduct(productId));
     shoppingCart.Quantity = quantity;
 
     return shoppingCart;

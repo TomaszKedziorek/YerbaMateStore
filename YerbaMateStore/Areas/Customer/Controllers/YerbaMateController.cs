@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using YerbaMateStore.Models.Entities;
 using YerbaMateStore.Models.Managers;
@@ -39,19 +40,21 @@ public class YerbaMateController : Controller
   [ValidateAntiForgeryToken]
   public IActionResult Details(YerbaMateShoppingCart shoppingCart)
   {
-    if (!ModelState.IsValid)
+    if (ModelState.IsValid)
     {
-      YerbaMateProductsViewModel YerbaMateVM = new(_unitOfWork);
-      return RedirectToAction(nameof(Index), YerbaMateVM);
+      ClaimsIdentity? claimsIdentity = (ClaimsIdentity)User.Identity;
+      Claim? claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+      shoppingCart.ApplicationUserId = claim.Value;
+      _unitOfWork.YerbaMateShoppingCart.Add(shoppingCart);
+      _unitOfWork.Save();
+
+      TempData["success"] = "Product added to cart!";
+      return RedirectToAction(nameof(Index));
     }
     else
     {
-      ShoppingCartManager<YerbaMate, YerbaMateShoppingCart> manager = new(_unitOfWork);
-      shoppingCart = manager.CreateShoppingCart(shoppingCart.ProductId, shoppingCart.Quantity);
-      Country country = _unitOfWork.YerbaMate.GetFirstOrDefault(p => p.Id == shoppingCart.ProductId, includeProperties: "Country").Country;
-      ViewData["CountryName"] = country.Name;
-      ViewData["CountryCode"] = country.CountryIsoAlfa2Code;
-      return View(shoppingCart);
+      TempData["error"] = "Something went wrong!";
+      return RedirectToAction(nameof(Details), new { productId = shoppingCart.ProductId });
     }
   }
 }
