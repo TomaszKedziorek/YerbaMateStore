@@ -108,7 +108,12 @@
                           src="@product.Images.First().ImageUrl">
                         <div
                           class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
-                          <a class="btn btn-success btn-md text-white mt-2" style="z-index: 2;position: relative;"><i
+                          @* <a asp-action="AddToCart" asp-route-productId="@product.Id"
+                            class="btn btn-success btn-md text-white mt-2" style="z-index: 2;position: relative;"><i
+                              class="bi bi-cart-plus-fill"></i>
+                          </a> *@
+                          <a onclick="AddToCart('/Customer/YerbaMate/AddToCart?productId=@product.Id')"
+                            class="btn btn-success btn-md text-white mt-2" style="z-index: 2;position: relative;"><i
                               class="bi bi-cart-plus-fill"></i>
                           </a>
                         </div>
@@ -164,3 +169,6 @@
 </section>
 <!-- End Content -->
 
+@section Scripts{
+  <script src="~/js/addProductToCart.js"></script>
+}
