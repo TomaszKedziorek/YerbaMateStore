@@ -24,15 +24,15 @@ public class ShoppingCartRepository<T> : Repository<T>, IShoppingCartRepository<
     });
   }
 
-  public int DecrementQuantity(T shoppingCart, int count)
+  public int DecrementQuantity(T shoppingCart, int quantity)
   {
-    shoppingCart.Quantity -= count;
+    shoppingCart.Quantity -= quantity;
     return shoppingCart.Quantity;
   }
 
-  public int IncrementQuantity(T shoppingCart, int count)
+  public int IncrementQuantity(T shoppingCart, int quantity)
   {
-    shoppingCart.Quantity += count;
+    shoppingCart.Quantity += quantity;
     return shoppingCart.Quantity;
   }
 }

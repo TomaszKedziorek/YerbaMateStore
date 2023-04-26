@@ -12,10 +12,12 @@ namespace YerbaMateStore.Controllers;
 public class YerbaMateController : Controller
 {
   private readonly IUnitOfWork _unitOfWork;
+  private readonly ShoppingCartManager<YerbaMate, YerbaMateShoppingCart> _shoppingCartManager;
 
   public YerbaMateController(IUnitOfWork unitOfWork)
   {
     _unitOfWork = unitOfWork;
+    _shoppingCartManager = new(unitOfWork);
   }
 
   [HttpGet]
@@ -28,8 +30,7 @@ public class YerbaMateController : Controller
   [HttpGet]
   public IActionResult Details(int productId)
   {
-    ShoppingCartManager<YerbaMate, YerbaMateShoppingCart> manager = new(_unitOfWork);
-    YerbaMateShoppingCart shoppingCart = manager.CreateShoppingCart(productId);
+    YerbaMateShoppingCart shoppingCart = _shoppingCartManager.CreateShoppingCart(productId);
     Country country = _unitOfWork.YerbaMate.GetFirstOrDefault(p => p.Id == productId, includeProperties: "Country").Country;
     ViewData["CountryName"] = country.Name;
     ViewData["CountryCode"] = country.CountryIsoAlfa2Code;
@@ -46,16 +47,9 @@ public class YerbaMateController : Controller
       Claim? claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
       shoppingCart.ApplicationUserId = claim.Value;
 
-      var shoppingCartFromDb = _unitOfWork.YerbaMateShoppingCart.GetFirstOrDefault(i => i.ApplicationUserId == claim.Value && i.ProductId == shoppingCart.ProductId);
-      if (shoppingCartFromDb == null)
-      {
-        _unitOfWork.YerbaMateShoppingCart.Add(shoppingCart);
-      }
-      else
-      {
-        _unitOfWork.YerbaMateShoppingCart.IncrementQuantity(shoppingCartFromDb,shoppingCart.Quantity);
-      }
-
+      var shoppingCartFromDb = _unitOfWork.YerbaMateShoppingCart.GetFirstOrDefault(
+          i => i.ApplicationUserId == claim.Value && i.ProductId == shoppingCart.ProductId);
+      _shoppingCartManager.AddOrIncrement(shoppingCart, shoppingCartFromDb);
       _unitOfWork.Save();
 
       TempData["success"] = "Product added to cart!";

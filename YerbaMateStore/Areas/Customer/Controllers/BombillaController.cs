@@ -10,10 +10,12 @@ namespace YerbaMateStore.Controllers;
 public class BombillaController : Controller
 {
   private readonly IUnitOfWork _unitOfWork;
+  private readonly ShoppingCartManager<Bombilla, BombillaShoppingCart> _shoppingCartManager;
 
   public BombillaController(IUnitOfWork unitOfWork)
   {
     _unitOfWork = unitOfWork;
+    _shoppingCartManager = new(unitOfWork);
   }
 
   [HttpGet]
@@ -26,8 +28,7 @@ public class BombillaController : Controller
   [HttpGet]
   public IActionResult Details(int productId)
   {
-    ShoppingCartManager<Bombilla, BombillaShoppingCart> manager = new(_unitOfWork);
-    BombillaShoppingCart shoppingCart = manager.CreateShoppingCart(productId);
+    BombillaShoppingCart shoppingCart = _shoppingCartManager.CreateShoppingCart(productId);
     return View(shoppingCart);
   }
 
@@ -41,16 +42,9 @@ public class BombillaController : Controller
       Claim? claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
       shoppingCart.ApplicationUserId = claim.Value;
 
-      var shoppingCartFromDb = _unitOfWork.BombillaShoppingCart.GetFirstOrDefault(i => i.ApplicationUserId == claim.Value && i.ProductId == shoppingCart.ProductId);
-      if (shoppingCartFromDb == null)
-      {
-        _unitOfWork.BombillaShoppingCart.Add(shoppingCart);
-      }
-      else
-      {
-        _unitOfWork.BombillaShoppingCart.IncrementQuantity(shoppingCartFromDb, shoppingCart.Quantity);
-      }
-
+      var shoppingCartFromDb = _unitOfWork.BombillaShoppingCart.GetFirstOrDefault(
+          i => i.ApplicationUserId == claim.Value && i.ProductId == shoppingCart.ProductId);
+      _shoppingCartManager.AddOrIncrement(shoppingCart, shoppingCartFromDb);
       _unitOfWork.Save();
 
       TempData["success"] = "Product added to cart!";

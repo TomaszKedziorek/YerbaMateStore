@@ -10,10 +10,12 @@ namespace YerbaMateStore.Controllers;
 public class CupController : Controller
 {
   private readonly IUnitOfWork _unitOfWork;
+  private readonly ShoppingCartManager<Cup, CupShoppingCart> _shoppingCartManager;
 
   public CupController(IUnitOfWork unitOfWork)
   {
     _unitOfWork = unitOfWork;
+    _shoppingCartManager = new(unitOfWork);
   }
 
   [HttpGet]
@@ -26,8 +28,7 @@ public class CupController : Controller
   [HttpGet]
   public IActionResult Details(int productId)
   {
-    ShoppingCartManager<Cup, CupShoppingCart> manager = new(_unitOfWork);
-    CupShoppingCart shoppingCart = manager.CreateShoppingCart(productId);
+    CupShoppingCart shoppingCart = _shoppingCartManager.CreateShoppingCart(productId);
     return View(shoppingCart);
   }
 
@@ -41,16 +42,9 @@ public class CupController : Controller
       Claim? claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
       shoppingCart.ApplicationUserId = claim.Value;
 
-      var shoppingCartFromDb = _unitOfWork.CupShoppingCart.GetFirstOrDefault(i => i.ApplicationUserId == claim.Value && i.ProductId == shoppingCart.ProductId);
-      if (shoppingCartFromDb == null)
-      {
-        _unitOfWork.CupShoppingCart.Add(shoppingCart);
-      }
-      else
-      {
-        _unitOfWork.CupShoppingCart.IncrementQuantity(shoppingCartFromDb, shoppingCart.Quantity);
-      }
-
+      var shoppingCartFromDb = _unitOfWork.CupShoppingCart.GetFirstOrDefault(
+        i => i.ApplicationUserId == claim.Value && i.ProductId == shoppingCart.ProductId);
+      _shoppingCartManager.AddOrIncrement(shoppingCart, shoppingCartFromDb);
       _unitOfWork.Save();
 
       TempData["success"] = "Product added to cart!";

@@ -39,11 +39,27 @@ public class ShoppingCartManager<T, F> where T : class, new() where F : Shopping
     PropertyInfo[] properties = shoppingCart.GetType().GetProperties();
     var ProductId = properties.First(p => p.Name == "ProductId");
     var Product = properties.First(p => p.Name == "Product");
-    
+
     ProductId.SetValue(shoppingCart, productId);
     Product.SetValue(shoppingCart, CreateShoppingCartProduct(productId));
     shoppingCart.Quantity = quantity;
 
     return shoppingCart;
+  }
+
+  public void AddOrIncrement(F shoppingCart, F shoppingCartFromDb)
+  {
+    var property = _unitOfWork.GetType().GetProperties()
+              .First(p => p.PropertyType.IsAssignableTo(typeof(IShoppingCartRepository<F>)));
+    object obj = property.GetValue(_unitOfWork);
+
+    if (shoppingCartFromDb == null)
+    {
+      object? result = obj.GetType().GetMethod("Add").Invoke(obj, new object[] { shoppingCart });
+    }
+    else
+    {
+      object? result = obj.GetType().GetMethod("IncrementQuantity").Invoke(obj, new object[] { shoppingCartFromDb, shoppingCart.Quantity });
+    }
   }
 }
