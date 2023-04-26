@@ -28,7 +28,7 @@ public class YerbaMateController : Controller
   public IActionResult Details(int productId)
   {
     ShoppingCartManager<YerbaMate> manager = new(_unitOfWork);
-    ShoppingCart<YerbaMate> shoppingCart = manager.CreateShoppingCart<YerbaMate>(productId);
+    YerbaMateShoppingCart shoppingCart = new(manager.CreateShoppingCartProduct(productId), productId);
     Country country = _unitOfWork.YerbaMate.GetFirstOrDefault(p => p.Id == productId, includeProperties: "Country").Country;
     ViewData["CountryName"] = country.Name;
     ViewData["CountryCode"] = country.CountryIsoAlfa2Code;

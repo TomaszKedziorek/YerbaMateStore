@@ -13,7 +13,7 @@ public class ShoppingCartManager<T> where T : class, new()
     _unitOfWork = unitOfWork;
   }
   
-  public ShoppingCart<T> CreateShoppingCart<T>(int productId) where T : class, new()
+  public T CreateShoppingCartProduct(int productId)
   {
     var param = Expression.Parameter(typeof(T), "e");
     var prop = Expression.Property(param, "Id");
@@ -30,7 +30,8 @@ public class ShoppingCartManager<T> where T : class, new()
         "Images",
         true
     });
-    ShoppingCart<T> shoppingCart = new((T)result, productId);
-    return shoppingCart;
+    // ShoppingCart<T> shoppingCart = new((T)result, productId);
+    // return shoppingCart;
+    return (T)result;
   }
 }
