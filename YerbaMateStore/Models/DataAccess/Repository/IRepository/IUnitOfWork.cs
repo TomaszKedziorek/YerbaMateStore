@@ -13,5 +13,6 @@ public interface IUnitOfWork
   ICupRepository Cup { get; }
   IImageRepository<CupImage> CupImage { get; }
   IApplicationUserRepository ApplicationUser { get; }
+  IShoppingCartRepository<YerbaMateShoppingCart> YerbaMateShoppingCart { get; }
   void Save();
 }
