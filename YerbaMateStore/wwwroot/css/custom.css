@@ -61,3 +61,7 @@ div .swal2-icon-content {
   background-color: #59ab6e !important;
   border-bottom: #59ab6e !important;
 }
+
+body, body > *, a,button {
+  display: grid;
+}
