@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using YerbaMateStore.Models.Entities;
 using YerbaMateStore.Models.Managers;
 using YerbaMateStore.Models.Repository.IRepository;
+using YerbaMateStore.Models.Utilities;
 using YerbaMateStore.Models.ViewModels;
 
 namespace YerbaMateStore.Controllers;
@@ -38,12 +39,11 @@ public class BombillaController : Controller
   {
     if (ModelState.IsValid)
     {
-      ClaimsIdentity? claimsIdentity = (ClaimsIdentity)User.Identity;
-      Claim? claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-      shoppingCart.ApplicationUserId = claim.Value;
+      string userClaimsValue = UserClaims.GetUserClaimsValue(User);
+      shoppingCart.ApplicationUserId = userClaimsValue;
 
       var shoppingCartFromDb = _unitOfWork.BombillaShoppingCart.GetFirstOrDefault(
-          i => i.ApplicationUserId == claim.Value && i.ProductId == shoppingCart.ProductId);
+          i => i.ApplicationUserId == userClaimsValue && i.ProductId == shoppingCart.ProductId);
       _shoppingCartManager.AddOrIncrement(shoppingCart, shoppingCartFromDb);
       _unitOfWork.Save();
 
@@ -61,13 +61,12 @@ public class BombillaController : Controller
   public IActionResult AddToCart(int productId)
   {
     BombillaShoppingCart shoppingCart = _shoppingCartManager.CreateShoppingCart(productId, 1);
-    ClaimsIdentity? claimsIdentity = (ClaimsIdentity)User.Identity;
-    Claim? claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-    shoppingCart.ApplicationUserId = claim.Value;
+    string userClaimsValue = UserClaims.GetUserClaimsValue(User);
+    shoppingCart.ApplicationUserId = userClaimsValue;
     if (shoppingCart.Product != null)
     {
       var shoppingCartFromDb = _unitOfWork.BombillaShoppingCart.GetFirstOrDefault(
-          i => i.ApplicationUserId == claim.Value && i.ProductId == shoppingCart.ProductId);
+          i => i.ApplicationUserId == userClaimsValue && i.ProductId == shoppingCart.ProductId);
       _shoppingCartManager.AddOrIncrement(shoppingCart, shoppingCartFromDb);
       _unitOfWork.Save();
 
