@@ -15,6 +15,10 @@ public class AppDbContext : IdentityDbContext<IdentityUser>
   public DbSet<BombillaImage> BombillaImages { get; set; }
   public DbSet<CupImage> CupImages { get; set; }
   public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+  public DbSet<ShoppingCart> ShoppingCart { get; set; }
+  public DbSet<YerbaMateShoppingCart> YerbaMateShoppingCart { get; set; }
+  public DbSet<BombillaShoppingCart> BombillaShoppingCart { get; set; }
+  public DbSet<CupShoppingCart> CupShoppingCart { get; set; }
 
   public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
   {

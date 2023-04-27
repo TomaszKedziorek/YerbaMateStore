@@ -1,5 +1,5 @@
 @using YerbaMateStore.Models.Entities
-@model YerbaMateStore.Models.Entities.ShoppingCart<YerbaMate>
+@model YerbaMateStore.Models.Entities.YerbaMateShoppingCart
 
 @section HeadArea{
   <link rel="stylesheet" type="text/css" href="/css/zayTemplateCss/slick.min.css">
@@ -94,17 +94,18 @@
               </li>
             </ul>
 
-            <form action="">
-              <input type="hidden" name="productId" asp-for="@Model.Product.Id">
+            <form method="post" asp-area="Customer" asp-controller="YerbaMate" asp-action="Details">
+              <input type="hidden" asp-for="@Model.ProductId">
+              <input type="hidden" asp-for="@Model.ApplicationUserId" value="0">
               <div class="row">
                 <div class="col-auto">
                   <ul class="list-inline pb-3">
                     <li class="list-inline-item text-right">
                       <h6>Quantity</h6>
-                      <input type="hidden" name="quanity" id="product-quanity" value="1">
+                      <input type="hidden" asp-for="@Model.Quantity" id="product-quanity">
                     </li>
                     <li class="list-inline-item"><span class="btn btn-success" id="btn-minus">-</span></li>
-                    <li class="list-inline-item"><span class="badge bg-secondary" id="var-value">1</span></li>
+                    <li class="list-inline-item"><span class="badge bg-secondary" id="var-value">@Model.Quantity</span></li>
                     <li class="list-inline-item"><span class="btn btn-success" id="btn-plus">+</span></li>
                   </ul>
                 </div>

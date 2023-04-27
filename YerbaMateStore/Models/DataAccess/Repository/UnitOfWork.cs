@@ -18,6 +18,9 @@ public class UnitOfWork : IUnitOfWork
 
   public IImageRepository<CupImage> CupImage { get; private set; }
   public IApplicationUserRepository ApplicationUser { get; private set; }
+  public IShoppingCartRepository<YerbaMateShoppingCart> YerbaMateShoppingCart { get; private set; }
+  public IShoppingCartRepository<BombillaShoppingCart> BombillaShoppingCart { get; private set; }
+  public IShoppingCartRepository<CupShoppingCart> CupShoppingCart { get; private set; }
 
   public UnitOfWork(AppDbContext dbContext)
   {
@@ -30,6 +33,9 @@ public class UnitOfWork : IUnitOfWork
     Cup = new CupRepository(dbContext);
     CupImage = new CupImageRepository(dbContext);
     ApplicationUser = new ApplicationUserRepository(dbContext);
+    YerbaMateShoppingCart = new ShoppingCartRepository<YerbaMateShoppingCart>(dbContext);
+    BombillaShoppingCart = new ShoppingCartRepository<BombillaShoppingCart>(dbContext);
+    CupShoppingCart = new ShoppingCartRepository<CupShoppingCart>(dbContext);
   }
 
   public void Save()
