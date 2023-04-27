@@ -22,8 +22,23 @@ public class CartController : Controller
     {
       YerbaMateCartList = _unitOfWork.YerbaMateShoppingCart.GetAll(c => c.ApplicationUserId == userClaimsValue, "Product"),
       BombillaCartList = _unitOfWork.BombillaShoppingCart.GetAll(c => c.ApplicationUserId == userClaimsValue, "Product"),
-      CupCartList = _unitOfWork.CupShoppingCart.GetAll(c => c.ApplicationUserId == userClaimsValue, "Product")
+      CupCartList = _unitOfWork.CupShoppingCart.GetAll(c => c.ApplicationUserId == userClaimsValue, "Product"),
     };
+    foreach (var item in ShoppingCartVM.YerbaMateCartList)
+    {
+      item.Price = (double)(item.Product.DiscountPrice == null ? item.Product.Price : item.Product.DiscountPrice);
+      item.ImageUrl = _unitOfWork.YerbaMateImage.GetFirstOrDefault(i => i.ProductId == item.ProductId).ImageUrl;
+    }
+    foreach (var item in ShoppingCartVM.BombillaCartList)
+    {
+      item.Price = (double)(item.Product.DiscountPrice == null ? item.Product.Price : item.Product.DiscountPrice);
+      item.ImageUrl = _unitOfWork.BombillaImage.GetFirstOrDefault(i => i.ProductId == item.ProductId).ImageUrl;
+    }
+    foreach (var item in ShoppingCartVM.CupCartList)
+    {
+      item.Price = (double)(item.Product.DiscountPrice == null ? item.Product.Price : item.Product.DiscountPrice);
+      item.ImageUrl = _unitOfWork.CupImage.GetFirstOrDefault(i => i.ProductId == item.ProductId).ImageUrl;
+    }
     return View(ShoppingCartVM);
   }
 

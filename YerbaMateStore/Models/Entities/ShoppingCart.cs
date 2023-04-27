@@ -14,4 +14,8 @@ public abstract class ShoppingCart
   [ForeignKey("ApplicationUserId")]
   [ValidateNever]
   public ApplicationUser ApplicationUser { get; set; }
+  [NotMapped]
+  public double Price { get; set; }
+  [NotMapped]
+  public string ImageUrl { get; set; }
 }
