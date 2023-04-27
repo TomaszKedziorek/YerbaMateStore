@@ -56,4 +56,26 @@ public class CupController : Controller
       return RedirectToAction(nameof(Details), new { productId = shoppingCart.ProductId });
     }
   }
+
+  [HttpPost]
+  public IActionResult AddToCart(int productId)
+  {
+    CupShoppingCart shoppingCart = _shoppingCartManager.CreateShoppingCart(productId, 1);
+    ClaimsIdentity? claimsIdentity = (ClaimsIdentity)User.Identity;
+    Claim? claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+    shoppingCart.ApplicationUserId = claim.Value;
+    if (shoppingCart.Product != null)
+    {
+      var shoppingCartFromDb = _unitOfWork.CupShoppingCart.GetFirstOrDefault(
+          i => i.ApplicationUserId == claim.Value && i.ProductId == shoppingCart.ProductId);
+      _shoppingCartManager.AddOrIncrement(shoppingCart, shoppingCartFromDb);
+      _unitOfWork.Save();
+
+      return Json(new { success = true, message = "Product added to cart!" });
+    }
+    else
+    {
+      return Json(new { success = false, message = "Something went wrong!" });
+    }
+  }
 }
