@@ -31,16 +31,34 @@ public class CartController : Controller
     return View(ShoppingCartVM);
   }
 
-  public IActionResult PlusOne(int cartId, int increment = 1)
+  public IActionResult PlusOne(int cartId)
   {
     var cart = _unitOfWork.ShoppingCart.GetFirstOrDefault(c => c.Id == cartId);
-    _unitOfWork.ShoppingCart.IncrementQuantity(cart, increment);
+    _unitOfWork.ShoppingCart.IncrementQuantity(cart, 1);
     _unitOfWork.Save();
     return Redirect(nameof(Index));
   }
   public IActionResult MinusOne(int cartId)
   {
-    return PlusOne(cartId, -1);
+    var cart = _unitOfWork.ShoppingCart.GetFirstOrDefault(c => c.Id == cartId);
+    if (cart.Quantity <= 1)
+    {
+      _unitOfWork.ShoppingCart.Remove(cart);
+    }
+    else
+    {
+      _unitOfWork.ShoppingCart.DecrementQuantity(cart, 1);
+    }
+    _unitOfWork.Save();
+    return Redirect(nameof(Index));
+  }
+
+  public IActionResult Remove(int cartId)
+  {
+    var cart = _unitOfWork.ShoppingCart.GetFirstOrDefault(c => c.Id == cartId);
+    _unitOfWork.ShoppingCart.Remove(cart);
+    _unitOfWork.Save();
+    return Redirect(nameof(Index));
   }
 
   [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
