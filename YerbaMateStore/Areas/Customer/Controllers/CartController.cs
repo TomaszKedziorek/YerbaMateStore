@@ -61,6 +61,11 @@ public class CartController : Controller
     return Redirect(nameof(Index));
   }
 
+  public IActionResult Summary()
+  {
+    return View();
+  }
+
   [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
   public IActionResult Error()
   {
