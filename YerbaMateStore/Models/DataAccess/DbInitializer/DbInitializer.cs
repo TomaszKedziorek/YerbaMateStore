@@ -51,6 +51,7 @@ public class DbInitializer : IDbInitializer
         Email = _adminData.Email,
         Name = "Thomas Smith",
         PhoneNumber = "678 345 129",
+        EmailConfirmed = true
       };
       _userManager.CreateAsync(admin, _adminData.Password).GetAwaiter().GetResult();
       ApplicationUser user = _dbContext.ApplicationUsers.FirstOrDefault(u => u.Email == _adminData.Email);
