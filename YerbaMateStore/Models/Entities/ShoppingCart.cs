@@ -17,7 +17,4 @@ public abstract class ShoppingCart
   [NotMapped]
   [ValidateNever]
   public double Price { get; set; }
-  [NotMapped]
-  [ValidateNever]
-  public string ImageUrl { get; set; }
 }
