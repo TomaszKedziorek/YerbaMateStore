@@ -29,7 +29,7 @@
               {
                 <div class="row mt-2">
                   <div class="d-none d-lg-block col-lg-1 text-center">
-                    <img src="@cart.ImageUrl" class="img-fluid mx-auto d-block" width="50%" />
+                    <img src="@cart.Product.Images.First().ImageUrl" class="img-fluid mx-auto d-block" width="50%" />
                   </div>
                   <div class="col-12 col-lg-6 pt-2">
                     <a asp-area="Customer" asp-controller="YerbaMate" asp-action="Details"
@@ -42,8 +42,8 @@
                     <div class="col-5 text-md-right pt-2">
                       <h6>
                         <strong>
-                          @(@cart.Product.Price.ToString("0.00")) zł<span class="text-muted"> x </span> @cart.Quantity
-                          <span class="text-muted"> = </span> @((@cart.Product.Price * cart.Quantity).ToString("0.00"))
+                          @(@cart.Price.ToString("0.00")) zł<span class="text-muted"> x </span> @cart.Quantity
+                          <span class="text-muted"> = </span> @((@cart.Price * cart.Quantity).ToString("0.00")) zł
                         </strong>
                       </h6>
                     </div>
@@ -69,10 +69,10 @@
               {
                 <div class="row mt-2">
                   <div class="d-none d-lg-block col-lg-1 text-center">
-                    <img src="@cart.ImageUrl" class="img-fluid mx-auto d-block" width="50%" />
+                    <img src="@cart.Product.Images.First().ImageUrl" class="img-fluid mx-auto d-block" width="50%" />
                   </div>
                   <div class="col-12 col-lg-6 pt-2">
-                    <a asp-area="Customer" asp-controller="YerbaMate" asp-action="Details"
+                    <a asp-area="Customer" asp-controller="Bombilla" asp-action="Details"
                     asp-route-productId="@cart.ProductId" class="text-dark">
                       <h6><strong>@cart.Product.Name</strong></h6>
                     </a>
@@ -82,8 +82,8 @@
                     <div class="col-5 text-md-right pt-2">
                       <h6>
                         <strong>
-                          @(@cart.Product.Price.ToString("0.00")) zł<span class="text-muted"> x </span> @cart.Quantity
-                          <span class="text-muted"> = </span> @((@cart.Product.Price * cart.Quantity).ToString("0.00"))
+                          @(@cart.Price.ToString("0.00")) zł<span class="text-muted"> x </span> @cart.Quantity
+                          <span class="text-muted"> = </span> @((@cart.Price * cart.Quantity).ToString("0.00")) zł
                         </strong>
                       </h6>
                     </div>
@@ -109,10 +109,10 @@
               {
                 <div class="row mt-2">
                   <div class="d-none d-lg-block col-lg-1 text-center">
-                    <img src="@cart.ImageUrl" class="img-fluid mx-auto d-block" width="50%" />
+                    <img src="@cart.Product.Images.First().ImageUrl" class="img-fluid mx-auto d-block" width="50%" />
                   </div>
                   <div class="col-12 col-lg-6 pt-2">
-                    <a asp-area="Customer" asp-controller="YerbaMate" asp-action="Details"
+                    <a asp-area="Customer" asp-controller="Cup" asp-action="Details"
                     asp-route-productId="@cart.ProductId" class="text-dark">
                       <h6><strong>@cart.Product.Name</strong></h6>
                     </a>
@@ -122,8 +122,8 @@
                     <div class="col-5 text-md-right pt-2">
                       <h6>
                         <strong>
-                          @(@cart.Product.Price.ToString("0.00")) zł<span class="text-muted"> x </span> @cart.Quantity
-                          <span class="text-muted"> = </span> @((@cart.Product.Price * cart.Quantity).ToString("0.00"))
+                          @(@cart.Price.ToString("0.00")) zł<span class="text-muted"> x </span> @cart.Quantity
+                          <span class="text-muted"> = </span> @((@cart.Price * cart.Quantity).ToString("0.00")) zł
                         </strong>
                       </h6>
                     </div>
