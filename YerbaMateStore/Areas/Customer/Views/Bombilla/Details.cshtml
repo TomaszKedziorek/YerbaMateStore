@@ -1,5 +1,5 @@
 @using YerbaMateStore.Models.Entities
-@model YerbaMateStore.Models.ViewModels.ShopProductViewModel<Bombilla>
+@model YerbaMateStore.Models.Entities.BombillaShoppingCart
 
 @section HeadArea{
   <link rel="stylesheet" type="text/css" href="/css/zayTemplateCss/slick.min.css">
@@ -84,14 +84,15 @@
               </li>
             </ul>
 
-            <form action="">
-              <input type="hidden" name="productId" asp-for="@Model.Product.Id">
+            <form method="post" asp-area="Customer" asp-controller="Bombilla" asp-action="Details">
+              <input type="hidden" asp-for="@Model.ProductId">
+              <input type="hidden" asp-for="@Model.ApplicationUserId" value="0">
               <div class="row">
                 <div class="col-auto">
                   <ul class="list-inline pb-3">
                     <li class="list-inline-item text-right">
-                      Quantity
-                      <input type="hidden" name="quanity" id="product-quanity" value="1">
+                      <h6>Quantity</h6>
+                      <input type="hidden" asp-for="@Model.Quantity" id="product-quanity">
                     </li>
                     <li class="list-inline-item"><span class="btn btn-success fw-bold" style="width: 40px;height: 40px;"
                         id="btn-minus">-</span></li>

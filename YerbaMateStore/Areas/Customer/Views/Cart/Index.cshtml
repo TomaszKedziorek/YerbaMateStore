@@ -1,0 +1,174 @@
+@model YerbaMateStore.Models.ViewModels.ShoppingCartViewModel
+@{
+  ViewData["Title"] = "Cart";
+}
+<section class="d-flex justify-content-center bg-light">
+  <div class="container-lg pb-5 p-3">
+    <div class="row justify-content-center">
+      <div class="col-12">
+
+        <form method="post">
+          <div class="card">
+            <div class="card-header bg-dark text-light">
+              <div class="row">
+                <div class="col-6  pt-2">
+                  <i class="bi bi-basket2-fill "></i> &nbsp;
+                  @ViewData["Title"]
+                </div>
+                <div class="col-6 text-end">
+                  <a class="btn btn-outline-info btn-sm" asp-area="Customer" asp-controller="Home"
+                    asp-action="Index">Continue Shopping</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-body">
+              @foreach (var cart in Model.YerbaMateCartList)
+              {
+                <div class="row mt-2">
+                  <div class="d-none d-lg-block col-lg-1 text-center">
+                    <img src="@cart.Product.Images.First().ImageUrl" class="img-fluid mx-auto d-block" width="50%" />
+                  </div>
+                  <div class="col-12 col-lg-6 pt-2">
+                    <a asp-area="Customer" asp-controller="YerbaMate" asp-action="Details"
+                    asp-route-productId="@cart.ProductId" class="text-dark">
+                      <h6><strong>@cart.Product.Brand - @cart.Product.Name</strong></h6>
+                    </a>
+                    <p><small>@cart.Product.Weight</small></p>
+                  </div>
+                  <div class="col-12  col-lg-5 text-center row">
+                    <div class="col-5 text-md-right pt-2">
+                      <h6>
+                        <strong>
+                          @(@cart.Price.ToString("0.00")) zł<span class="text-muted"> x </span> @cart.Quantity
+                          <span class="text-muted"> = </span> @((@cart.Price * cart.Quantity).ToString("0.00")) zł
+                        </strong>
+                      </h6>
+                    </div>
+
+                    <div class="col-6 col-sm-4 col-lg-5">
+                      <a class="btn btn-success" asp-action="MinusOne" asp-route-cartId="@cart.Id">
+                        <i class="bi bi-dash-circle"></i>
+                      </a>
+                      <a class="btn btn-success" asp-action="PlusOne" asp-route-cartId="@cart.Id">
+                        <i class="bi bi-plus-circle"></i>
+                      </a>
+                    </div>
+
+                    <div class="col-2 col-sm-4 col-lg-1 text-right">
+                      <a class="btn btn-danger" asp-action="Remove" asp-route-cartId="@cart.Id">
+                        <i class="bi bi-trash-fill"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              }
+              @foreach (var cart in Model.BombillaCartList)
+              {
+                <div class="row mt-2">
+                  <div class="d-none d-lg-block col-lg-1 text-center">
+                    <img src="@cart.Product.Images.First().ImageUrl" class="img-fluid mx-auto d-block" width="50%" />
+                  </div>
+                  <div class="col-12 col-lg-6 pt-2">
+                    <a asp-area="Customer" asp-controller="Bombilla" asp-action="Details"
+                    asp-route-productId="@cart.ProductId" class="text-dark">
+                      <h6><strong>@cart.Product.Name</strong></h6>
+                    </a>
+                    <p><small>@cart.Product.Length</small></p>
+                  </div>
+                  <div class="col-12  col-lg-5 text-center row">
+                    <div class="col-5 text-md-right pt-2">
+                      <h6>
+                        <strong>
+                          @(@cart.Price.ToString("0.00")) zł<span class="text-muted"> x </span> @cart.Quantity
+                          <span class="text-muted"> = </span> @((@cart.Price * cart.Quantity).ToString("0.00")) zł
+                        </strong>
+                      </h6>
+                    </div>
+
+                    <div class="col-6 col-sm-4 col-lg-5">
+                      <a class="btn btn-success" asp-action="MinusOne" asp-route-cartId="@cart.Id">
+                        <i class="bi bi-dash-circle"></i>
+                      </a>
+                      <a class="btn btn-success" asp-action="PlusOne" asp-route-cartId="@cart.Id">
+                        <i class="bi bi-plus-circle"></i>
+                      </a>
+                    </div>
+
+                    <div class="col-2 col-sm-4 col-lg-1 text-right">
+                      <a class="btn btn-danger" asp-action="Remove" asp-route-cartId="@cart.Id">
+                        <i class="bi bi-trash-fill"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              }
+              @foreach (var cart in Model.CupCartList)
+              {
+                <div class="row mt-2">
+                  <div class="d-none d-lg-block col-lg-1 text-center">
+                    <img src="@cart.Product.Images.First().ImageUrl" class="img-fluid mx-auto d-block" width="50%" />
+                  </div>
+                  <div class="col-12 col-lg-6 pt-2">
+                    <a asp-area="Customer" asp-controller="Cup" asp-action="Details" asp-route-productId="@cart.ProductId"
+                      class="text-dark">
+                      <h6><strong>@cart.Product.Name</strong></h6>
+                    </a>
+                    <p><small>@cart.Product.Volume</small></p>
+                  </div>
+                  <div class="col-12  col-lg-5 text-center row">
+                    <div class="col-5 text-md-right pt-2">
+                      <h6>
+                        <strong>
+                          @(@cart.Price.ToString("0.00")) zł<span class="text-muted"> x </span> @cart.Quantity
+                          <span class="text-muted"> = </span> @((@cart.Price * cart.Quantity).ToString("0.00")) zł
+                        </strong>
+                      </h6>
+                    </div>
+
+                    <div class="col-6 col-sm-4 col-lg-5">
+                      <a class="btn btn-success" asp-action="MinusOne" asp-route-cartId="@cart.Id">
+                        <i class="bi bi-dash-circle"></i>
+                      </a>
+                      <a class="btn btn-success" asp-action="PlusOne" asp-route-cartId="@cart.Id">
+                        <i class="bi bi-plus-circle"></i>
+                      </a>
+                    </div>
+
+                    <div class="col-2 col-sm-4 col-lg-1 text-right">
+                      <a class="btn btn-danger" asp-action="Remove" asp-route-cartId="@cart.Id">
+                        <i class="bi bi-trash-fill"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              }
+              <hr />
+
+              <div class="row px-4">
+                <div class="col-12 col-md-6 offset-md-6 col-lg-4 offset-lg-8">
+                  <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between bg-light text-dark fw-bold">
+                      <span class=""> Total (PLN)</span>
+                      <strong class="">@Model.CartTotal.ToString("0.00") zł</strong>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-footer ">
+              <div class="row my-2 px-4 bg-transparent">
+                <div class="col-sm-12 col-lg-4 col-md-6 offset-lg-8 offset-md-6 ">
+                  <a asp-area="Customer" asp-controller="Cart" asp-action="Summary"
+                    class="btn btn-success form-control fw-bold">Summary</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</section>

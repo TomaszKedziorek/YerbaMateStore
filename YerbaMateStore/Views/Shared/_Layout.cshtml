@@ -109,19 +109,17 @@ https://templatemo.com/tm-559-zay-shop
           </ul>
         </div>
 
-        <div class="navbar align-self-center d-flex">
-          <a class="nav-icon position-relative text-decoration-none" href="#">
-            <i class="bi bi-cart-check-fill text-dark mr-1"></i>
-            <span
-              class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">7</span>
-          </a>
-          <a class="nav-icon position-relative text-decoration-none" href="#">
-            <i class="bi bi-person-fill text-dark mr-3"></i>
-            <span
-              class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">+99</span>
+        <div class="navbar align-self-center d-inline-flex  bg-light rounded-1 border border-secondary py-0 px-1">
+          <a class="text-decoration-none" asp-area="Customer" asp-controller="Cart" asp-action="Index">
+            <span class="text-dark">
+              <span class="text-dark align-middle">123.00zł</span>
+              <span class="badge rounded-pill bg-success text-dark align-middle">127</span>
+              <i class="bi bi-basket2-fill text-dark h2 align-middle"></i>
+            </span>
           </a>
         </div>
       </div>
+    </div>
 
     </div>
   </nav>
