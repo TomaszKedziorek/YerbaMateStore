@@ -26,7 +26,8 @@ public class CartController : Controller
 
     ShoppingCartVM = new ShoppingCartViewModel(YerbaMateCartList, BombillaCartList, CupCartList);
     ShoppingCartVM.SetPrices();
-    
+    ShoppingCartVM.CalculateTotalPrice();
+
     return View(ShoppingCartVM);
   }
 

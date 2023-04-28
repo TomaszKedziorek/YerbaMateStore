@@ -11,6 +11,8 @@ public class ShoppingCartViewModel
   public IEnumerable<BombillaShoppingCart> BombillaCartList { get; set; }
   [ValidateNever]
   public IEnumerable<CupShoppingCart> CupCartList { get; set; }
+  public double CartTotal { get; set; }
+
 
   public ShoppingCartViewModel()
   {
@@ -39,6 +41,22 @@ public class ShoppingCartViewModel
     foreach (var cart in CupCartList)
     {
       cart.Price = (double)(cart.Product.DiscountPrice == null ? cart.Product.Price : cart.Product.DiscountPrice);
+    }
+  }
+
+  public void CalculateTotalPrice()
+  {
+    foreach (var cart in YerbaMateCartList)
+    {
+      CartTotal += (cart.Quantity * cart.Price);
+    }
+    foreach (var cart in BombillaCartList)
+    {
+      CartTotal += (cart.Quantity * cart.Price);
+    }
+    foreach (var cart in CupCartList)
+    {
+      CartTotal += (cart.Quantity * cart.Price);
     }
   }
 }
