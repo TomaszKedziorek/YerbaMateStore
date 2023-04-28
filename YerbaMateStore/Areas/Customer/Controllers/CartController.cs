@@ -31,6 +31,18 @@ public class CartController : Controller
     return View(ShoppingCartVM);
   }
 
+  public IActionResult PlusOne(int cartId, int increment = 1)
+  {
+    var cart = _unitOfWork.ShoppingCart.GetFirstOrDefault(c => c.Id == cartId);
+    _unitOfWork.ShoppingCart.IncrementQuantity(cart, increment);
+    _unitOfWork.Save();
+    return Redirect(nameof(Index));
+  }
+  public IActionResult MinusOne(int cartId)
+  {
+    return PlusOne(cartId, -1);
+  }
+
   [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
   public IActionResult Error()
   {
