@@ -27,6 +27,14 @@ public class CartController : Controller
     ShoppingCartVM = new ShoppingCartViewModel(YerbaMateCartList, BombillaCartList, CupCartList);
     ShoppingCartVM.SetPrices();
     ShoppingCartVM.CalculateTotalPrice();
+    if (YerbaMateCartList.Count() == 0 && BombillaCartList.Count() == 0 && CupCartList.Count() == 0)
+    {
+      ShoppingCartVM.IsCartEmpty = true;
+    }
+    else
+    {
+      ShoppingCartVM.IsCartEmpty = false;
+    }
 
     return View(ShoppingCartVM);
   }

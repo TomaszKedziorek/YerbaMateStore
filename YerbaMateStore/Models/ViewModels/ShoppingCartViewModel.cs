@@ -12,6 +12,8 @@ public class ShoppingCartViewModel
   [ValidateNever]
   public IEnumerable<CupShoppingCart> CupCartList { get; set; }
   public double CartTotal { get; set; }
+  [ValidateNever]
+  public bool IsCartEmpty { get; set; }
 
 
   public ShoppingCartViewModel()
