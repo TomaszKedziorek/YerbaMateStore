@@ -83,13 +83,18 @@ public class YerbaMateController : Controller
   {
     var imageToDelete = _unitOfWork.YerbaMateImage.GetFirstOrDefault(i => i.Id == imageId);
     int productId = imageToDelete.ProductId;
-    if (imageToDelete != null)
+    var numberOfImages = _unitOfWork.YerbaMateImage.GetAll(i => i.ProductId == productId).Count();
+    if (imageToDelete != null && numberOfImages > 1)
     {
       ProductManager<YerbaMate> productManager = new(_hostEnvironment);
       productManager.DeleteFile(imageToDelete);
       _unitOfWork.YerbaMateImage.Remove(imageToDelete);
       _unitOfWork.Save();
       TempData["success"] = "Deleted succesfully!";
+    }
+    else
+    {
+      TempData["info"] = "Add a new image before deleting the last one!";
     }
     return RedirectToAction(nameof(Upsert), new { id = productId });
   }
