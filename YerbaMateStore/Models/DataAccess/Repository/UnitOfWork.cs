@@ -21,6 +21,7 @@ public class UnitOfWork : IUnitOfWork
   public IShoppingCartRepository<YerbaMateShoppingCart> YerbaMateShoppingCart { get; private set; }
   public IShoppingCartRepository<BombillaShoppingCart> BombillaShoppingCart { get; private set; }
   public IShoppingCartRepository<CupShoppingCart> CupShoppingCart { get; private set; }
+  public IShoppingCartRepository<ShoppingCart> ShoppingCart { get; private set; }
 
   public UnitOfWork(AppDbContext dbContext)
   {
@@ -36,6 +37,7 @@ public class UnitOfWork : IUnitOfWork
     YerbaMateShoppingCart = new ShoppingCartRepository<YerbaMateShoppingCart>(dbContext);
     BombillaShoppingCart = new ShoppingCartRepository<BombillaShoppingCart>(dbContext);
     CupShoppingCart = new ShoppingCartRepository<CupShoppingCart>(dbContext);
+    ShoppingCart = new ShoppingCartRepository<ShoppingCart>(dbContext);
   }
 
   public void Save()
