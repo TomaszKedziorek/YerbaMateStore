@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using YerbaMateStore.Models.Entities;
 using YerbaMateStore.Models.Managers;
@@ -40,6 +41,7 @@ public class YerbaMateController : Controller
 
   [HttpPost]
   [ValidateAntiForgeryToken]
+  [Authorize]
   public IActionResult Details(YerbaMateShoppingCart shoppingCart)
   {
     if (ModelState.IsValid)
@@ -63,6 +65,7 @@ public class YerbaMateController : Controller
   }
 
   [HttpPost]
+  [Authorize]
   public IActionResult AddToCart(int productId)
   {
     YerbaMateShoppingCart shoppingCart = _shoppingCartManager.CreateShoppingCart(productId, 1);

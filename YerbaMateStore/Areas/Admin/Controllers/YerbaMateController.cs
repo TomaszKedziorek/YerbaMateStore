@@ -1,12 +1,15 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using YerbaMateStore.Models.Entities;
 using YerbaMateStore.Models.Managers;
 using YerbaMateStore.Models.Repository.IRepository;
+using YerbaMateStore.Models.Utilities;
 using YerbaMateStore.Models.ViewModels;
 
 namespace YerbaMateStore.Areas.Admin.Controllers;
 
 [Area("Admin")]
+[Authorize(Roles = StaticDetails.Role_Admin + "," + StaticDetails.Role_Employee)]
 public class YerbaMateController : Controller
 {
   private readonly IUnitOfWork _unitOfWork;

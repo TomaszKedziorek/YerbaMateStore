@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using YerbaMateStore.Models.Entities;
 using YerbaMateStore.Models.Managers;
@@ -7,6 +8,7 @@ using YerbaMateStore.Models.ViewModels;
 
 namespace YerbaMateStore.Areas.Customer.Controllers;
 [Area("Customer")]
+[Authorize]
 public class CartController : Controller
 {
   private readonly IUnitOfWork _unitOfWork;

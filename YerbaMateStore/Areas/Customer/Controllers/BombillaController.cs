@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using YerbaMateStore.Models.Entities;
 using YerbaMateStore.Models.Managers;
@@ -35,6 +36,7 @@ public class BombillaController : Controller
 
   [HttpPost]
   [ValidateAntiForgeryToken]
+  [Authorize]
   public IActionResult Details(BombillaShoppingCart shoppingCart)
   {
     if (ModelState.IsValid)
@@ -58,6 +60,7 @@ public class BombillaController : Controller
   }
 
   [HttpPost]
+  [Authorize]
   public IActionResult AddToCart(int productId)
   {
     BombillaShoppingCart shoppingCart = _shoppingCartManager.CreateShoppingCart(productId, 1);

@@ -9,6 +9,9 @@ function AddToCart(url) {
       else {
         toastr.error(data.message);
       }
+    },
+    error:function () {
+      toastr.warning("Please log in first!");
     }
   })
 }

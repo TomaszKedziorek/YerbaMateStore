@@ -76,7 +76,7 @@
               </li>
             </ul>
 
-            <form method="post" asp-area="Customer" asp-controller="Cup" asp-action="Details">
+            <form method="post">
               <input type="hidden" asp-for="@Model.ProductId">
               <input type="hidden" asp-for="@Model.ApplicationUserId" value="0">
               <div class="row">
