@@ -122,18 +122,26 @@ namespace YerbaMateStore.Areas.Identity.Pages.Account
     }
 
 
-    public async Task OnGetAsync(string returnUrl = null)
+    public async Task<IActionResult> OnGetAsync(string returnUrl = null)
     {
-      Input = new InputModel()
+      if (User.Identity.IsAuthenticated && !User.IsInRole(StaticDetails.Role_Admin))
       {
-        RoleList = _roleManager.Roles.Select(r => r.Name).Select(x => new SelectListItem
+        return RedirectToAction("Index", "Home", new { area = "Customer" });
+      }
+      else
+      {
+        Input = new InputModel()
         {
-          Text = x,
-          Value = x
-        })
-      };
-      ReturnUrl = returnUrl;
-      ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+          RoleList = _roleManager.Roles.Select(r => r.Name).Select(x => new SelectListItem
+          {
+            Text = x,
+            Value = x
+          })
+        };
+        ReturnUrl = returnUrl;
+        ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+        return Page();
+      }
     }
 
     public async Task<IActionResult> OnPostAsync(string returnUrl = null)
