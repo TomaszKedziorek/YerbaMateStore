@@ -24,94 +24,172 @@
             </div>
 
             <div class="card-body">
-              <div class="card-body">
-                <div class="container rounded">
-                  <div class="row">
-                    <div class="col-12 col-lg-6 ">
-                      <div class="row">
-                        <h4 class="d-flex justify-content-between align-items-center mb-3">
-                          <span class="text-dark">Shipping Details:</span>
-                        </h4>
+              <div class="container rounded">
+                <div class="row">
+                  <div class="col-12 col-lg-6 order-1 order-md-0">
+                    <div class="row">
+                      <h4 class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-dark">Shipping Details:</span>
+                      </h4>
+                    </div>
+
+                    <input asp-for="@Model.OrderHeader.ApplicationUserId" value="0" hidden />
+
+                    <div class="mb-2 row justify-content-center">
+                      <label asp-for="@Model.OrderHeader.Name" class="col-sm-3 col-form-label"></label>
+                      <div class="col-sm-9">
+                        <input asp-for="@Model.OrderHeader.Name" class="form-control rounded-0">
+                        <span asp-validation-for="@Model.OrderHeader.Name" class="text-danger"></span>
                       </div>
-                      <div class="row my-1">
-                        <div class="col-3">
-                          <label>Name</label>
-                        </div>
-                        <div class="col-9">
-                          <input class="form-control" />
-                        </div>
+                    </div>
+
+                    <div class="mb-2 row justify-content-center">
+                      <label asp-for="@Model.OrderHeader.PhoneNumber" class="col-sm-3 col-form-label"></label>
+                      <div class="col-sm-9">
+                        <input asp-for="@Model.OrderHeader.PhoneNumber" class="form-control rounded-0">
+                        <span asp-validation-for="@Model.OrderHeader.PhoneNumber" class="text-danger"></span>
                       </div>
-                      <div class="row my-1">
-                        <div class="col-3">
-                          <label>Phone</label>
-                        </div>
-                        <div class="col-9">
-                          <input class="form-control" />
-                        </div>
+                    </div>
+
+                    <div class="mb-2 row justify-content-center">
+                      <label asp-for="@Model.OrderHeader.Country" class="col-sm-3 col-form-label"></label>
+                      <div class="col-sm-9">
+                        <input asp-for="@Model.OrderHeader.Country" class="form-control rounded-0">
+                        <span asp-validation-for="@Model.OrderHeader.Country" class="text-danger"></span>
                       </div>
-                      <div class="row my-1">
-                        <div class="col-3">
-                          <label>Street Address</label>
-                        </div>
-                        <div class="col-9">
-                          <input class="form-control" />
-                        </div>
+                    </div>
+                    <div class="mb-2 row justify-content-center">
+                      <label asp-for="@Model.OrderHeader.City" class="col-sm-3 col-form-label"></label>
+                      <div class="col-sm-9">
+                        <input asp-for="@Model.OrderHeader.City" class="form-control rounded-0">
+                        <span asp-validation-for="@Model.OrderHeader.City" class="text-danger"></span>
                       </div>
-                      <div class="row my-1">
-                        <div class="col-3">
-                          <label>City</label>
-                        </div>
-                        <div class="col-9">
-                          <input class="form-control" />
-                        </div>
+                    </div>
+                    <div class="mb-2 row justify-content-center">
+                      <label asp-for="@Model.OrderHeader.State" class="col-sm-3 col-form-label"></label>
+                      <div class="col-sm-9">
+                        <input asp-for="@Model.OrderHeader.State" class="form-control rounded-0">
+                        <span asp-validation-for="@Model.OrderHeader.State" class="text-danger"></span>
                       </div>
-                      <div class="row my-1">
-                        <div class="col-3">
-                          <label>State</label>
-                        </div>
-                        <div class="col-9">
-                          <input class="form-control" />
-                        </div>
+                    </div>
+                    <div class="mb-2 row justify-content-center">
+                      <label asp-for="@Model.OrderHeader.StreetAddress" class="col-sm-3 col-form-label"></label>
+                      <div class="col-sm-9">
+                        <input asp-for="@Model.OrderHeader.StreetAddress" class="form-control rounded-0">
+                        <span asp-validation-for="@Model.OrderHeader.StreetAddress" class="text-danger"></span>
                       </div>
-                      <div class="row my-1">
-                        <div class="col-3">
-                          <label>Postal Code</label>
+                    </div>
+                    <div class="mb-2 row justify-content-center">
+                      <label asp-for="@Model.OrderHeader.PostalCode" class="col-sm-3 col-form-label"></label>
+                      <div class="col-sm-9">
+                        <input asp-for="@Model.OrderHeader.PostalCode" class="form-control rounded-0">
+                        <span asp-validation-for="@Model.OrderHeader.PostalCode" class="text-danger"></span>
+                      </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                      <h4 class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-dark">Delivery method:</span>
+                      </h4>
+                    </div>
+                    <div class="mb-2 row justify-content-center">
+                      <div class="col-12">
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="delivery" id="delivery1" value="option1">
+                          <label class="form-check-label" for="exampleRadios1">
+                            InPost Paczkomaty 24/7, bank transfer (cost: 13 zł)
+                          </label>
                         </div>
-                        <div class="col-9">
-                          <input class="form-control" />
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="delivery" id="delivery2" value="option2">
+                          <label class="form-check-label" for="exampleRadios1">
+                            InPost Paczkomaty 24/7, cash on delivery (cost: 17 zł)
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="delivery" id="delivery3" value="option3">
+                          <label class="form-check-label" for="exampleRadios1">
+                            Post, bank transfer (cost: 15 zł)
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="delivery" id="delivery3" value="option3"
+                            checked>
+                          <label class="form-check-label" for="exampleRadios1">
+                            Post, cash on delivery (cost: 20 zł)
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="delivery" id="delivery4" value="option4">
+                          <label class="form-check-label" for="exampleRadios1">
+                            Personal collection (cost: 0 zł)
+                          </label>
                         </div>
                       </div>
                     </div>
-                    <div class="col-12 col-lg-5 offset-lg-1">
-                      <h4 class="d-flex justify-content-between align-items-center mb-3">
-                        <span class="text-dark">Order Summary:</span>
-                      </h4>
-                      <ul class="list-group mb-3">
+                  </div>
 
+                  <div class="col-12 col-lg-6">
+                    <h4 class="d-flex justify-content-between align-items-center mb-3">
+                      <span class="text-dark">Order Summary:</span>
+                    </h4>
+                    <ul class="list-group mb-3">
+                      @foreach (var cart in Model.YerbaMateCartList)
+                      {
                         <li class="list-group-item d-flex justify-content-between">
                           <div>
-                            <h6 class="my-0">Title</h6>
-                            <small class="text-muted">Quantity: Count</small>
+                            <a asp-area="Customer" asp-controller="YerbaMate" asp-action="Details"
+                            asp-route-productId="@cart.ProductId" class="my-0 h6 text-dark">
+                              @cart.Product.Brand @cart.Product.Name @cart.Product.Weight</a>
+                            <small class="text-muted">Quantity: @cart.Quantity</small>
                           </div>
-                          <span class="text-muted">$$$ </span>
+                          <span class="text-muted">@((cart.Quantity * cart.Price).ToString("0.00")) zł </span>
                         </li>
-
-                        <li class="list-group-item d-flex justify-content-between bg-light">
-                          <small class="text-dark fw-bold">Total (USD)</small>
-                          <strong class="text-dark fw-bold">$$$</strong>
+                      }
+                      @foreach (var cart in Model.BombillaCartList)
+                      {
+                        <li class="list-group-item d-flex justify-content-between">
+                          <div>
+                            <a asp-area="Customer" asp-controller="YerbaMate" asp-action="Details"
+                            asp-route-productId="@cart.ProductId" class="my-0 h6 text-dark">
+                              @cart.Product.Name @cart.Product.Length</a>
+                            <small class="text-muted">Quantity: @cart.Quantity</small>
+                          </div>
+                          <span class="text-muted">@((cart.Quantity * cart.Price).ToString("0.00")) zł </span>
                         </li>
-                      </ul>
-                    </div>
+                      }
+                      @foreach (var cart in Model.CupCartList)
+                      {
+                        <li class="list-group-item d-flex justify-content-between">
+                          <div>
+                            <a asp-area="Customer" asp-controller="YerbaMate" asp-action="Details"
+                            asp-route-productId="@cart.ProductId" class="my-0 h6 text-dark">
+                              @cart.Product.Name @cart.Product.Volume</a>
+                            <small class="text-muted">Quantity: @cart.Quantity</small>
+                          </div>
+                          <span class="text-muted">@((cart.Quantity * cart.Price).ToString("0.00")) zł </span>
+                        </li>
+                      }
+                      <li class="list-group-item d-flex justify-content-between bg-light">
+                        <small class="text-dark fw-bold">Total (PLN)</small>
+                        <strong class="text-dark fw-bold">@Model.OrderHeader.OrderTotal.ToString("0.00") zł</strong>
+                      </li>
+                    </ul>
                   </div>
                 </div>
               </div>
-
             </div>
 
             <div class="card-footer ">
-              <div class="row my-2 px-4 bg-transparent">
-                <div class="col-sm-12 col-lg-4 col-md-6 offset-lg-8 offset-md-6 ">
-                  <a class="btn btn-success form-control fw-bold">Place Order</a>
+              <div class="row my-2 px-4 bg-transparent justify-content-between">
+                <div class="col-sm-12 col-lg-4 col-md-6 ">
+                  <p class="text-primary fw-bolder">Estimate Arrival Date:
+                    @DateTime.Now.AddDays(7).ToString("dd.MM.yyyy") -
+                    @DateTime.Now.AddDays(14).ToString("dd.MM.yyyy")
+                  </p>
+                </div>
+                <div class="col-sm-12 col-lg-4 col-md-6">
+                  <button class="btn btn-success form-control fw-bold">Place Order</button>
                 </div>
               </div>
             </div>
@@ -124,7 +202,6 @@
   </div>
 </section>
 @section Scripts{
-  @{
-    <partial name="_ValidationScriptsPartial.cshtml" />
-  }
+  <partial name="_ValidationScriptsPartial.cshtml" />
+  <partial name="_Notification" />
 }
