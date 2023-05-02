@@ -11,7 +11,7 @@ public class ShoppingCartViewModel
   public IEnumerable<BombillaShoppingCart> BombillaCartList { get; set; }
   [ValidateNever]
   public IEnumerable<CupShoppingCart> CupCartList { get; set; }
-  public double CartTotal { get; set; }
+  public OrderHeader OrderHeader { get; set; }
   [ValidateNever]
   public bool IsCartEmpty { get; set; }
 
@@ -28,9 +28,13 @@ public class ShoppingCartViewModel
     YerbaMateCartList = yerbaMateCartList;
     BombillaCartList = bombillaCartList;
     CupCartList = cupCartList;
+    OrderHeader = new();
+    SetPrices();
+    CalculateTotalPrice();
+    CheckIfCartIsEmpty();
   }
 
-  public void SetPrices()
+  private void SetPrices()
   {
     foreach (var cart in YerbaMateCartList)
     {
@@ -46,19 +50,33 @@ public class ShoppingCartViewModel
     }
   }
 
-  public void CalculateTotalPrice()
+  private void CalculateTotalPrice()
   {
+    double total = 0;
     foreach (var cart in YerbaMateCartList)
     {
-      CartTotal += (cart.Quantity * cart.Price);
+      total += (cart.Quantity * cart.Price);
     }
     foreach (var cart in BombillaCartList)
     {
-      CartTotal += (cart.Quantity * cart.Price);
+      total += (cart.Quantity * cart.Price);
     }
     foreach (var cart in CupCartList)
     {
-      CartTotal += (cart.Quantity * cart.Price);
+      total += (cart.Quantity * cart.Price);
+    }
+    this.OrderHeader.OrderTotal = total;
+  }
+
+  private void CheckIfCartIsEmpty()
+  {
+    if (YerbaMateCartList.Count() == 0 && BombillaCartList.Count() == 0 && CupCartList.Count() == 0)
+    {
+      IsCartEmpty = true;
+    }
+    else
+    {
+      IsCartEmpty = false;
     }
   }
 }
