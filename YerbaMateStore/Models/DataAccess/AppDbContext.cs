@@ -24,6 +24,8 @@ public class AppDbContext : IdentityDbContext<IdentityUser>
   public DbSet<ProductOrderDetail<YerbaMate>> YerbaMateOrderDetail { get; set; }
   public DbSet<ProductOrderDetail<Bombilla>> BombillaOrderDetail { get; set; }
   public DbSet<ProductOrderDetail<Cup>> CupOrderDetail { get; set; }
+  public DbSet<DeliveryMethod> DeliveryMethod { get; set; }
+  public DbSet<PaymentMethod> PaymentMethod { get; set; }
 
   public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
   {
