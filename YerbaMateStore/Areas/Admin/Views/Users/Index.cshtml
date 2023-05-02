@@ -1,0 +1,44 @@
+@{
+  ViewData["Title"] = "Yerba Mate List";
+}
+@section HeadArea{
+  <link rel="stylesheet" href="//cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+}
+
+<section class="bg-light d-flex justify-content-center">
+  <div class="container-lg pb-5 p-3">
+    <h1 class="text-success">@ViewData["Title"]</h1>
+    <hr />
+
+    <div class="row justify-content-center">
+      <div class="col-12">
+        <div class="row justify-content-end mb-3">
+          <div class="col-12 text-end">
+            <a class="btn btn-success fw-bold" asp-controller="YerbaMate" asp-action="Upsert">
+              <i class="bi bi-plus-circle"></i>&nbsp; Create New Product
+            </a>
+          </div>
+        </div>
+
+        <table id="yerbaMateProductData" class="table table-bordered table-striped table-hover align-middle w-100">
+          <thead>
+            <tr class="bg-dark text-light border-secondary">
+              <th>Id</th>
+              <th>Username</th>
+              <th>Email</th>
+              <th>EmailConfirmed</th>
+              <th>Price</th>
+              <th></th>
+            </tr>
+          </thead>
+
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+@section Scripts{
+  <script src="~/js/yerbaMateProduct.js"></script>
+  <script src="~/js/deleteProduct.js"></script>
+  <script src="//cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+}
