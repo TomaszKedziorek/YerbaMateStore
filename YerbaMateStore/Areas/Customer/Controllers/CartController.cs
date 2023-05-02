@@ -61,9 +61,16 @@ public class CartController : Controller
     return Redirect(nameof(Index));
   }
 
+  [HttpGet]
   public IActionResult Summary()
   {
-    return View();
+    string userClaimsValue = UserClaims.GetUserClaimsValue(User);
+    var YerbaMateCartList = _unitOfWork.YerbaMateShoppingCart.GetAll(c => c.ApplicationUserId == userClaimsValue, "Product,Product.Images");
+    var BombillaCartList = _unitOfWork.BombillaShoppingCart.GetAll(c => c.ApplicationUserId == userClaimsValue, "Product,Product.Images");
+    var CupCartList = _unitOfWork.CupShoppingCart.GetAll(c => c.ApplicationUserId == userClaimsValue, "Product,Product.Images");
+
+    ShoppingCartVM = new ShoppingCartViewModel(YerbaMateCartList, BombillaCartList, CupCartList);
+    return View(ShoppingCartVM);
   }
 
   [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
