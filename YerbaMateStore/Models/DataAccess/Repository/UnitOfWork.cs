@@ -22,6 +22,10 @@ public class UnitOfWork : IUnitOfWork
   public IShoppingCartRepository<BombillaShoppingCart> BombillaShoppingCart { get; private set; }
   public IShoppingCartRepository<CupShoppingCart> CupShoppingCart { get; private set; }
   public IShoppingCartRepository<ShoppingCart> ShoppingCart { get; private set; }
+  public IOrderHeaderRepository OrderHeader { get; private set; }
+  public IOrderDetailRepository<YerbaMate> YerbaMateOrderDetail { get; private set; }
+  public IOrderDetailRepository<Bombilla> BombillaOrderDetail { get; private set; }
+  public IOrderDetailRepository<Cup> CupOrderDetail { get; private set; }
 
   public UnitOfWork(AppDbContext dbContext)
   {
@@ -38,6 +42,10 @@ public class UnitOfWork : IUnitOfWork
     BombillaShoppingCart = new ShoppingCartRepository<BombillaShoppingCart>(dbContext);
     CupShoppingCart = new ShoppingCartRepository<CupShoppingCart>(dbContext);
     ShoppingCart = new ShoppingCartRepository<ShoppingCart>(dbContext);
+    OrderHeader = new OrderHeaderRepository(dbContext);
+    YerbaMateOrderDetail = new OrderDetailRepository<YerbaMate>(dbContext);
+    BombillaOrderDetail = new OrderDetailRepository<Bombilla>(dbContext);
+    CupOrderDetail = new OrderDetailRepository<Cup>(dbContext);
   }
 
   public void Save()

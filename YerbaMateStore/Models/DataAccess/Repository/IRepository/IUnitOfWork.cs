@@ -17,5 +17,10 @@ public interface IUnitOfWork
   IShoppingCartRepository<BombillaShoppingCart> BombillaShoppingCart { get; }
   IShoppingCartRepository<CupShoppingCart> CupShoppingCart { get; }
   IShoppingCartRepository<ShoppingCart> ShoppingCart { get; }
+  IOrderHeaderRepository OrderHeader { get; }
+  IOrderDetailRepository<YerbaMate> YerbaMateOrderDetail { get; }
+  IOrderDetailRepository<Bombilla> BombillaOrderDetail { get; }
+  IOrderDetailRepository<Cup> CupOrderDetail { get; }
+  
   void Save();
 }
