@@ -4,7 +4,6 @@ namespace YerbaMateStore.Models.Repository.IRepository;
 
 public interface IUnitOfWork
 {
-
   ICountryRepository Countries { get; }
   IYerbaMateRepository YerbaMate { get; }
   IImageRepository<YerbaMateImage> YerbaMateImage { get; }
@@ -21,6 +20,8 @@ public interface IUnitOfWork
   IOrderDetailRepository<YerbaMate> YerbaMateOrderDetail { get; }
   IOrderDetailRepository<Bombilla> BombillaOrderDetail { get; }
   IOrderDetailRepository<Cup> CupOrderDetail { get; }
-  
+  IPaymentMethodRepository PaymentMethod { get; }
+  IDeliveryMethodRepository DeliveryMethod { get; }
+
   void Save();
 }

@@ -26,6 +26,8 @@ public class UnitOfWork : IUnitOfWork
   public IOrderDetailRepository<YerbaMate> YerbaMateOrderDetail { get; private set; }
   public IOrderDetailRepository<Bombilla> BombillaOrderDetail { get; private set; }
   public IOrderDetailRepository<Cup> CupOrderDetail { get; private set; }
+  public IPaymentMethodRepository PaymentMethod { get; private set; }
+  public IDeliveryMethodRepository DeliveryMethod { get; private set; }
 
   public UnitOfWork(AppDbContext dbContext)
   {
@@ -46,6 +48,8 @@ public class UnitOfWork : IUnitOfWork
     YerbaMateOrderDetail = new OrderDetailRepository<YerbaMate>(dbContext);
     BombillaOrderDetail = new OrderDetailRepository<Bombilla>(dbContext);
     CupOrderDetail = new OrderDetailRepository<Cup>(dbContext);
+    PaymentMethod = new PaymentMethodRepository(dbContext);
+    DeliveryMethod = new DeliveryMethodRepository(dbContext);
   }
 
   public void Save()
