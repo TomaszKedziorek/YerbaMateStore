@@ -6,6 +6,8 @@ using YerbaMateStore.Models.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using YerbaMateStore.Models.DataAccess.DbInitializer;
+using Microsoft.AspNetCore.Http.Json;
+using System.Text.Json.Serialization;
 
 namespace YerbaMateStore;
 

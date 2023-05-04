@@ -1,0 +1,42 @@
+@model IEnumerable<YerbaMateStore.Models.Entities.DeliveryMethod>
+@section HeadArea{
+  <link rel="stylesheet" href="//cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+}
+@{
+  ViewData["Title"] = "Delivery Methods";
+}
+<section class="bg-light d-flex justify-content-center">
+  <div class="container-lg pb-5 p-3">
+    <h1 class="text-success">@ViewData["Title"]</h1>
+    <hr />
+
+    <div class="row justify-content-center">
+      <div class="col-12">
+        <div class="row justify-content-end mb-3">
+          <div class="col-12 text-end">
+            <a class="btn btn-success fw-bold" asp-controller="DeliveryMethod" asp-action="Upsert">
+              <i class="bi bi-plus-circle"></i>&nbsp; Add New Method
+            </a>
+          </div>
+        </div>
+        <table id="deliveryMethodData" class="table">
+          <thead>
+            <tr class="bg-dark text-light border-secondary">
+              <th>Id</th>
+              <th>Carrier</th>
+              <th>Delivery Time</th>
+              <th>Payment Method</th>
+              <th>Cost</th>
+              <th></th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+@section Scripts{
+  <script src="~/js/deliveryMethod.js"></script>
+  <script src="~/js/deleteProduct.js"></script>
+  <script src="//cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+}
