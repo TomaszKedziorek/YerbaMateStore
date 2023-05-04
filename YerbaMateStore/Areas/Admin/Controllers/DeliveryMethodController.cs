@@ -46,12 +46,12 @@ public class DeliveryMethodController : Controller
       if (deliveryMethod.Id == 0)
       {
         _unitOfWork.DeliveryMethod.Add(deliveryMethod);
-        TempData["success"] = "Product created successfully!";
+        TempData["success"] = "Method created successfully!";
       }
       else
       {
         _unitOfWork.DeliveryMethod.Update(deliveryMethod);
-        TempData["success"] = "Product updated successfully!";
+        TempData["success"] = "Method updated successfully!";
       }
       _unitOfWork.Save();
       return RedirectToAction(nameof(Index));
@@ -59,7 +59,7 @@ public class DeliveryMethodController : Controller
     else
     {
       ViewData["PaymentMethodId"] = new SelectList(_unitOfWork.PaymentMethod.GetAll(), "Id", "Name", deliveryMethod.PaymentMethodId);
-      TempData["error"] = "Product updated failed!";
+      TempData["error"] = "Method updated failed!";
       return View(deliveryMethod);
     }
   }
