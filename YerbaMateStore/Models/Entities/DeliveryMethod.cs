@@ -9,11 +9,8 @@ public class DeliveryMethod
 {
   public int Id { get; set; }
 
-  [Required, StringLength(50, ErrorMessage = "The {0} value cannot exceed {1} characters. ")]
+  [Required,MaxLength(200), StringLength(200, ErrorMessage = "The {0} value cannot exceed {1} characters. ")]
   public string Carrier { get; set; }
-
-  [Display(Name = "Collection Point"), StringLength(100, ErrorMessage = "The {0} value cannot exceed {1} characters. ")]
-  public string CollectionPoint { get; set; }
 
   [Required, Display(Name = "Delivery Time"), StringLength(20, ErrorMessage = "The {0} value cannot exceed {1} characters. ")]
   public string DeliveryTime { get; set; }

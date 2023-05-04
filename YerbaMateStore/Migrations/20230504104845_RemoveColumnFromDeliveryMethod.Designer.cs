@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using YerbaMateStore.Models.DataAccess;
 
@@ -10,9 +11,10 @@ using YerbaMateStore.Models.DataAccess;
 namespace YerbaMateStore.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230504104845_RemoveColumnFromDeliveryMethod")]
+    partial class RemoveColumnFromDeliveryMethod
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -256,7 +258,7 @@ namespace YerbaMateStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Bombilla", (string)null);
+                    b.ToTable("Bombilla");
                 });
 
             modelBuilder.Entity("YerbaMateStore.Models.Entities.BombillaImage", b =>
@@ -276,7 +278,7 @@ namespace YerbaMateStore.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("BombillaImages", (string)null);
+                    b.ToTable("BombillaImages");
                 });
 
             modelBuilder.Entity("YerbaMateStore.Models.Entities.Country", b =>
@@ -296,7 +298,7 @@ namespace YerbaMateStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries", (string)null);
+                    b.ToTable("Countries");
                 });
 
             modelBuilder.Entity("YerbaMateStore.Models.Entities.Cup", b =>
@@ -335,7 +337,7 @@ namespace YerbaMateStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cup", (string)null);
+                    b.ToTable("Cup");
                 });
 
             modelBuilder.Entity("YerbaMateStore.Models.Entities.CupImage", b =>
@@ -355,7 +357,7 @@ namespace YerbaMateStore.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("CupImages", (string)null);
+                    b.ToTable("CupImages");
                 });
 
             modelBuilder.Entity("YerbaMateStore.Models.Entities.DeliveryMethod", b =>
@@ -384,7 +386,7 @@ namespace YerbaMateStore.Migrations
 
                     b.HasIndex("PaymentMethodId");
 
-                    b.ToTable("DeliveryMethod", (string)null);
+                    b.ToTable("DeliveryMethod");
                 });
 
             modelBuilder.Entity("YerbaMateStore.Models.Entities.OrderDetail", b =>
@@ -410,7 +412,7 @@ namespace YerbaMateStore.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderDetail", (string)null);
+                    b.ToTable("OrderDetail");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("OrderDetail");
                 });
@@ -490,7 +492,7 @@ namespace YerbaMateStore.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("OrderHeader", (string)null);
+                    b.ToTable("OrderHeader");
                 });
 
             modelBuilder.Entity("YerbaMateStore.Models.Entities.PaymentMethod", b =>
@@ -506,7 +508,7 @@ namespace YerbaMateStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PaymentMethod", (string)null);
+                    b.ToTable("PaymentMethod");
                 });
 
             modelBuilder.Entity("YerbaMateStore.Models.Entities.ShoppingCart", b =>
@@ -530,7 +532,7 @@ namespace YerbaMateStore.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("ShoppingCart", (string)null);
+                    b.ToTable("ShoppingCart");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("ShoppingCart");
                 });
@@ -584,7 +586,7 @@ namespace YerbaMateStore.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("YerbaMate", (string)null);
+                    b.ToTable("YerbaMate");
                 });
 
             modelBuilder.Entity("YerbaMateStore.Models.Entities.YerbaMateImage", b =>
@@ -604,7 +606,7 @@ namespace YerbaMateStore.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("YerbaMateImages", (string)null);
+                    b.ToTable("YerbaMateImages");
                 });
 
             modelBuilder.Entity("YerbaMateStore.Models.Entities.ApplicationUser", b =>
