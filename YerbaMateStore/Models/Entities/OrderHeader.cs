@@ -7,8 +7,7 @@ namespace YerbaMateStore.Models.Entities;
 public class OrderHeader
 {
   public int Id { get; set; }
-  [ForeignKey("ApplicationUserId")]
-  [ValidateNever]
+  [ForeignKey("ApplicationUserId"), ValidateNever]
   public ApplicationUser ApplicationUser { get; set; }
   public string ApplicationUserId { get; set; }
 
@@ -26,11 +25,9 @@ public class OrderHeader
   public string? SessionId { get; set; }
   public string? PaymentIntentId { get; set; }
 
-  [Required]
-  [Display(Name = "Phone Number")]
+  [Required, Display(Name = "Phone Number")]
   public string PhoneNumber { get; set; }
-  [Required]
-  [Display(Name = "Street Address")]
+  [Required, Display(Name = "Street Address")]
   public string StreetAddress { get; set; }
   [Required]
   public string Country { get; set; }
@@ -38,9 +35,13 @@ public class OrderHeader
   public string City { get; set; }
   [Required]
   public string State { get; set; }
-  [Required]
-  [Display(Name = "Postal Code")]
+  [Required, Display(Name = "Postal Code")]
   public string PostalCode { get; set; }
   [Required]
   public string Name { get; set; }
+
+  [Required, Display(Name = "Delivery Method"), ForeignKey("DeliveryMethodId")]
+  public int DeliveryMethodId { get; set; }
+  [ValidateNever]
+  public DeliveryMethod DeliveryMethod { get; set; }
 }

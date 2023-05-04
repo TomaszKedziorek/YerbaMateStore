@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using YerbaMateStore.Models.Utilities;
 
@@ -9,7 +10,7 @@ public class DeliveryMethod
 {
   public int Id { get; set; }
 
-  [Required,MaxLength(200), StringLength(200, ErrorMessage = "The {0} value cannot exceed {1} characters. ")]
+  [Required, MaxLength(200), StringLength(200, ErrorMessage = "The {0} value cannot exceed {1} characters. ")]
   public string Carrier { get; set; }
 
   [Required, Display(Name = "Delivery Time"), StringLength(20, ErrorMessage = "The {0} value cannot exceed {1} characters. ")]
@@ -20,7 +21,9 @@ public class DeliveryMethod
   [ForeignKey("PaymentMethodId"), ValidateNever]
   public PaymentMethod PaymentMethod { get; set; }
 
-  [Required, Range(0.01, 100000)]
+  [Required, Range(0.00, 100000)]
   public double Cost { get; set; }
 
+  [JsonIgnore]
+  public List<OrderHeader> OrderHeaders { get; set; } = new List<OrderHeader>();
 }

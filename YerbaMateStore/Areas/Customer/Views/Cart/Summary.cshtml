@@ -94,37 +94,21 @@
                     </div>
                     <div class="mb-2 row justify-content-center">
                       <div class="col-12">
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="delivery" id="delivery1" value="option1">
-                          <label class="form-check-label" for="exampleRadios1">
-                            InPost Paczkomaty 24/7, bank transfer (cost: 13 zł)
-                          </label>
-                        </div>
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="delivery" id="delivery2" value="option2">
-                          <label class="form-check-label" for="exampleRadios1">
-                            InPost Paczkomaty 24/7, cash on delivery (cost: 17 zł)
-                          </label>
-                        </div>
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="delivery" id="delivery3" value="option3">
-                          <label class="form-check-label" for="exampleRadios1">
-                            Post, bank transfer (cost: 15 zł)
-                          </label>
-                        </div>
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="delivery" id="delivery3" value="option3"
-                            checked>
-                          <label class="form-check-label" for="exampleRadios1">
-                            Post, cash on delivery (cost: 20 zł)
-                          </label>
-                        </div>
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="delivery" id="delivery4" value="option4">
-                          <label class="form-check-label" for="exampleRadios1">
-                            Personal collection (cost: 0 zł)
-                          </label>
-                        </div>
+                        @foreach (var method in Model.DeliveryMethodList)
+                        {
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" asp-for="@Model.OrderHeader.DeliveryMethodId"
+                              id="@method.Id" value="@method.Id"
+                              onclick="AddDeliveryCostToOrderTotal(@method.Cost,@Model.OrderHeader.OrderTotal)">
+                            <label class="form-check-label fw-bolder" for="@method.Id">
+                              @method.Carrier, @method.PaymentMethod.Name.ToLower() (cost: @method.Cost.ToString("0.00")
+                              zł)
+                            </label>
+
+                            <small>delivery: @method.DeliveryTime</small>
+                          </div>
+                        }
+                        <span asp-validation-for="@Model.OrderHeader.DeliveryMethodId" class="text-danger"></span>
                       </div>
                     </div>
                   </div>
@@ -171,8 +155,12 @@
                         </li>
                       }
                       <li class="list-group-item d-flex justify-content-between bg-light">
-                        <small class="text-dark fw-bold">Total (PLN)</small>
+                        <small class="text-dark fw-bold">Order Total (PLN)</small>
                         <strong class="text-dark fw-bold">@Model.OrderHeader.OrderTotal.ToString("0.00") zł</strong>
+                      </li>
+                      <li class="list-group-item d-flex justify-content-between bg-dark rounded-bottom ">
+                        <small class="text-light fw-bold">Order + Delivery (PLN)</small>
+                        <strong class="text-light fw-bold" id="OrderDeliveryTotal"><strong>
                       </li>
                     </ul>
                   </div>
@@ -181,13 +169,13 @@
             </div>
 
             <div class="card-footer ">
-              <div class="row my-2 px-4 bg-transparent justify-content-between">
-                <div class="col-sm-12 col-lg-4 col-md-6 ">
-                  <p class="text-primary fw-bolder">Estimate Arrival Date:
-                    @DateTime.Now.AddDays(7).ToString("dd.MM.yyyy") -
-                    @DateTime.Now.AddDays(14).ToString("dd.MM.yyyy")
-                  </p>
-                </div>
+              <div class="row my-2 px-4 bg-transparent justify-content-end">
+                @* <div class="col-sm-12 col-lg-4 col-md-6 ">
+                <p class="text-primary fw-bolder">Estimate Arrival Date:
+                @DateTime.Now.AddDays(7).ToString("dd.MM.yyyy") -
+                @DateTime.Now.AddDays(14).ToString("dd.MM.yyyy")
+                </p>
+                </div> *@
                 <div class="col-sm-12 col-lg-4 col-md-6">
                   <button class="btn btn-success form-control fw-bold">Place Order</button>
                 </div>
@@ -204,4 +192,14 @@
 @section Scripts{
   <partial name="_ValidationScriptsPartial.cshtml" />
   <partial name="_Notification" />
+  <script>
+    $(document).ready(function () {
+      AddDeliveryCostToOrderTotal(0, @Model.OrderHeader.OrderTotal);
+    })
+
+    const OrderDeliveryTotal = document.querySelector('#OrderDeliveryTotal');
+    function AddDeliveryCostToOrderTotal(deliveryCost, orderTotal) {
+      OrderDeliveryTotal.innerHTML = (deliveryCost + orderTotal).toFixed(2) +" zł";
+    }
+  </script>
 }

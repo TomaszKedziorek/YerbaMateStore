@@ -11,6 +11,8 @@ public class ShoppingCartViewModel
   public IEnumerable<BombillaShoppingCart> BombillaCartList { get; set; }
   [ValidateNever]
   public IEnumerable<CupShoppingCart> CupCartList { get; set; }
+  [ValidateNever]
+  public IEnumerable<DeliveryMethod> DeliveryMethodList { get; set; }
   public OrderHeader OrderHeader { get; set; }
   [ValidateNever]
   public bool IsCartEmpty { get; set; }
@@ -32,6 +34,15 @@ public class ShoppingCartViewModel
     SetPrices();
     CalculateTotalPrice();
     CheckIfCartIsEmpty();
+  }
+  public ShoppingCartViewModel(
+    IEnumerable<YerbaMateShoppingCart> yerbaMateCartList,
+    IEnumerable<BombillaShoppingCart> bombillaCartList,
+    IEnumerable<CupShoppingCart> cupCartList,
+    IEnumerable<DeliveryMethod> deliveryMethodList)
+    : this(yerbaMateCartList, bombillaCartList, cupCartList)
+  {
+    DeliveryMethodList = deliveryMethodList;
   }
 
   private void SetPrices()
