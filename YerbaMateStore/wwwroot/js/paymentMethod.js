@@ -13,6 +13,7 @@ function loadDataTable() {
     columns: [
       { "data": "id", "width": "5%" },
       { "data": "name", "width": "40%" },
+      { "data": "isTransfer", "width": "5%" },
       {
         "data": "id",
         "width": "15%",
