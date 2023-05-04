@@ -14,7 +14,7 @@ function loadDataTable() {
       { "data": "id", "width": "5%" },
       { "data": "carrier", "width": "15%" },
       { "data": "deliveryTime", "width": "10%" },
-      { "data": "paymentMethod", "width": "10%" },
+      { "data": "paymentMethod.name", "width": "10%" },
       {
         "data": "cost", "width": "10%", "render":
           function (data) {
@@ -28,7 +28,7 @@ function loadDataTable() {
           return `
           <div class="row justify-content-center">
             <div class="col-6 pe-1">
-              <a href="/Admin/DeliveryMethod/Edit?id=${data}" class="btn btn-primary w-100 px-1">
+              <a href="/Admin/DeliveryMethod/Upsert?id=${data}" class="btn btn-primary w-100 px-1">
                 <i class="bi bi-pencil-square"></i><span class="d-none d-md-block">Edit</span>
               </a>
             </div>

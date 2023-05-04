@@ -1,150 +1,90 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using YerbaMateStore.Models.DataAccess;
 using YerbaMateStore.Models.Entities;
+using YerbaMateStore.Models.Repository.IRepository;
 
 namespace YerbaMateStore.Areas.Admin.Controllers;
 
 [Area("Admin")]
 public class DeliveryMethodController : Controller
 {
-  private readonly AppDbContext _context;
+  private readonly IUnitOfWork _unitOfWork;
 
-  public DeliveryMethodController(AppDbContext context)
+  public DeliveryMethodController(IUnitOfWork unitOfWork)
   {
-    _context = context;
+    _unitOfWork = unitOfWork;
   }
 
-  // GET: Admin/DeliveryMethod
-  public async Task<IActionResult> Index()
+  [HttpGet]
+  public IActionResult Index()
   {
-    var appDbContext = _context.DeliveryMethod.Include(d => d.PaymentMethod);
-    return View(await appDbContext.ToListAsync());
-  }
-
-  // GET: Admin/DeliveryMethod/Create
-  public IActionResult Create()
-  {
-    ViewData["PaymentMethodId"] = new SelectList(_context.PaymentMethod, "Id", "Name");
     return View();
   }
 
-  // POST: Admin/DeliveryMethod/Create
-  // To protect from overposting attacks, enable the specific properties you want to bind to.
-  // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+  [HttpGet]
+  public IActionResult Upsert(int? id)
+  {
+    DeliveryMethod deliveryMethod = _unitOfWork.DeliveryMethod.GetFirstOrDefault(m => m.Id == id, "PaymentMethod");
+    if (deliveryMethod == null)
+    {
+      deliveryMethod = new();
+      ViewData["PaymentMethodId"] = new SelectList(_unitOfWork.PaymentMethod.GetAll(), "Id", "Name");
+    }
+    else
+    {
+      ViewData["PaymentMethodId"] = new SelectList(_unitOfWork.PaymentMethod.GetAll(), "Id", "Name", deliveryMethod.PaymentMethodId);
+    }
+    return View(deliveryMethod);
+  }
+
   [HttpPost]
   [ValidateAntiForgeryToken]
-  public async Task<IActionResult> Create([Bind("Id,Carrier,CollectionPoint,DeliveryTime,PaymentMethodId,Cost")] DeliveryMethod deliveryMethod)
+  public IActionResult Upsert(DeliveryMethod deliveryMethod)
   {
     if (ModelState.IsValid)
     {
-      _context.Add(deliveryMethod);
-      await _context.SaveChangesAsync();
+      if (deliveryMethod.Id == 0)
+      {
+        _unitOfWork.DeliveryMethod.Add(deliveryMethod);
+        TempData["success"] = "Product created successfully!";
+      }
+      else
+      {
+        _unitOfWork.DeliveryMethod.Update(deliveryMethod);
+        TempData["success"] = "Product updated successfully!";
+      }
+      _unitOfWork.Save();
       return RedirectToAction(nameof(Index));
     }
-    ViewData["PaymentMethodId"] = new SelectList(_context.PaymentMethod, "Id", "Name", deliveryMethod.PaymentMethodId);
-    return View(deliveryMethod);
+    else
+    {
+      ViewData["PaymentMethodId"] = new SelectList(_unitOfWork.PaymentMethod.GetAll(), "Id", "Name", deliveryMethod.PaymentMethodId);
+      TempData["error"] = "Product updated failed!";
+      return View(deliveryMethod);
+    }
   }
 
-  // GET: Admin/DeliveryMethod/Edit/5
-  public async Task<IActionResult> Edit(int? id)
+  [HttpGet]
+  public IActionResult GetAll()
   {
-    if (id == null || _context.DeliveryMethod == null)
-    {
-      return NotFound();
-    }
+    IEnumerable<DeliveryMethod>? deliveryMethodList = _unitOfWork.DeliveryMethod.GetAll(includeProperties: "PaymentMethod");
+    return Json(new { data = deliveryMethodList });
+  }
 
-    var deliveryMethod = await _context.DeliveryMethod.FindAsync(id);
+  [HttpDelete]
+  public IActionResult Delete(int? id)
+  {
+    var deliveryMethod = _unitOfWork.DeliveryMethod.GetFirstOrDefault(m => m.Id == id);
     if (deliveryMethod == null)
     {
-      return NotFound();
+      return Json(new { success = false, message = "Error while deleting!" });
     }
-    ViewData["PaymentMethodId"] = new SelectList(_context.PaymentMethod, "Id", "Name", deliveryMethod.PaymentMethodId);
-    return View(deliveryMethod);
-  }
-
-  // POST: Admin/DeliveryMethod/Edit/5
-  // To protect from overposting attacks, enable the specific properties you want to bind to.
-  // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-  [HttpPost]
-  [ValidateAntiForgeryToken]
-  public async Task<IActionResult> Edit(int id, [Bind("Id,Carrier,CollectionPoint,DeliveryTime,PaymentMethodId,Cost")] DeliveryMethod deliveryMethod)
-  {
-    if (id != deliveryMethod.Id)
+    else
     {
-      return NotFound();
+      _unitOfWork.DeliveryMethod.Remove(deliveryMethod);
+      _unitOfWork.Save();
+      return Json(new { success = true, message = "Delete Successful!" });
     }
-
-    if (ModelState.IsValid)
-    {
-      try
-      {
-        _context.Update(deliveryMethod);
-        await _context.SaveChangesAsync();
-      }
-      catch (DbUpdateConcurrencyException)
-      {
-        if (!DeliveryMethodExists(deliveryMethod.Id))
-        {
-          return NotFound();
-        }
-        else
-        {
-          throw;
-        }
-      }
-      return RedirectToAction(nameof(Index));
-    }
-    ViewData["PaymentMethodId"] = new SelectList(_context.PaymentMethod, "Id", "Name", deliveryMethod.PaymentMethodId);
-    return View(deliveryMethod);
-  }
-
-  // GET: Admin/DeliveryMethod/Delete/5
-  public async Task<IActionResult> Delete(int? id)
-  {
-    if (id == null || _context.DeliveryMethod == null)
-    {
-      return NotFound();
-    }
-
-    var deliveryMethod = await _context.DeliveryMethod
-        .Include(d => d.PaymentMethod)
-        .FirstOrDefaultAsync(m => m.Id == id);
-    if (deliveryMethod == null)
-    {
-      return NotFound();
-    }
-
-    return View(deliveryMethod);
-  }
-
-  // POST: Admin/DeliveryMethod/Delete/5
-  [HttpPost, ActionName("Delete")]
-  [ValidateAntiForgeryToken]
-  public async Task<IActionResult> DeleteConfirmed(int id)
-  {
-    if (_context.DeliveryMethod == null)
-    {
-      return Problem("Entity set 'AppDbContext.DeliveryMethod'  is null.");
-    }
-    var deliveryMethod = await _context.DeliveryMethod.FindAsync(id);
-    if (deliveryMethod != null)
-    {
-      _context.DeliveryMethod.Remove(deliveryMethod);
-    }
-
-    await _context.SaveChangesAsync();
-    return RedirectToAction(nameof(Index));
-  }
-
-  private bool DeliveryMethodExists(int id)
-  {
-    return (_context.DeliveryMethod?.Any(e => e.Id == id)).GetValueOrDefault();
   }
 }
 

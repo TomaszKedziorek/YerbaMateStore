@@ -1,7 +1,7 @@
 @model YerbaMateStore.Models.Entities.DeliveryMethod
-
 @{
-  ViewData["Title"] = "Create Delivery Method";
+  bool exist = Model.Id != 0 ? true : false;
+  ViewData["Title"] = exist ? "Update Delivery Method" : "Create Delivery Method";
 }
 <section class="bg-light d-flex justify-content-center">
   <div class="container-lg pb-5 p-3">
@@ -10,10 +10,12 @@
     <div class="row justify-content-center">
       <div class="col-12">
 
-        <form asp-action="Create">
+        <form asp-action="Upsert">
           <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
           <div class="row ">
+            <input asp-for="Id" class="form-control" hidden/>
+
             <div class="col-12 col-lg-6 mb-3">
               <label asp-for="Carrier" class="control-label"></label>
               <input asp-for="Carrier" class="form-control" />
@@ -33,11 +35,11 @@
             <div class="col-12 col-lg-6 mb-3">
               <label asp-for="PaymentMethodId" class="control-label"></label>
               <select asp-for="PaymentMethodId" class="form-control" asp-items="ViewBag.PaymentMethodId">
-                <option value="">- select peyment method -</option>
+                <option value="" disabled selected>- select peyment method -</option>
               </select>
               <span asp-validation-for="PaymentMethodId" class="text-danger"></span>
             </div>
-            
+
             <div class="col-12 col-lg-6 mb-3">
               <label asp-for="Cost" class="control-label"></label>
               <input asp-for="Cost" class="form-control" />
@@ -45,8 +47,15 @@
             </div>
 
             <div class="col-12 mb-3">
-              <button type="submit" class="btn btn-success create-category-btn me-1 w-25">Create</button>
-              <a asp-controller="PaymentMethod" asp-action="Index"
+              @if (exist)
+              {
+                <button type="submit" class="btn btn-primary create-category-btn me-1 w-25">Update</button>
+              }
+              else
+              {
+                <button type="submit" class="btn btn-success create-category-btn me-1 w-25">Create</button>
+              }
+              <a asp-controller="DeliveryMethod" asp-action="Index"
                 class="btn btn-secondary create-category-btn ms-1 w-25">Back to
                 list</a>
             </div>
