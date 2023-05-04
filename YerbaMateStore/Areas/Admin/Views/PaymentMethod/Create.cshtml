@@ -1,33 +1,42 @@
 @model YerbaMateStore.Models.Entities.PaymentMethod
 
 @{
-    ViewData["Title"] = "Create";
+  ViewData["Title"] = "Create Payment Method";
 }
+<section class="bg-light d-flex justify-content-center">
+  <div class="container-lg pb-5 p-3">
+    <h1 class="text-success">@ViewData["Title"]</h1>
+    <hr />
+    <div class="row justify-content-center">
+      <div class="col-12">
 
-<h1>Create</h1>
-
-<h4>PaymentMethod</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+          <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+          
+          <div class="row ">
+            <div class="col-12 mb-3">
+              <label asp-for="@Model.Name" class="form-label"></label>
+              <input asp-for="@Model.Name" class="form-control">
+              <span asp-validation-for="@Model.Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+            <div class="col-12 mb-3">
+                <button type="submit" class="btn btn-success create-category-btn me-1 w-25">Create</button>
+              <a asp-controller="PaymentMethod" asp-action="Index"
+                class="btn btn-secondary create-category-btn ms-1 w-25">Back to
+                list</a>
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+</section>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+  @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+  }
 }

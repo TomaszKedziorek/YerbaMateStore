@@ -28,23 +28,6 @@ namespace YerbaMateStore.Areas.Admin.Controllers
                           Problem("Entity set 'AppDbContext.PaymentMethod'  is null.");
         }
 
-        // GET: Admin/PaymentMethod/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.PaymentMethod == null)
-            {
-                return NotFound();
-            }
-
-            var paymentMethod = await _context.PaymentMethod
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (paymentMethod == null)
-            {
-                return NotFound();
-            }
-
-            return View(paymentMethod);
-        }
 
         // GET: Admin/PaymentMethod/Create
         public IActionResult Create()

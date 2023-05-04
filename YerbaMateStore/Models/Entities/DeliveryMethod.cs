@@ -15,9 +15,10 @@ public class DeliveryMethod
   [Display(Name = "Collection Point"), StringLength(100, ErrorMessage = "The {0} value cannot exceed {1} characters. ")]
   public string CollectionPoint { get; set; }
 
-  [Required, Display(Name = "Delivery time"), StringLength(20, ErrorMessage = "The {0} value cannot exceed {1} characters. ")]
+  [Required, Display(Name = "Delivery Time"), StringLength(20, ErrorMessage = "The {0} value cannot exceed {1} characters. ")]
   public string DeliveryTime { get; set; }
 
+  [Display(Name = "Payment Method")]
   public int PaymentMethodId { get; set; }
   [ForeignKey("PaymentMethodId"), ValidateNever]
   public PaymentMethod PaymentMethod { get; set; }
