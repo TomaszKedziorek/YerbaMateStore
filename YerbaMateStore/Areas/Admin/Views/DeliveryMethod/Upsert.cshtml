@@ -17,25 +17,25 @@
             <input asp-for="Id" class="form-control" hidden/>
 
             <div class="col-12 col-lg-6 mb-3">
-              <label asp-for="Carrier" class="control-label"></label>
+              <label asp-for="Carrier" class="form-label"></label>
               <input asp-for="Carrier" class="form-control" />
               <span asp-validation-for="Carrier" class="text-danger"></span>
             </div>
             <div class="col-12 col-lg-6 mb-3">
-              <label asp-for="DeliveryTime" class="control-label"></label>
+              <label asp-for="DeliveryTime" class="form-label"></label>
               <input asp-for="DeliveryTime" class="form-control" />
               <span asp-validation-for="DeliveryTime" class="text-danger"></span>
             </div>
             <div class="col-12 col-lg-6 mb-3">
-              <label asp-for="PaymentMethodId" class="control-label"></label>
-              <select asp-for="PaymentMethodId" class="form-control" asp-items="ViewBag.PaymentMethodId">
+              <label asp-for="PaymentMethodId" class="form-label"></label>
+              <select asp-for="PaymentMethodId" class="form-select" asp-items="ViewBag.PaymentMethodId">
                 <option value="" disabled selected>- select peyment method -</option>
               </select>
               <span asp-validation-for="PaymentMethodId" class="text-danger"></span>
             </div>
-
+      
             <div class="col-12 col-lg-6 mb-3">
-              <label asp-for="Cost" class="control-label"></label>
+              <label asp-for="Cost" class="form-label"></label>
               <input asp-for="Cost" class="form-control" />
               <span asp-validation-for="Cost" class="text-danger"></span>
             </div>
