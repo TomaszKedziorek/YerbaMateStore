@@ -12,7 +12,7 @@ function loadDataTable() {
     responsive: true,
     columns: [
       { "data": "id", "width": "5%" },
-      { "data": "name", "width": "15%" },
+      { "data": "name", "width": "40%" },
       {
         "data": "id",
         "width": "15%",
@@ -20,7 +20,7 @@ function loadDataTable() {
           return `
           <div class="row justify-content-center">
             <div class="col-6 pe-1">
-              <a href="/Admin/PaymentMethod/Edit?id=${data}" class="btn btn-primary w-100 px-1">
+              <a href="/Admin/PaymentMethod/Upsert?id=${data}" class="btn btn-primary w-100 px-1">
                 <i class="bi bi-pencil-square"></i><span class="d-none d-md-block">Edit</span>
               </a>
             </div>
