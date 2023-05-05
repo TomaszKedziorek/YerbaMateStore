@@ -172,6 +172,7 @@
                         <small class="text-light fw-bold">Order + Delivery (PLN)</small>
                         <strong class="text-light fw-bold" id="OrderDeliveryTotal"><strong>
                       </li>
+                      <input type="number" asp-for="@Model.OrderHeader.OrderTotal" hidden>
                       <input type="number" asp-for="@Model.OrderHeader.OrderAndDeliveryTotal"
                         id="OrderDeliveryTotalInput" hidden>
                     </ul>
