@@ -3,11 +3,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace YerbaMateStore.Models.Entities;
-public class ProductOrderDetail<T> : OrderDetail where T : class, new()
+public class CupOrderDetail : OrderDetail 
 {
-  [Required]
+  [Required,Column("CupProductId")]
   public int ProductId { get; set; }
   [ForeignKey("ProductId")]
   [ValidateNever]
-  public T Product { get; set; }
+  public Cup Product { get; set; }
 }

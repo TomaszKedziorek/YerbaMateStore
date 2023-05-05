@@ -23,9 +23,9 @@ public class UnitOfWork : IUnitOfWork
   public IShoppingCartRepository<CupShoppingCart> CupShoppingCart { get; private set; }
   public IShoppingCartRepository<ShoppingCart> ShoppingCart { get; private set; }
   public IOrderHeaderRepository OrderHeader { get; private set; }
-  public IOrderDetailRepository<YerbaMate> YerbaMateOrderDetail { get; private set; }
-  public IOrderDetailRepository<Bombilla> BombillaOrderDetail { get; private set; }
-  public IOrderDetailRepository<Cup> CupOrderDetail { get; private set; }
+  public IOrderDetailRepository<YerbaMateOrderDetail> YerbaMateOrderDetail { get; private set; }
+  public IOrderDetailRepository<BombillaOrderDetail> BombillaOrderDetail { get; private set; }
+  public IOrderDetailRepository<CupOrderDetail> CupOrderDetail { get; private set; }
   public IPaymentMethodRepository PaymentMethod { get; private set; }
   public IDeliveryMethodRepository DeliveryMethod { get; private set; }
 
@@ -45,9 +45,9 @@ public class UnitOfWork : IUnitOfWork
     CupShoppingCart = new ShoppingCartRepository<CupShoppingCart>(dbContext);
     ShoppingCart = new ShoppingCartRepository<ShoppingCart>(dbContext);
     OrderHeader = new OrderHeaderRepository(dbContext);
-    YerbaMateOrderDetail = new OrderDetailRepository<YerbaMate>(dbContext);
-    BombillaOrderDetail = new OrderDetailRepository<Bombilla>(dbContext);
-    CupOrderDetail = new OrderDetailRepository<Cup>(dbContext);
+    YerbaMateOrderDetail = new OrderDetailRepository<YerbaMateOrderDetail>(dbContext);
+    BombillaOrderDetail = new OrderDetailRepository<BombillaOrderDetail>(dbContext);
+    CupOrderDetail = new OrderDetailRepository<CupOrderDetail>(dbContext);
     PaymentMethod = new PaymentMethodRepository(dbContext);
     DeliveryMethod = new DeliveryMethodRepository(dbContext);
   }

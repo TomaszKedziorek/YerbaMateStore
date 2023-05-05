@@ -21,9 +21,9 @@ public class AppDbContext : IdentityDbContext<IdentityUser>
   public DbSet<CupShoppingCart> CupShoppingCart { get; set; }
   public DbSet<OrderHeader> OrderHeader { get; set; }
   public DbSet<OrderDetail> OrderDetail { get; set; }
-  public DbSet<ProductOrderDetail<YerbaMate>> YerbaMateOrderDetail { get; set; }
-  public DbSet<ProductOrderDetail<Bombilla>> BombillaOrderDetail { get; set; }
-  public DbSet<ProductOrderDetail<Cup>> CupOrderDetail { get; set; }
+  public DbSet<YerbaMateOrderDetail> YerbaMateOrderDetail { get; set; }
+  public DbSet<BombillaOrderDetail> BombillaOrderDetail { get; set; }
+  public DbSet<CupOrderDetail> CupOrderDetail { get; set; }
   public DbSet<DeliveryMethod> DeliveryMethod { get; set; }
   public DbSet<PaymentMethod> PaymentMethod { get; set; }
 

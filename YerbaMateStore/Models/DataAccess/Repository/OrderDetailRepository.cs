@@ -3,7 +3,7 @@ using YerbaMateStore.Models.Repository.IRepository;
 using YerbaMateStore.Models.Entities;
 
 namespace YerbaMateStore.Models.Repository;
-public class OrderDetailRepository<T> : Repository<ProductOrderDetail<T>>, IOrderDetailRepository<T> where T : class, new()
+public class OrderDetailRepository<T> : Repository<T>, IOrderDetailRepository<T> where T :OrderDetail, new()
 {
   private readonly AppDbContext _dbContext;
   public OrderDetailRepository(AppDbContext dbContext) : base(dbContext)
@@ -11,7 +11,7 @@ public class OrderDetailRepository<T> : Repository<ProductOrderDetail<T>>, IOrde
     _dbContext = dbContext;
   }
 
-  public void Update(ProductOrderDetail<T> orderDetail)
+  public void Update(T orderDetail)
   {
     _dbContext.OrderDetail.Update(orderDetail);
   }

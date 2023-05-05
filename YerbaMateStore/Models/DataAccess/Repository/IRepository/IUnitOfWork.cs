@@ -17,9 +17,9 @@ public interface IUnitOfWork
   IShoppingCartRepository<CupShoppingCart> CupShoppingCart { get; }
   IShoppingCartRepository<ShoppingCart> ShoppingCart { get; }
   IOrderHeaderRepository OrderHeader { get; }
-  IOrderDetailRepository<YerbaMate> YerbaMateOrderDetail { get; }
-  IOrderDetailRepository<Bombilla> BombillaOrderDetail { get; }
-  IOrderDetailRepository<Cup> CupOrderDetail { get; }
+  IOrderDetailRepository<YerbaMateOrderDetail> YerbaMateOrderDetail { get; }
+  IOrderDetailRepository<BombillaOrderDetail> BombillaOrderDetail { get; }
+  IOrderDetailRepository<CupOrderDetail> CupOrderDetail { get; }
   IPaymentMethodRepository PaymentMethod { get; }
   IDeliveryMethodRepository DeliveryMethod { get; }
 
