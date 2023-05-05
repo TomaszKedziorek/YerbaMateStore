@@ -12,7 +12,7 @@ namespace YerbaMateStore.Areas.Customer.Controllers;
 public class CartController : Controller
 {
   private readonly IUnitOfWork _unitOfWork;
-  public ShoppingCartViewModel ShoppingCartVM { get; set; }
+  public ShoppingCartViewModel CartVM { get; set; }
 
   public CartController(IUnitOfWork unitOfWork)
   {
@@ -26,9 +26,9 @@ public class CartController : Controller
     var BombillaCartList = _unitOfWork.BombillaShoppingCart.GetAll(c => c.ApplicationUserId == userClaimsValue, "Product,Product.Images");
     var CupCartList = _unitOfWork.CupShoppingCart.GetAll(c => c.ApplicationUserId == userClaimsValue, "Product,Product.Images");
 
-    ShoppingCartVM = new ShoppingCartViewModel(YerbaMateCartList, BombillaCartList, CupCartList);
+    CartVM = new ShoppingCartViewModel(YerbaMateCartList, BombillaCartList, CupCartList);
 
-    return View(ShoppingCartVM);
+    return View(CartVM);
   }
 
   public IActionResult PlusOne(int cartId)
@@ -70,25 +70,104 @@ public class CartController : Controller
     var CupCartList = _unitOfWork.CupShoppingCart.GetAll(c => c.ApplicationUserId == userClaimsValue, "Product,Product.Images");
     var deliveryMethodList = _unitOfWork.DeliveryMethod
       .GetAll(includeProperties: "PaymentMethod")
-      .OrderBy(m=>m.Carrier)
-      .ThenByDescending(m=>m.PaymentMethod.IsTransfer);
+      .OrderBy(m => m.Carrier)
+      .ThenByDescending(m => m.PaymentMethod.IsTransfer);
 
-    ShoppingCartVM = new ShoppingCartViewModel(YerbaMateCartList, BombillaCartList, CupCartList, deliveryMethodList);
-    ShoppingCartVM.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Id == userClaimsValue);
-    ShoppingCartVM.OrderHeader.Name = ShoppingCartVM.OrderHeader.ApplicationUser.Name;
-    ShoppingCartVM.OrderHeader.PhoneNumber = ShoppingCartVM.OrderHeader.ApplicationUser.PhoneNumber;
-    ShoppingCartVM.OrderHeader.StreetAddress = ShoppingCartVM.OrderHeader.ApplicationUser.StreetAddress;
-    ShoppingCartVM.OrderHeader.Country = ShoppingCartVM.OrderHeader.ApplicationUser.Country;
-    ShoppingCartVM.OrderHeader.City = ShoppingCartVM.OrderHeader.ApplicationUser.City;
-    ShoppingCartVM.OrderHeader.State = ShoppingCartVM.OrderHeader.ApplicationUser.State;
-    ShoppingCartVM.OrderHeader.PostalCode = ShoppingCartVM.OrderHeader.ApplicationUser.PostalCode;
+    CartVM = new ShoppingCartViewModel(YerbaMateCartList, BombillaCartList, CupCartList, deliveryMethodList);
+    CartVM.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Id == userClaimsValue);
+    CartVM.OrderHeader.Name = CartVM.OrderHeader.ApplicationUser.Name;
+    CartVM.OrderHeader.PhoneNumber = CartVM.OrderHeader.ApplicationUser.PhoneNumber;
+    CartVM.OrderHeader.StreetAddress = CartVM.OrderHeader.ApplicationUser.StreetAddress;
+    CartVM.OrderHeader.Country = CartVM.OrderHeader.ApplicationUser.Country;
+    CartVM.OrderHeader.City = CartVM.OrderHeader.ApplicationUser.City;
+    CartVM.OrderHeader.State = CartVM.OrderHeader.ApplicationUser.State;
+    CartVM.OrderHeader.PostalCode = CartVM.OrderHeader.ApplicationUser.PostalCode;
 
-    return View(ShoppingCartVM);
+    return View(CartVM);
   }
 
-  [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-  public IActionResult Error()
+  [HttpPost]
+  [ValidateAntiForgeryToken]
+  public IActionResult Summary(ShoppingCartViewModel CartVM)
   {
-    return View("Error!");
+    string userClaimsValue = UserClaims.GetUserClaimsValue(User);
+    CartVM.YerbaMateCartList = _unitOfWork.YerbaMateShoppingCart.GetAll(c => c.ApplicationUserId == userClaimsValue, "Product,Product.Images");
+    CartVM.BombillaCartList = _unitOfWork.BombillaShoppingCart.GetAll(c => c.ApplicationUserId == userClaimsValue, "Product,Product.Images");
+    CartVM.CupCartList = _unitOfWork.CupShoppingCart.GetAll(c => c.ApplicationUserId == userClaimsValue, "Product,Product.Images");
+    CartVM.OrderHeader.DeliveryMethod = _unitOfWork.DeliveryMethod.GetFirstOrDefault(m => m.Id == CartVM.OrderHeader.DeliveryMethodId, "PaymentMethod");
+
+    CartVM.SetPrices();
+
+    if (ModelState.IsValid)
+    {
+      CartVM.OrderHeader.ApplicationUserId = userClaimsValue;
+      CartVM.OrderHeader.OrderDate = DateTime.Now;
+      if (CartVM.OrderHeader.DeliveryMethod.PaymentMethod.IsTransfer)
+      {
+        CartVM.OrderHeader.PaymentType = StaticDetails.PaymentTypeTransfer;
+      }
+      else
+      {
+        CartVM.OrderHeader.PaymentType = StaticDetails.PaymentTypeOnPickup;
+      }
+      CartVM.OrderHeader.OrderStatus = StaticDetails.StatusPending;
+      CartVM.OrderHeader.PaymentStatus = StaticDetails.PaymentStatusPending;
+      double? orderDeliveryTotal = CartVM.OrderHeader.OrderAndDeliveryTotal;
+      double orderDeliveryTotalCalculated = CartVM.OrderHeader.OrderTotal + CartVM.OrderHeader.DeliveryMethod.Cost;
+      if (orderDeliveryTotal == 0 || orderDeliveryTotal != orderDeliveryTotalCalculated || orderDeliveryTotal == null)
+      {
+        CartVM.OrderHeader.OrderAndDeliveryTotal = orderDeliveryTotalCalculated;
+      }
+      _unitOfWork.OrderHeader.Add(CartVM.OrderHeader);
+      _unitOfWork.Save();
+
+      foreach (var cart in CartVM.YerbaMateCartList)
+      {
+        var orderDetail = new YerbaMateOrderDetail()
+        {
+          ProductId = cart.ProductId,
+          OrderId = CartVM.OrderHeader.Id,
+          Price = cart.Price,
+          Quantity = cart.Quantity,
+        };
+        _unitOfWork.YerbaMateOrderDetail.Add(orderDetail);
+      }
+      foreach (var cart in CartVM.BombillaCartList)
+      {
+        var orderDetail = new BombillaOrderDetail()
+        {
+          ProductId = cart.ProductId,
+          OrderId = CartVM.OrderHeader.Id,
+          Price = cart.Price,
+          Quantity = cart.Quantity,
+        };
+        _unitOfWork.BombillaOrderDetail.Add(orderDetail);
+      }
+      foreach (var cart in CartVM.CupCartList)
+      {
+        var orderDetail = new CupOrderDetail()
+        {
+          ProductId = cart.ProductId,
+          OrderId = CartVM.OrderHeader.Id,
+          Price = cart.Price,
+          Quantity = cart.Quantity,
+        };
+        _unitOfWork.CupOrderDetail.Add(orderDetail);
+      }
+
+      _unitOfWork.ShoppingCart.RemoveRange(CartVM.YerbaMateCartList);
+      _unitOfWork.ShoppingCart.RemoveRange(CartVM.BombillaCartList);
+      _unitOfWork.ShoppingCart.RemoveRange(CartVM.CupCartList);
+      _unitOfWork.Save();
+
+      TempData["success"] = "Order placed successfully!";
+      return RedirectToAction("Index", "Home");
+    }
+    else
+    {
+      TempData["error"] = "error";
+      return View(CartVM);
+    }
   }
+
 }

@@ -45,7 +45,7 @@ public class ShoppingCartViewModel
     DeliveryMethodList = deliveryMethodList;
   }
 
-  private void SetPrices()
+  public void SetPrices()
   {
     foreach (var cart in YerbaMateCartList)
     {
