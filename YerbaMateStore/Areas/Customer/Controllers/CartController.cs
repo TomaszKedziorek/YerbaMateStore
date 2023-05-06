@@ -121,53 +121,20 @@ public class CartController : Controller
       _unitOfWork.OrderHeader.Add(CartVM.OrderHeader);
       _unitOfWork.Save();
 
-      foreach (var cart in CartVM.YerbaMateCartList)
-      {
-        var orderDetail = new YerbaMateOrderDetail()
-        {
-          ProductId = cart.ProductId,
-          OrderId = CartVM.OrderHeader.Id,
-          Price = cart.Price,
-          Quantity = cart.Quantity,
-        };
-        _unitOfWork.YerbaMateOrderDetail.Add(orderDetail);
-      }
-      foreach (var cart in CartVM.BombillaCartList)
-      {
-        var orderDetail = new BombillaOrderDetail()
-        {
-          ProductId = cart.ProductId,
-          OrderId = CartVM.OrderHeader.Id,
-          Price = cart.Price,
-          Quantity = cart.Quantity,
-        };
-        _unitOfWork.BombillaOrderDetail.Add(orderDetail);
-      }
-      foreach (var cart in CartVM.CupCartList)
-      {
-        var orderDetail = new CupOrderDetail()
-        {
-          ProductId = cart.ProductId,
-          OrderId = CartVM.OrderHeader.Id,
-          Price = cart.Price,
-          Quantity = cart.Quantity,
-        };
-        _unitOfWork.CupOrderDetail.Add(orderDetail);
-      }
+      CartManager cartManager = new(_unitOfWork, CartVM);
+      cartManager.CreateOrderDetails();
+      cartManager.AddOrderDetailsToDBThroughRepository();
+      cartManager.CleanShoppingCart();
 
-      _unitOfWork.ShoppingCart.RemoveRange(CartVM.YerbaMateCartList);
-      _unitOfWork.ShoppingCart.RemoveRange(CartVM.BombillaCartList);
-      _unitOfWork.ShoppingCart.RemoveRange(CartVM.CupCartList);
       _unitOfWork.Save();
 
-      TempData["success"] = "Order placed successfully!";
+      TempData["success"] = "Order has been placed!";
       return RedirectToAction("Index", "Home");
     }
     else
     {
-      TempData["error"] = "error";
+      TempData["error"] = "Something went wrong!";
       return View(CartVM);
     }
   }
-
 }
