@@ -121,10 +121,10 @@ public class CartController : Controller
       _unitOfWork.OrderHeader.Add(CartVM.OrderHeader);
       _unitOfWork.Save();
 
-      CartManager cartManager = new(_unitOfWork, CartVM);
-      cartManager.CreateOrderDetails();
-      cartManager.AddOrderDetailsToDBThroughRepository();
-      cartManager.CleanShoppingCart();
+      OrderManager orderManager = new(_unitOfWork, CartVM);
+      orderManager.CreateOrderDetailsForAllProducts();
+      orderManager.AddOrderDetailsToDBThroughRepositoryButNotSaveYet();
+      orderManager.CleanShoppingCartButNotSaveYet();
 
       _unitOfWork.Save();
 

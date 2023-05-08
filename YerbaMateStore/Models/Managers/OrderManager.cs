@@ -4,7 +4,7 @@ using YerbaMateStore.Models.ViewModels;
 
 namespace YerbaMateStore.Models.Managers;
 
-public class CartManager
+public class OrderManager
 {
   private readonly IUnitOfWork _unitOfWork;
   private readonly ShoppingCartViewModel _cartVM;
@@ -12,13 +12,13 @@ public class CartManager
   private IEnumerable<BombillaOrderDetail> BombillaOrderDetailList { get; set; }
   private IEnumerable<CupOrderDetail> CupOrderDetailList { get; set; }
 
-  public CartManager(IUnitOfWork unitOfWork, ShoppingCartViewModel cartVM)
+  public OrderManager(IUnitOfWork unitOfWork, ShoppingCartViewModel cartVM)
   {
     _unitOfWork = unitOfWork;
     _cartVM = cartVM;
   }
 
-  public void CreateOrderDetails()
+  public void CreateOrderDetailsForAllProducts()
   {
     int id = _cartVM.OrderHeader.Id;
     YerbaMateOrderDetailList = CreateOrderDetails<YerbaMateShoppingCart, YerbaMateOrderDetail>(_cartVM.YerbaMateCartList, id);
@@ -26,14 +26,14 @@ public class CartManager
     CupOrderDetailList = CreateOrderDetails<CupShoppingCart, CupOrderDetail>(_cartVM.CupCartList, id);
   }
 
-  public void AddOrderDetailsToDBThroughRepository()
+  public void AddOrderDetailsToDBThroughRepositoryButNotSaveYet()
   {
     _unitOfWork.YerbaMateOrderDetail.AddRange(YerbaMateOrderDetailList);
     _unitOfWork.BombillaOrderDetail.AddRange(BombillaOrderDetailList);
     _unitOfWork.CupOrderDetail.AddRange(CupOrderDetailList);
   }
 
-  public void CleanShoppingCart()
+  public void CleanShoppingCartButNotSaveYet()
   {
     _unitOfWork.ShoppingCart.RemoveRange( _cartVM.YerbaMateCartList);
     _unitOfWork.ShoppingCart.RemoveRange( _cartVM.BombillaCartList);
