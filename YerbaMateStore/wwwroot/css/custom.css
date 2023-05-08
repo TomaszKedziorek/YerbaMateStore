@@ -62,6 +62,24 @@ div .swal2-icon-content {
   border-bottom: #59ab6e !important;
 }
 
-body, body > *, a,button {
+body,
+body>*,
+a,
+button {
   display: grid;
+}
+
+.form-check-input:checked {
+  background-color: #59ab6e !important;
+  border-color: #59ab6e !important;
+}
+
+.form-check-input:checked:focus {
+  background-color: #59ab6e !important;
+  border-color: #59ab6e !important;
+}
+
+#orderConfirmationTable td {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
 }

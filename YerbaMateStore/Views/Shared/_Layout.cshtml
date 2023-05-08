@@ -65,6 +65,22 @@ https://templatemo.com/tm-559-zay-shop
               </ul>
             </div>
           }
+          @if (isAdmin || isEmployee)
+          {
+            <div class="flex-fill">
+              <ul class="nav navbar-nav d-flex">
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle text-light" data-bs-toggle="dropdown" href="#" role="button">Delivery/Payments Methods</a>
+                  <div class="dropdown-menu ms-2">
+                    <a class="nav-link dropdown-item bg" asp-area="Admin" asp-controller="DeliveryMethod"
+                    asp-action="Index">DeliveryMethod</a>
+                    <a class="nav-link dropdown-item" asp-area="Admin" asp-controller="PaymentMethod"
+                    asp-action="Index">Payment Method</a>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          }
         </div>
         <div class="d-flex ">
           <partial name="_LoginPartial" />

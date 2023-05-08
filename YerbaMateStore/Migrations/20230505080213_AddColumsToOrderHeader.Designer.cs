@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using YerbaMateStore.Models.DataAccess;
 
@@ -10,9 +11,10 @@ using YerbaMateStore.Models.DataAccess;
 namespace YerbaMateStore.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230505080213_AddColumsToOrderHeader")]
+    partial class AddColumsToOrderHeader
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -650,19 +652,6 @@ namespace YerbaMateStore.Migrations
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
 
-            modelBuilder.Entity("YerbaMateStore.Models.Entities.BombillaOrderDetail", b =>
-                {
-                    b.HasBaseType("YerbaMateStore.Models.Entities.OrderDetail");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int")
-                        .HasColumnName("BombillaProductId");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasDiscriminator().HasValue("BombillaOrderDetail");
-                });
-
             modelBuilder.Entity("YerbaMateStore.Models.Entities.BombillaShoppingCart", b =>
                 {
                     b.HasBaseType("YerbaMateStore.Models.Entities.ShoppingCart");
@@ -674,19 +663,6 @@ namespace YerbaMateStore.Migrations
                     b.HasIndex("ProductId");
 
                     b.HasDiscriminator().HasValue("BombillaShoppingCart");
-                });
-
-            modelBuilder.Entity("YerbaMateStore.Models.Entities.CupOrderDetail", b =>
-                {
-                    b.HasBaseType("YerbaMateStore.Models.Entities.OrderDetail");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int")
-                        .HasColumnName("CupProductId");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasDiscriminator().HasValue("CupOrderDetail");
                 });
 
             modelBuilder.Entity("YerbaMateStore.Models.Entities.CupShoppingCart", b =>
@@ -702,17 +678,42 @@ namespace YerbaMateStore.Migrations
                     b.HasDiscriminator().HasValue("CupShoppingCart");
                 });
 
-            modelBuilder.Entity("YerbaMateStore.Models.Entities.YerbaMateOrderDetail", b =>
+            modelBuilder.Entity("YerbaMateStore.Models.Entities.ProductOrderDetail<YerbaMateStore.Models.Entities.Bombilla>", b =>
+                {
+                    b.HasBaseType("YerbaMateStore.Models.Entities.OrderDetail");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasDiscriminator().HasValue("ProductOrderDetail<Bombilla>");
+                });
+
+            modelBuilder.Entity("YerbaMateStore.Models.Entities.ProductOrderDetail<YerbaMateStore.Models.Entities.Cup>", b =>
                 {
                     b.HasBaseType("YerbaMateStore.Models.Entities.OrderDetail");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int")
-                        .HasColumnName("YerbaMateProductId");
+                        .HasColumnName("ProductOrderDetail<Cup>_ProductId");
 
                     b.HasIndex("ProductId");
 
-                    b.HasDiscriminator().HasValue("YerbaMateOrderDetail");
+                    b.HasDiscriminator().HasValue("ProductOrderDetail<Cup>");
+                });
+
+            modelBuilder.Entity("YerbaMateStore.Models.Entities.ProductOrderDetail<YerbaMateStore.Models.Entities.YerbaMate>", b =>
+                {
+                    b.HasBaseType("YerbaMateStore.Models.Entities.OrderDetail");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int")
+                        .HasColumnName("ProductOrderDetail<YerbaMate>_ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasDiscriminator().HasValue("ProductOrderDetail<YerbaMate>");
                 });
 
             modelBuilder.Entity("YerbaMateStore.Models.Entities.YerbaMateShoppingCart", b =>
@@ -875,31 +876,9 @@ namespace YerbaMateStore.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("YerbaMateStore.Models.Entities.BombillaOrderDetail", b =>
-                {
-                    b.HasOne("YerbaMateStore.Models.Entities.Bombilla", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("YerbaMateStore.Models.Entities.BombillaShoppingCart", b =>
                 {
                     b.HasOne("YerbaMateStore.Models.Entities.Bombilla", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("YerbaMateStore.Models.Entities.CupOrderDetail", b =>
-                {
-                    b.HasOne("YerbaMateStore.Models.Entities.Cup", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -919,7 +898,29 @@ namespace YerbaMateStore.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("YerbaMateStore.Models.Entities.YerbaMateOrderDetail", b =>
+            modelBuilder.Entity("YerbaMateStore.Models.Entities.ProductOrderDetail<YerbaMateStore.Models.Entities.Bombilla>", b =>
+                {
+                    b.HasOne("YerbaMateStore.Models.Entities.Bombilla", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("YerbaMateStore.Models.Entities.ProductOrderDetail<YerbaMateStore.Models.Entities.Cup>", b =>
+                {
+                    b.HasOne("YerbaMateStore.Models.Entities.Cup", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("YerbaMateStore.Models.Entities.ProductOrderDetail<YerbaMateStore.Models.Entities.YerbaMate>", b =>
                 {
                     b.HasOne("YerbaMateStore.Models.Entities.YerbaMate", "Product")
                         .WithMany()

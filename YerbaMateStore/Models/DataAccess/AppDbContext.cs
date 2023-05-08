@@ -19,6 +19,13 @@ public class AppDbContext : IdentityDbContext<IdentityUser>
   public DbSet<YerbaMateShoppingCart> YerbaMateShoppingCart { get; set; }
   public DbSet<BombillaShoppingCart> BombillaShoppingCart { get; set; }
   public DbSet<CupShoppingCart> CupShoppingCart { get; set; }
+  public DbSet<OrderHeader> OrderHeader { get; set; }
+  public DbSet<OrderDetail> OrderDetail { get; set; }
+  public DbSet<YerbaMateOrderDetail> YerbaMateOrderDetail { get; set; }
+  public DbSet<BombillaOrderDetail> BombillaOrderDetail { get; set; }
+  public DbSet<CupOrderDetail> CupOrderDetail { get; set; }
+  public DbSet<DeliveryMethod> DeliveryMethod { get; set; }
+  public DbSet<PaymentMethod> PaymentMethod { get; set; }
 
   public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
   {

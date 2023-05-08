@@ -1,0 +1,69 @@
+@model YerbaMateStore.Models.Entities.DeliveryMethod
+@{
+  bool exist = Model.Id != 0 ? true : false;
+  ViewData["Title"] = exist ? "Update Delivery Method" : "Create Delivery Method";
+}
+<section class="bg-light d-flex justify-content-center">
+  <div class="container-lg pb-5 p-3">
+    <h1 class="text-success">@ViewData["Title"]</h1>
+    <hr />
+    <div class="row justify-content-center">
+      <div class="col-12">
+
+        <form asp-action="Upsert">
+          <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+          <div class="row ">
+            <input asp-for="Id" class="form-control" hidden/>
+
+            <div class="col-12 col-lg-6 mb-3">
+              <label asp-for="Carrier" class="form-label"></label>
+              <input asp-for="Carrier" class="form-control" />
+              <span asp-validation-for="Carrier" class="text-danger"></span>
+            </div>
+            <div class="col-12 col-lg-6 mb-3">
+              <label asp-for="DeliveryTime" class="form-label"></label>
+              <input asp-for="DeliveryTime" class="form-control" />
+              <span asp-validation-for="DeliveryTime" class="text-danger"></span>
+            </div>
+            <div class="col-12 col-lg-6 mb-3">
+              <label asp-for="PaymentMethodId" class="form-label"></label>
+              <select asp-for="PaymentMethodId" class="form-select" asp-items="ViewBag.PaymentMethodId">
+                <option value="" disabled selected>- select peyment method -</option>
+              </select>
+              <span asp-validation-for="PaymentMethodId" class="text-danger"></span>
+            </div>
+      
+            <div class="col-12 col-lg-6 mb-3">
+              <label asp-for="Cost" class="form-label"></label>
+              <input asp-for="Cost" class="form-control" />
+              <span asp-validation-for="Cost" class="text-danger"></span>
+            </div>
+
+            <div class="col-12 mb-3">
+              @if (exist)
+              {
+                <button type="submit" class="btn btn-primary create-category-btn me-1 w-25">Update</button>
+              }
+              else
+              {
+                <button type="submit" class="btn btn-success create-category-btn me-1 w-25">Create</button>
+              }
+              <a asp-controller="DeliveryMethod" asp-action="Index"
+                class="btn btn-secondary create-category-btn ms-1 w-25">Back to
+                list</a>
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+@section Scripts {
+  @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+  }
+}

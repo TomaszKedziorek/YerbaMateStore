@@ -1,0 +1,58 @@
+@model YerbaMateStore.Models.Entities.PaymentMethod
+
+@{
+  bool exist = Model.Id != 0 ? true : false;
+  ViewData["Title"] = exist ? "Update Payment Method" : "Create Payment Method";
+}
+<section class="bg-light d-flex justify-content-center">
+  <div class="container-lg pb-5 p-3">
+    <h1 class="text-success">@ViewData["Title"]</h1>
+    <hr />
+    <div class="row justify-content-center">
+      <div class="col-12">
+
+        <form asp-action="Upsert">
+          <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+          <div class="row ">
+            <input asp-for="@Model.Id" class="form-control" hidden>
+
+            <div class="col-12 col-lg-6 mb-3">
+              <label asp-for="@Model.Name" class="form-label"></label>
+              <input asp-for="@Model.Name" class="form-control">
+              <span asp-validation-for="@Model.Name" class="text-danger"></span>
+            </div>
+
+            <div class="col-12 mb-3">
+              <label asp-for="@Model.IsTransfer" class="form-check-label"></label>
+              <input type="checkbox" asp-for="@Model.IsTransfer" class="form-check-input"></input>
+              <span asp-validation-for="@Model.IsTransfer" class="text-danger"></span>
+            </div>
+
+            <div class="col-12 mb-3">
+              @if (exist)
+              {
+                <button type="submit" class="btn btn-primary create-category-btn me-1 w-25">Update</button>
+              }
+              else
+              {
+                <button type="submit" class="btn btn-success create-category-btn me-1 w-25">Create</button>
+              }
+              <a asp-controller="PaymentMethod" asp-action="Index"
+                class="btn btn-secondary create-category-btn ms-1 w-25">Back to
+                list</a>
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+@section Scripts {
+  @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+  }
+}
