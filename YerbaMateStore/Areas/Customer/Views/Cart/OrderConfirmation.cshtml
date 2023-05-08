@@ -10,19 +10,64 @@
       <div class="col-12">
 
         <div class="container row my-2">
-          <div class="col-12 text-center">
-            <h2 class="text-dark text-center">Thank you for making order!</h2>
-            <h3 class="text-success text-center">Order Placed Successfully!</h3>
+          <div class="col-12 text-center mb-3">
+            <h2 class="text-success text-center">Order Placed Successfully!</h2>
+            <h4 class="text-dark text-center">Thank you for making order!</h4>
           </div>
 
           <div class="row justify-content-center">
-            <div class="col-6 ">
-              <hr>
-              <table class="table table-hover table-borderless" id="orderConfirmationTable">
+            <div class="col-12 col-md-5 ">
+              <table class="table table-hover table-borderless table-striped" id="orderConfirmationTable">
+                <thead class="border-bottom">
+                  <tr class="">
+                    <td class="h5">Delivery detalis</td>
+                    <td></td>
+                  </tr>
+                </thead>
+                <tbody class="text-left">
+                  <tr>
+                    <td>Name</td>
+                    <td>@Model.Name</td>
+                  </tr>
+                  <tr>
+                    <td>Phone Number</td>
+                    <td>@Model.PhoneNumber</td>
+                  </tr>
+                  <tr>
+                    <td>Delivery Address</td>
+                    <td>
+                      <p>
+                        @Model.StreetAddress
+                        <br>
+                        @Model.City @Model.PostalCode
+                        <br>
+                        @Model.State
+                        <br>
+                        @Model.Country
+                      </p>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+
+            <div class="col-12 col-md-5 offset-1">
+              <table class="table table-hover table-borderless table-striped" id="orderConfirmationTable">
+                <thead class="border-bottom">
+                  <tr class="">
+                    <td class="h5">Order detalis</td>
+                    <td></td>
+                  </tr>
+                </thead>
                 <tbody class="text-left">
                   <tr>
                     <td>Order Id</td>
                     <td>@Model.Id</td>
+                  </tr>
+                  <tr>
+                    <td>Order Date</td>
+                    <td>@Model.OrderDate.ToString("dd.MM.yyyy HH:mm")</td>
                   </tr>
                   <tr>
                     <td>Order Status</td>
@@ -38,8 +83,12 @@
                       <td>Order Payment Status</td>
                       <td>@Model.PaymentStatus</td>
                     </tr>
+                    <tr>
+                      <td>Payment Date</td>
+                      <td>@Model.PaymentDate.ToString("dd.MM.yyyy HH:mm")</td>
+                    </tr>
                   }
-                  <tr>
+                  <tr class="border-top">
                     <td>Delivery Method</td>
                     <td>@Model.DeliveryMethod.Carrier</td>
                   </tr>
@@ -55,15 +104,15 @@
                     <td>Delivery cost</td>
                     <td>@Model.DeliveryMethod.Cost.ToString("0.00") zł</td>
                   </tr>
-                  <tr>
+                  <tr class="table-dark">
                     <td>Total</td>
                     <td>@Model.OrderAndDeliveryTotal.ToString("0.00") zł</td>
                   </tr>
                 </tbody>
               </table>
-
             </div>
           </div>
+
         </div>
 
       </div>
