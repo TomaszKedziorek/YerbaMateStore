@@ -1,5 +1,7 @@
+using Stripe.Checkout;
 using YerbaMateStore.Models.Entities;
 using YerbaMateStore.Models.Repository.IRepository;
+using YerbaMateStore.Models.Utilities;
 using YerbaMateStore.Models.ViewModels;
 
 namespace YerbaMateStore.Models.Managers;
@@ -35,12 +37,12 @@ public class OrderManager
 
   public void CleanShoppingCartButNotSaveYet()
   {
-    _unitOfWork.ShoppingCart.RemoveRange( _cartVM.YerbaMateCartList);
-    _unitOfWork.ShoppingCart.RemoveRange( _cartVM.BombillaCartList);
-    _unitOfWork.ShoppingCart.RemoveRange( _cartVM.CupCartList);
+    _unitOfWork.ShoppingCart.RemoveRange(_cartVM.YerbaMateCartList);
+    _unitOfWork.ShoppingCart.RemoveRange(_cartVM.BombillaCartList);
+    _unitOfWork.ShoppingCart.RemoveRange(_cartVM.CupCartList);
   }
 
-  public IEnumerable<F> CreateOrderDetails<T, F>(IEnumerable<T> cartList, int orderHeaderId) where T : ShoppingCart where F : OrderDetail, new()
+  private IEnumerable<F> CreateOrderDetails<T, F>(IEnumerable<T> cartList, int orderHeaderId) where T : ShoppingCart where F : OrderDetail, new()
   {
     var orderDetailList = new List<F>();
     Parallel.ForEach(cartList, (currentItem) =>
@@ -58,5 +60,57 @@ public class OrderManager
       orderDetailList.Add(orderDetail);
     });
     return orderDetailList;
+  }
+
+  public SessionCreateOptions StripePayment()
+  {
+    //Stripe payment settings
+    var domain = StaticDetails.Domain;
+    var options = new SessionCreateOptions
+    {
+      PaymentMethodTypes = new List<string>
+        {
+          "card",
+        },
+      LineItems = new List<SessionLineItemOptions>(),
+      Mode = "payment",
+      SuccessUrl = domain + $"Customer/Cart/OrderConfirmation?id={_cartVM.OrderHeader.Id}",
+      CancelUrl = domain + "Customer/Cart/Index",
+    };
+    options.LineItems = AddCartItemsToStripeOptionsLineItems();
+    return options;
+  }
+
+  private List<SessionLineItemOptions> AddCartItemsToStripeOptionsLineItems()
+  {
+    List<SessionLineItemOptions> LineItems = new List<SessionLineItemOptions>();
+    CreateStripeSessionLineItemOptions<YerbaMateShoppingCart>(ref LineItems, _cartVM.YerbaMateCartList, "Brand", "Name");
+    CreateStripeSessionLineItemOptions<BombillaShoppingCart>(ref LineItems, _cartVM.BombillaCartList, "Name", "Length");
+    CreateStripeSessionLineItemOptions<CupShoppingCart>(ref LineItems, _cartVM.CupCartList, "Name", "Volume");
+    return LineItems;
+  }
+
+  private void CreateStripeSessionLineItemOptions<T>(ref List<SessionLineItemOptions> LineItems, IEnumerable<T> CartList, string firstProperty, string srcondProperty) where T : ShoppingCart
+  {
+    foreach (var item in CartList)
+    {
+      var Product = item.GetType().GetProperty("Product").GetValue(item);
+      var FirstProperty = Product.GetType().GetProperty(firstProperty).GetValue(Product);
+      var SecondProperty = Product.GetType().GetProperty(srcondProperty).GetValue(Product);
+      var sessionLineItem = new SessionLineItemOptions
+      {
+        PriceData = new SessionLineItemPriceDataOptions
+        {
+          UnitAmount = (int)(item.Price * 100),//this value is int, represent decimal price 20.00->2000
+          Currency = "pln",
+          ProductData = new SessionLineItemPriceDataProductDataOptions
+          {
+            Name = $"{FirstProperty} {SecondProperty}",
+          }
+        },
+        Quantity = item.Quantity
+      };
+      LineItems.Add(sessionLineItem);
+    }
   }
 }

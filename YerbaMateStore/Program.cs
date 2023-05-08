@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using YerbaMateStore.Models.DataAccess.DbInitializer;
 using Microsoft.AspNetCore.Http.Json;
 using System.Text.Json.Serialization;
+using Stripe;
 
 namespace YerbaMateStore;
 
@@ -38,7 +39,9 @@ public class Program
 
     AdminData adminData = builder.Configuration.GetSection("AdminData").Get<AdminData>();
     EmailSenderAccessData emailAccessData = builder.Configuration.GetSection("EmailSender").Get<EmailSenderAccessData>();
+    StripeSettings stripeSettings = builder.Configuration.GetSection("Stripe").Get<StripeSettings>();
     builder.Services.AddSingleton(adminData);
+    
     builder.Services.AddSingleton(emailAccessData);
     builder.Services.ConfigureApplicationCookie(options =>
     {
@@ -70,6 +73,7 @@ public class Program
     app.UseStaticFiles();
     app.UseAuthentication();
     app.UseRouting();
+    StripeConfiguration.ApiKey = stripeSettings.SecretKey;
 
     app.UseAuthorization();
     app.MapRazorPages();

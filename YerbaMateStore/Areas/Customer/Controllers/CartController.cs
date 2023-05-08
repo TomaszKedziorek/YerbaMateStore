@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Stripe.Checkout;
 using YerbaMateStore.Models.Entities;
 using YerbaMateStore.Models.Managers;
 using YerbaMateStore.Models.Repository.IRepository;
@@ -124,12 +125,32 @@ public class CartController : Controller
       OrderManager orderManager = new(_unitOfWork, CartVM);
       orderManager.CreateOrderDetailsForAllProducts();
       orderManager.AddOrderDetailsToDBThroughRepositoryButNotSaveYet();
-      orderManager.CleanShoppingCartButNotSaveYet();
 
-      _unitOfWork.Save();
+      if (CartVM.OrderHeader.DeliveryMethod.PaymentMethod.IsTransfer)
+      {
+        //Stripe payment
+        SessionCreateOptions options = orderManager.StripePayment();
+        var service = new SessionService();
+        Session session = service.Create(options);
 
-      TempData["success"] = "Order has been placed!";
-      return RedirectToAction("Index", "Home");
+        Response.Headers.Add("Location", session.Url);
+        return new StatusCodeResult(303);
+      }
+      else
+      {
+        var domain = StaticDetails.Domain;
+        var url = domain + $"Customer/Cart/OrderConfirmation?id={CartVM.OrderHeader.Id}";
+
+        // return RedirectToAction(nameof(OrderConfirmation),new {CartVM.OrderHeader.Id});
+        return new StatusCodeResult(303);
+
+      }
+      // orderManager.CleanShoppingCartButNotSaveYet();
+
+      // _unitOfWork.Save();
+
+      // TempData["success"] = "Order has been placed!";
+      // return RedirectToAction("Index", "Home");
     }
     else
     {
