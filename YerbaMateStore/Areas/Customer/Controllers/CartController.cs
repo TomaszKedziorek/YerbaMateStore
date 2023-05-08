@@ -125,6 +125,7 @@ public class CartController : Controller
       OrderManager orderManager = new(_unitOfWork, CartVM);
       orderManager.CreateOrderDetailsForAllProducts();
       orderManager.AddOrderDetailsToDBThroughRepositoryButNotSaveYet();
+      _unitOfWork.Save();
 
       if (CartVM.OrderHeader.DeliveryMethod.PaymentMethod.IsTransfer)
       {
@@ -143,21 +144,52 @@ public class CartController : Controller
         var domain = StaticDetails.Domain;
         var url = domain + $"Customer/Cart/OrderConfirmation?id={CartVM.OrderHeader.Id}";
 
-        // return RedirectToAction(nameof(OrderConfirmation),new {CartVM.OrderHeader.Id});
-        return new StatusCodeResult(303);
-
+        return RedirectToAction(nameof(OrderConfirmation), new { CartVM.OrderHeader.Id });
       }
-      // orderManager.CleanShoppingCartButNotSaveYet();
-
-      // _unitOfWork.Save();
-
-      // TempData["success"] = "Order has been placed!";
-      // return RedirectToAction("Index", "Home");
     }
     else
     {
       TempData["error"] = "Something went wrong!";
       return View(CartVM);
+    }
+  }
+
+  [HttpGet]
+  public IActionResult OrderConfirmation(int Id)
+  {
+    OrderHeader orderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(o => o.Id == Id, "DeliveryMethod,DeliveryMethod.PaymentMethod");
+    if (orderHeader != null)
+    {
+      if (orderHeader.PaymentType == StaticDetails.PaymentTypeTransfer)
+      {
+        var service = new SessionService();
+        Session session = service.Get(orderHeader.SessionId);
+        if (session.PaymentStatus.ToLower() == "paid")
+        {
+          _unitOfWork.OrderHeader.UpdateStatus(Id, StaticDetails.StatusApproved, StaticDetails.PaymentStatusApproved);
+        }
+      }
+      else
+      {
+        _unitOfWork.OrderHeader.UpdateStatus(Id, StaticDetails.StatusApproved, StaticDetails.PaymentStatusOnPickup);
+      }
+      _unitOfWork.Save();
+
+      var YerbaMateCartList = _unitOfWork.YerbaMateShoppingCart.GetAll(c => c.ApplicationUserId == orderHeader.ApplicationUserId, "Product,Product.Images");
+      var BombillaCartList = _unitOfWork.BombillaShoppingCart.GetAll(c => c.ApplicationUserId == orderHeader.ApplicationUserId, "Product,Product.Images");
+      var CupCartList = _unitOfWork.CupShoppingCart.GetAll(c => c.ApplicationUserId == orderHeader.ApplicationUserId, "Product,Product.Images");
+      CartVM = new ShoppingCartViewModel(YerbaMateCartList, BombillaCartList, CupCartList);
+
+      OrderManager orderManager = new(_unitOfWork, CartVM);
+      orderManager.CleanShoppingCartButNotSaveYet();
+      _unitOfWork.Save();
+      TempData["success"] = "Order has been placed successfully!";
+
+      return View(orderHeader);
+    }
+    else
+    {
+      return RedirectToAction("Index", "Home");
     }
   }
 }

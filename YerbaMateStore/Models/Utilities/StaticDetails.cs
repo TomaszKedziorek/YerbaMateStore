@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace YerbaMateStore.Models.Utilities;
 
 public static class StaticDetails
@@ -16,9 +18,9 @@ public static class StaticDetails
 
   public const string PaymentStatusPending = "Pending";
   public const string PaymentStatusApproved = "Approved";
-  public const string PaymentStatusDelayedPayment = "ApprovedForDelayedPayment";
+  public const string PaymentStatusOnPickup = "Approved For On Pickup";
   public const string PaymentStatusRejected = "Rejected";
 
   public const string PaymentTypeTransfer = "Transefr";
-  public const string PaymentTypeOnPickup = "OnPickup";
+  public const string PaymentTypeOnPickup = "On Pickup";
 }

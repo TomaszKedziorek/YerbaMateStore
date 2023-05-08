@@ -73,7 +73,13 @@ button {
   background-color: #59ab6e !important;
   border-color: #59ab6e !important;
 }
-.form-check-input:checked:focus{
+
+.form-check-input:checked:focus {
   background-color: #59ab6e !important;
   border-color: #59ab6e !important;
+}
+
+#orderConfirmationTable td {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
 }
