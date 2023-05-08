@@ -157,7 +157,8 @@ public class CartController : Controller
   [HttpGet]
   public IActionResult OrderConfirmation(int Id)
   {
-    OrderHeader orderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(o => o.Id == Id, "DeliveryMethod,DeliveryMethod.PaymentMethod");
+    string userClaimsValue = UserClaims.GetUserClaimsValue(User);
+    OrderHeader orderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(o => o.Id == Id && o.ApplicationUserId == userClaimsValue, "DeliveryMethod,DeliveryMethod.PaymentMethod");
     if (orderHeader != null)
     {
       if (orderHeader.PaymentType == StaticDetails.PaymentTypeTransfer)
@@ -175,9 +176,9 @@ public class CartController : Controller
       }
       _unitOfWork.Save();
 
-      var YerbaMateCartList = _unitOfWork.YerbaMateShoppingCart.GetAll(c => c.ApplicationUserId == orderHeader.ApplicationUserId, "Product,Product.Images");
-      var BombillaCartList = _unitOfWork.BombillaShoppingCart.GetAll(c => c.ApplicationUserId == orderHeader.ApplicationUserId, "Product,Product.Images");
-      var CupCartList = _unitOfWork.CupShoppingCart.GetAll(c => c.ApplicationUserId == orderHeader.ApplicationUserId, "Product,Product.Images");
+      var YerbaMateCartList = _unitOfWork.YerbaMateShoppingCart.GetAll(c => c.ApplicationUserId == userClaimsValue, "Product,Product.Images");
+      var BombillaCartList = _unitOfWork.BombillaShoppingCart.GetAll(c => c.ApplicationUserId == userClaimsValue, "Product,Product.Images");
+      var CupCartList = _unitOfWork.CupShoppingCart.GetAll(c => c.ApplicationUserId == userClaimsValue, "Product,Product.Images");
       CartVM = new ShoppingCartViewModel(YerbaMateCartList, BombillaCartList, CupCartList);
 
       OrderManager orderManager = new(_unitOfWork, CartVM);
