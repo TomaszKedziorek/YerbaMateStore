@@ -132,6 +132,8 @@ public class CartController : Controller
         SessionCreateOptions options = orderManager.StripePayment();
         var service = new SessionService();
         Session session = service.Create(options);
+        _unitOfWork.OrderHeader.UpdateStripePaymentId(CartVM.OrderHeader.Id, session.Id, session.PaymentIntentId);
+        _unitOfWork.Save();
 
         Response.Headers.Add("Location", session.Url);
         return new StatusCodeResult(303);

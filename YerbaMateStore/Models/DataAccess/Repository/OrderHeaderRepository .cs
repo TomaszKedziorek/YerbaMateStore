@@ -28,6 +28,12 @@ public class OrderHeaderRepository : Repository<OrderHeader>, IOrderHeaderReposi
         orderFromDb.PaymentStatus = paymentStatus;
       }
     }
+  }
 
+  public void UpdateStripePaymentId(int id, string sessionId, string paymentIntentId)
+  {
+    OrderHeader orderFromDb = _dbContext.OrderHeader.FirstOrDefault(o => o.Id == id);
+    orderFromDb.SessionId = sessionId;
+    orderFromDb.PaymentIntentId = paymentIntentId;
   }
 }
