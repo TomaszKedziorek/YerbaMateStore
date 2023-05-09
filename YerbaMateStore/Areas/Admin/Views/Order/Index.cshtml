@@ -3,6 +3,30 @@
 }
 @{
   ViewData["Title"] = "Manage Order";
+  var status = Context.Request.Query["status"];
+  var pending = "text-dark";
+  var inProcess = "text-dark";
+  var completed = "text-dark";
+  var approved = "text-dark";
+  var all = "text-dark";
+  switch (status)
+  {
+    case "pending":
+      pending = "active text-white bg-success rounded-2";
+      break;
+    case "inprocess":
+      inProcess = "active text-white bg-success rounded-2";
+      break;
+    case "completed":
+      completed = "active text-white bg-success rounded-2";
+      break;
+    case "approved":
+      approved = "active text-white bg-success rounded-2";
+      break;
+    default:
+      all = "active text-white bg-success border-0 bg-success rounded-2";
+      break;
+  }
 }
 <section class="bg-light d-flex justify-content-center">
   <div class="container-lg pb-5 p-3">
@@ -11,9 +35,33 @@
 
     <div class="row justify-content-center">
       <div class="col-12">
-        <div class="row justify-content-end mb-3">
-          <div class="col-12 text-end">
+        <div class="row text-end mb-3">
+
+          <div class="col-12">
+            <ul class="list-inline shop-top-menu">
+              <li class="list-inline-item @all">
+                <a asp-area="Admin" asp-controller="Order" asp-action="Index" asp-route-status="all"
+                  class="text-dark text-decoration-none btn btn-outline-success "> All </a>
+              </li>
+              <li class="list-inline-item @approved">
+                <a asp-area="Admin" asp-controller="Order" asp-action="Index" asp-route-status="approved"
+                  class="text-dark text-decoration-none btn btn-outline-success "> Approved </a>
+              </li>
+              <li class="list-inline-item @inProcess">
+                <a asp-area="Admin" asp-controller="Order" asp-action="Index" asp-route-status="inprocess"
+                  class="text-dark text-decoration-none btn btn-outline-success "> In Process </a>
+              </li>
+              <li class="list-inline-item @pending">
+                <a asp-area="Admin" asp-controller="Order" asp-action="Index" asp-route-status="pending"
+                  class="text-dark text-decoration-none btn btn-outline-success "> Payment Pending </a>
+              </li>
+              <li class="list-inline-item @completed">
+                <a asp-area="Admin" asp-controller="Order" asp-action="Index" asp-route-status="completed"
+                  class="text-dark text-decoration-none btn btn-outline-success "> Completed </a>
+              </li>
+            </ul>
           </div>
+
         </div>
         <table id="orderData" class="table table-hover">
           <thead>

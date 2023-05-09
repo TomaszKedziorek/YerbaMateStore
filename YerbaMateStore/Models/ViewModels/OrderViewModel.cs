@@ -1,0 +1,9 @@
+using YerbaMateStore.Models.Entities;
+
+namespace YerbaMateStore.Models.ViewModels;
+
+public class OrderViewModel
+{
+  public OrderHeader OrderHeader { get; set; }
+  public IEnumerable<OrderDetail> OrderDetails { get; set; }
+}
