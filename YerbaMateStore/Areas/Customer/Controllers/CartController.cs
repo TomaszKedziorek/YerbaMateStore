@@ -111,6 +111,7 @@ public class CartController : Controller
       {
         CartVM.OrderHeader.PaymentType = StaticDetails.PaymentTypeOnPickup;
       }
+      CartVM.OrderHeader.Carrier = CartVM.OrderHeader.DeliveryMethod.Carrier;
       CartVM.OrderHeader.OrderStatus = StaticDetails.StatusPending;
       CartVM.OrderHeader.PaymentStatus = StaticDetails.PaymentStatusPending;
       double? orderDeliveryTotal = CartVM.OrderHeader.OrderAndDeliveryTotal;
@@ -167,7 +168,9 @@ public class CartController : Controller
         Session session = service.Get(orderHeader.SessionId);
         if (session.PaymentStatus.ToLower() == "paid")
         {
+          _unitOfWork.OrderHeader.UpdateStripePaymentId(Id, session.Id, session.PaymentIntentId);
           _unitOfWork.OrderHeader.UpdateStatus(Id, StaticDetails.StatusApproved, StaticDetails.PaymentStatusApproved);
+          orderHeader.PaymentDate = DateTime.Now;
         }
       }
       else
