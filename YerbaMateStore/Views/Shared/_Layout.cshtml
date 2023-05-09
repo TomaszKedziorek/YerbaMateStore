@@ -70,7 +70,8 @@ https://templatemo.com/tm-559-zay-shop
             <div class="flex-fill">
               <ul class="nav navbar-nav d-flex">
                 <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle text-light" data-bs-toggle="dropdown" href="#" role="button">Delivery/Payments Methods</a>
+                  <a class="nav-link dropdown-toggle text-light" data-bs-toggle="dropdown" href="#"
+                    role="button">Delivery/Payments Methods</a>
                   <div class="dropdown-menu ms-2">
                     <a class="nav-link dropdown-item bg" asp-area="Admin" asp-controller="DeliveryMethod"
                     asp-action="Index">DeliveryMethod</a>
@@ -81,6 +82,7 @@ https://templatemo.com/tm-559-zay-shop
               </ul>
             </div>
           }
+          <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="text-decoration-none text-light">Manage Order</a>
         </div>
         <div class="d-flex ">
           <partial name="_LoginPartial" />

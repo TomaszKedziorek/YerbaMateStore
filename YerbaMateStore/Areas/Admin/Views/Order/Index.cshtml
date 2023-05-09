@@ -1,0 +1,40 @@
+@section HeadArea{
+  <link rel="stylesheet" href="//cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+}
+@{
+  ViewData["Title"] = "Manage Order";
+}
+<section class="bg-light d-flex justify-content-center">
+  <div class="container-lg pb-5 p-3">
+    <h1 class="text-success">@ViewData["Title"]</h1>
+    <hr />
+
+    <div class="row justify-content-center">
+      <div class="col-12">
+        <div class="row justify-content-end mb-3">
+          <div class="col-12 text-end">
+          </div>
+        </div>
+        <table id="orderData" class="table table-hover">
+          <thead>
+            <tr class="bg-dark text-light border-secondary">
+              <th>ID</th>
+              <th>Name</th>
+              <th>Phone Number</th>
+              <th>Email</th>
+              <th>Order Status</th>
+              <th>Payment Status</th>
+              <th>Carrier</th>
+              <th>Order Total</th>
+              <th></th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+@section Scripts{
+  <script src="~/js/order.js"></script>
+  <script src="//cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+}
