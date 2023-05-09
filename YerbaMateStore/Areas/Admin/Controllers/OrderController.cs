@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using YerbaMateStore.Models.Entities;
 using YerbaMateStore.Models.Repository.IRepository;
@@ -6,6 +7,7 @@ using YerbaMateStore.Models.Utilities;
 namespace YerbaMateStore.Areas.Admin.Controllers;
 
 [Area("Admin")]
+[Authorize]
 public class OrderController : Controller
 {
   private readonly IUnitOfWork _unitOfWork;
