@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Stripe;
 using YerbaMateStore.Models.Entities;
 using YerbaMateStore.Models.Repository.IRepository;
 using YerbaMateStore.Models.Utilities;
@@ -136,6 +137,42 @@ public class OrderController : Controller
     else
     {
       TempData["error"] = "Order Status update failed.";
+      OrderVM = CreateOrderVM(OrderId);
+      return View("Details", OrderVM);
+    }
+  }
+
+  [HttpPost]
+  [ValidateAntiForgeryToken]
+  public IActionResult CancelOrder(OrderViewModel OrderVM)
+  {
+    int OrderId = OrderVM.OrderHeader.Id;
+    OrderHeader orderHeaderFromDb = _unitOfWork.OrderHeader.GetFirstOrDefault(o => o.Id == OrderId, includeProperties: "ApplicationUser", false);
+    if (ModelState.IsValid)
+    {
+      if (orderHeaderFromDb.PaymentStatus == StaticDetails.PaymentStatusApproved)
+      {
+        RefundCreateOptions options = new RefundCreateOptions
+        {
+          Reason = RefundReasons.RequestedByCustomer,
+          PaymentIntent = orderHeaderFromDb.PaymentIntentId,
+        };
+        RefundService service = new RefundService();
+        Refund refund = service.Create(options);
+
+        _unitOfWork.OrderHeader.UpdateStatus(orderHeaderFromDb.Id, StaticDetails.StatusCancelled, StaticDetails.StatusRefunded);
+      }
+      else
+      {
+        _unitOfWork.OrderHeader.UpdateStatus(OrderId, StaticDetails.StatusCancelled, StaticDetails.StatusCancelled);
+      }
+      _unitOfWork.Save();
+      TempData["Success"] = "Order Cancelled successfully.";
+      return RedirectToAction("Details", "Order", new { orderId = OrderId });
+    }
+    else
+    {
+      TempData["error"] = "Order Cancelled failed.";
       OrderVM = CreateOrderVM(OrderId);
       return View("Details", OrderVM);
     }
