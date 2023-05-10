@@ -133,7 +133,7 @@
                     <div class="mb-2 row justify-content-center">
                       <label asp-for="@Model.OrderHeader.Carrier" class="col-sm-3 col-form-label"></label>
                       <div class="col-sm-9">
-                        <input asp-for="@Model.OrderHeader.Carrier" class="rounded-0 @plaintext"
+                        <input asp-for="@Model.OrderHeader.Carrier" id="carrier" class="rounded-0 @plaintext"
                           readonly="@(!isAdminOrEmployee)">
                         <span asp-validation-for="@Model.OrderHeader.Carrier" class="text-danger"></span>
                       </div>
@@ -143,8 +143,8 @@
                       <label asp-for="@Model.OrderHeader.TrackingNumber"
                         class="col-sm-3 col-form-label">Tracking</label>
                       <div class="col-sm-9">
-                        <input asp-for="@Model.OrderHeader.TrackingNumber" class="rounded-0 @plaintext"
-                          readonly="@(!isAdminOrEmployee)">
+                        <input asp-for="@Model.OrderHeader.TrackingNumber" id="trackingNumber"
+                          class="rounded-0 @plaintext" readonly="@(!isAdminOrEmployee)">
                         <span asp-validation-for="@Model.OrderHeader.TrackingNumber" class="text-danger"></span>
                       </div>
                     </div>
@@ -157,6 +157,16 @@
                           readonly>
                         <span asp-validation-for="@Model.OrderHeader.DeliveryMethod.DeliveryTime"
                           class="text-danger"></span>
+                      </div>
+                    </div>
+
+                    <div class="mb-2 row justify-content-center">
+                      <label asp-for="@Model.OrderHeader.ShippingDate" class="col-sm-3 col-form-label">Payment
+                        Date</label>
+                      <div class="col-sm-9">
+                        <input value='@Model.OrderHeader.ShippingDate.ToString("dd.MM.yyyy HH:mm")'
+                          class="rounded-0 @plaintext" readonly>
+                        <span asp-validation-for="@Model.OrderHeader.ShippingDate" class="text-danger"></span>
                       </div>
                     </div>
 
@@ -219,6 +229,9 @@
                       <span class="text-dark">Order Summary:</span>
                       <span class="text-dark">ID: @Model.OrderHeader.Id</span>
                     </h4>
+                    <label class="bg-primary form-control my-2 text-light text-uppercase text-center fw-bold">Order
+                      Status -
+                      @Model.OrderHeader.OrderStatus</label>
                     <ul class="list-group mb-3">
                       @foreach (var cart in Model.YerbaMateOrderDetailList)
                       {
@@ -280,11 +293,13 @@
                      (Model.OrderHeader.PaymentStatus == StaticDetails.PaymentStatusApproved ||
                      Model.OrderHeader.PaymentStatus == StaticDetails.PaymentStatusOnPickup))
                       {
-                        <button type="submit" class="btn btn-primary form-control my-1">Start Processing</button>
+                        <button type="submit" asp-controller="Order" asp-action="StartProcessing"
+                          class="btn btn-primary form-control my-1">Start Processing</button>
                       }
                       @if (Model.OrderHeader.OrderStatus == StaticDetails.StatusInProcess)
                       {
-                        <button type="submit" class="btn btn-primary form-control my-1">Ship Order</button>
+                        <button type="submit" asp-controller="Order" asp-action="ShipOrder" onclick="return validateInput()"
+                          class="btn btn-primary form-control my-1">Ship Order</button>
                       }
                       @if (Model.OrderHeader.OrderStatus != StaticDetails.StatusRefunded || Model.OrderHeader.OrderStatus
                      !=
@@ -321,4 +336,5 @@
 </section>
 @section Scripts{
   <partial name="_ValidationScriptsPartial.cshtml" />
+  <script src="~/js/orderDetail.js"></script>
 }

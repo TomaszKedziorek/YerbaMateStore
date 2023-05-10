@@ -48,15 +48,9 @@ public class OrderController : Controller
   }
   public IActionResult Details(int orderId)
   {
-    var OrderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(o => o.Id == orderId, includeProperties: "ApplicationUser,DeliveryMethod,DeliveryMethod.PaymentMethod");
-    var YerbaMateOrderDetail = _unitOfWork.YerbaMateOrderDetail.GetAll(o => o.OrderId == orderId, includeProperties: "Product").ToList();
-    var BombillaOrderDetail = _unitOfWork.BombillaOrderDetail.GetAll(o => o.OrderId == orderId, includeProperties: "Product").ToList();
-    var CupOrderDetail = _unitOfWork.CupOrderDetail.GetAll(o => o.OrderId == orderId, includeProperties: "Product").ToList();
-
-    OrderViewModel OrderVM = new(YerbaMateOrderDetail, BombillaOrderDetail, CupOrderDetail, OrderHeader);
+    OrderViewModel OrderVM = OrderVM = CreateOrderVM(orderId);
     return View(OrderVM);
   }
-
 
   [HttpPost]
   [ValidateAntiForgeryToken]
@@ -89,16 +83,71 @@ public class OrderController : Controller
     else
     {
       TempData["error"] = "Order details update failed!";
-
-      var OrderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(o => o.Id == OrderId, includeProperties: "ApplicationUser,DeliveryMethod,DeliveryMethod.PaymentMethod");
-      var YerbaMateOrderDetail = _unitOfWork.YerbaMateOrderDetail.GetAll(o => o.OrderId == OrderId, includeProperties: "Product").ToList();
-      var BombillaOrderDetail = _unitOfWork.BombillaOrderDetail.GetAll(o => o.OrderId == OrderId, includeProperties: "Product").ToList();
-      var CupOrderDetail = _unitOfWork.CupOrderDetail.GetAll(o => o.OrderId == OrderId, includeProperties: "Product").ToList();
-
-      OrderVM = new(YerbaMateOrderDetail, BombillaOrderDetail, CupOrderDetail, OrderHeader);
-
+      OrderVM = CreateOrderVM(OrderId);
       return View("Details", OrderVM);
     }
   }
 
+  [HttpPost]
+  [ValidateAntiForgeryToken]
+  public IActionResult StartProcessing(OrderViewModel OrderVM)
+  {
+    int OrderId = OrderVM.OrderHeader.Id;
+    if (ModelState.IsValid)
+    {
+      _unitOfWork.OrderHeader.UpdateStatus(OrderId, StaticDetails.StatusInProcess);
+      _unitOfWork.Save();
+      TempData["Success"] = "Order Status updated successfully.";
+      return RedirectToAction("Details", "Order", new { orderId = OrderId });
+    }
+    else
+    {
+      TempData["error"] = "Order Status update failed.";
+      OrderVM = CreateOrderVM(OrderId);
+      return View("Details", OrderVM);
+    }
+  }
+
+  [HttpPost]
+  [ValidateAntiForgeryToken]
+  public IActionResult ShipOrder(OrderViewModel OrderVM)
+  {
+    int OrderId = OrderVM.OrderHeader.Id;
+    OrderHeader orderHeaderFromDb = _unitOfWork.OrderHeader.GetFirstOrDefault(o => o.Id == OrderId, includeProperties: "ApplicationUser", false);
+    if (string.IsNullOrEmpty(OrderVM.OrderHeader.Carrier))
+    {
+      ModelState.AddModelError("OrderHeader.Carrier", "Carrier field is required!");
+    }
+    if (string.IsNullOrEmpty(OrderVM.OrderHeader.TrackingNumber))
+    {
+      ModelState.AddModelError("OrderHeader.TrackingNumber", "Tracking Number field is required!");
+    }
+    if (ModelState.IsValid)
+    {
+      orderHeaderFromDb.TrackingNumber = OrderVM.OrderHeader.TrackingNumber;
+      orderHeaderFromDb.Carrier = OrderVM.OrderHeader.Carrier;
+      orderHeaderFromDb.OrderStatus = StaticDetails.StatusShipped;
+      orderHeaderFromDb.ShippingDate = DateTime.Now;
+      _unitOfWork.OrderHeader.Update(orderHeaderFromDb);
+      _unitOfWork.Save();
+      TempData["success"] = "Order Status updated successfully.";
+      return RedirectToAction("Details", "Order", new { orderId = OrderVM.OrderHeader.Id });
+    }
+    else
+    {
+      TempData["error"] = "Order Status update failed.";
+      OrderVM = CreateOrderVM(OrderId);
+      return View("Details", OrderVM);
+    }
+  }
+
+  private OrderViewModel CreateOrderVM(int OrderId)
+  {
+    var OrderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(o => o.Id == OrderId, includeProperties: "ApplicationUser,DeliveryMethod,DeliveryMethod.PaymentMethod");
+    var YerbaMateOrderDetail = _unitOfWork.YerbaMateOrderDetail.GetAll(o => o.OrderId == OrderId, includeProperties: "Product").ToList();
+    var BombillaOrderDetail = _unitOfWork.BombillaOrderDetail.GetAll(o => o.OrderId == OrderId, includeProperties: "Product").ToList();
+    var CupOrderDetail = _unitOfWork.CupOrderDetail.GetAll(o => o.OrderId == OrderId, includeProperties: "Product").ToList();
+    OrderViewModel OrderVM = new(YerbaMateOrderDetail, BombillaOrderDetail, CupOrderDetail, OrderHeader);
+    return OrderVM;
+  }
 }
