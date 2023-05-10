@@ -1,8 +1,15 @@
 @using Microsoft.Extensions.Options
+@using YerbaMateStore.Models.Utilities
 @inject IOptions<YerbaMateStore.Models.Utilities.StripeSettings> Stripe
 @model YerbaMateStore.Models.ViewModels.OrderViewModel
 @{
   ViewData["Title"] = "Order Details";
+  bool isAdminOrEmployee = false;
+  if (User.IsInRole(StaticDetails.Role_Admin) || User.IsInRole(StaticDetails.Role_Employee))
+  {
+    isAdminOrEmployee = true;
+  }
+  string plaintext = isAdminOrEmployee ? "form-control" : "form-control-plaintext";
 }
 
 <section class="d-flex justify-content-center bg-light">
@@ -43,15 +50,25 @@
                     <div class="mb-2 row justify-content-center">
                       <label asp-for="@Model.OrderHeader.Name" class="col-sm-3 col-form-label"></label>
                       <div class="col-sm-9">
-                        <input asp-for="@Model.OrderHeader.Name" class="form-control rounded-0">
+                        <input asp-for="@Model.OrderHeader.Name" class="rounded-0 @plaintext"
+                          readonly="@(!isAdminOrEmployee)">
                         <span asp-validation-for="@Model.OrderHeader.Name" class="text-danger"></span>
+                      </div>
+                    </div>
+
+                    <div class="mb-2 row justify-content-center">
+                      <label asp-for="@Model.OrderHeader.ApplicationUser.Email" class="col-sm-3 col-form-label"></label>
+                      <div class="col-sm-9">
+                        <input asp-for="@Model.OrderHeader.ApplicationUser.Email" class="rounded-0 @plaintext" readonly>
+                        <span asp-validation-for="@Model.OrderHeader.ApplicationUser.Email" class="text-danger"></span>
                       </div>
                     </div>
 
                     <div class="mb-2 row justify-content-center">
                       <label asp-for="@Model.OrderHeader.PhoneNumber" class="col-sm-3 col-form-label"></label>
                       <div class="col-sm-9">
-                        <input asp-for="@Model.OrderHeader.PhoneNumber" class="form-control rounded-0">
+                        <input asp-for="@Model.OrderHeader.PhoneNumber" class="rounded-0 @plaintext"
+                          readonly="@(!isAdminOrEmployee)">
                         <span asp-validation-for="@Model.OrderHeader.PhoneNumber" class="text-danger"></span>
                       </div>
                     </div>
@@ -59,7 +76,8 @@
                     <div class="mb-2 row justify-content-center">
                       <label asp-for="@Model.OrderHeader.Country" class="col-sm-3 col-form-label"></label>
                       <div class="col-sm-9">
-                        <input asp-for="@Model.OrderHeader.Country" class="form-control rounded-0">
+                        <input asp-for="@Model.OrderHeader.Country" class="rounded-0 @plaintext"
+                          readonly="@(!isAdminOrEmployee)">
                         <span asp-validation-for="@Model.OrderHeader.Country" class="text-danger"></span>
                       </div>
                     </div>
@@ -67,7 +85,8 @@
                     <div class="mb-2 row justify-content-center">
                       <label asp-for="@Model.OrderHeader.City" class="col-sm-3 col-form-label"></label>
                       <div class="col-sm-9">
-                        <input asp-for="@Model.OrderHeader.City" class="form-control rounded-0">
+                        <input asp-for="@Model.OrderHeader.City" class="rounded-0 @plaintext"
+                          readonly="@(!isAdminOrEmployee)">
                         <span asp-validation-for="@Model.OrderHeader.City" class="text-danger"></span>
                       </div>
                     </div>
@@ -75,7 +94,8 @@
                     <div class="mb-2 row justify-content-center">
                       <label asp-for="@Model.OrderHeader.State" class="col-sm-3 col-form-label"></label>
                       <div class="col-sm-9">
-                        <input asp-for="@Model.OrderHeader.State" class="form-control rounded-0">
+                        <input asp-for="@Model.OrderHeader.State" class="rounded-0 @plaintext"
+                          readonly="@(!isAdminOrEmployee)">
                         <span asp-validation-for="@Model.OrderHeader.State" class="text-danger"></span>
                       </div>
                     </div>
@@ -83,7 +103,8 @@
                     <div class="mb-2 row justify-content-center">
                       <label asp-for="@Model.OrderHeader.StreetAddress" class="col-sm-3 col-form-label"></label>
                       <div class="col-sm-9">
-                        <input asp-for="@Model.OrderHeader.StreetAddress" class="form-control rounded-0">
+                        <input asp-for="@Model.OrderHeader.StreetAddress" class="rounded-0 @plaintext"
+                          readonly="@(!isAdminOrEmployee)">
                         <span asp-validation-for="@Model.OrderHeader.StreetAddress" class="text-danger"></span>
                       </div>
                     </div>
@@ -91,7 +112,8 @@
                     <div class="mb-2 row justify-content-center">
                       <label asp-for="@Model.OrderHeader.PostalCode" class="col-sm-3 col-form-label"></label>
                       <div class="col-sm-9">
-                        <input asp-for="@Model.OrderHeader.PostalCode" class="form-control rounded-0">
+                        <input asp-for="@Model.OrderHeader.PostalCode" class="rounded-0 @plaintext"
+                          readonly="@(!isAdminOrEmployee)">
                         <span asp-validation-for="@Model.OrderHeader.PostalCode" class="text-danger"></span>
                       </div>
                     </div>
@@ -99,7 +121,7 @@
                     <div class="mb-2 row justify-content-center">
                       <label asp-for="@Model.OrderHeader.OrderDate" class="col-sm-3 col-form-label">Order Date</label>
                       <div class="col-sm-9">
-                        <input asp-for="@Model.OrderHeader.OrderDate" class="form-control rounded-0">
+                        <input asp-for="@Model.OrderHeader.OrderDate" class="rounded-0 @plaintext" readonly>
                         <span asp-validation-for="@Model.OrderHeader.OrderDate" class="text-danger"></span>
                       </div>
                     </div>
@@ -107,7 +129,8 @@
                     <div class="mb-2 row justify-content-center">
                       <label asp-for="@Model.OrderHeader.Carrier" class="col-sm-3 col-form-label"></label>
                       <div class="col-sm-9">
-                        <input asp-for="@Model.OrderHeader.Carrier" class="form-control rounded-0">
+                        <input asp-for="@Model.OrderHeader.Carrier" class="rounded-0 @plaintext"
+                          readonly="@(!isAdminOrEmployee)">
                         <span asp-validation-for="@Model.OrderHeader.Carrier" class="text-danger"></span>
                       </div>
                     </div>
@@ -116,7 +139,8 @@
                       <label asp-for="@Model.OrderHeader.TrackingNumber"
                         class="col-sm-3 col-form-label">Tracking</label>
                       <div class="col-sm-9">
-                        <input asp-for="@Model.OrderHeader.TrackingNumber" class="form-control rounded-0">
+                        <input asp-for="@Model.OrderHeader.TrackingNumber" class="rounded-0 @plaintext"
+                          readonly="@(!isAdminOrEmployee)">
                         <span asp-validation-for="@Model.OrderHeader.TrackingNumber" class="text-danger"></span>
                       </div>
                     </div>
@@ -125,7 +149,8 @@
                       <label asp-for="@Model.OrderHeader.DeliveryMethod.DeliveryTime"
                         class="col-sm-3 col-form-label">Delivery Time</label>
                       <div class="col-sm-9">
-                        <input asp-for="@Model.OrderHeader.DeliveryMethod.DeliveryTime" class="form-control rounded-0">
+                        <input asp-for="@Model.OrderHeader.DeliveryMethod.DeliveryTime" class="rounded-0 @plaintext"
+                          readonly>
                         <span asp-validation-for="@Model.OrderHeader.DeliveryMethod.DeliveryTime"
                           class="text-danger"></span>
                       </div>
@@ -135,7 +160,8 @@
                       <label asp-for="@Model.OrderHeader.PaymentStatus" class="col-sm-3 col-form-label">Payment
                         Status</label>
                       <div class="col-sm-9">
-                        <input asp-for="@Model.OrderHeader.PaymentStatus" class="form-control rounded-0">
+                        <input asp-for="@Model.OrderHeader.PaymentStatus" class="rounded-0 @plaintext"
+                          readonly="@(!isAdminOrEmployee)">
                         <span asp-validation-for="@Model.OrderHeader.PaymentStatus" class="text-danger"></span>
                       </div>
                     </div>
@@ -143,31 +169,43 @@
                       <label asp-for="@Model.OrderHeader.PaymentType" class="col-sm-3 col-form-label">Payment
                         Type</label>
                       <div class="col-sm-9">
-                        <input asp-for="@Model.OrderHeader.PaymentType" class="form-control rounded-0">
+                        <input asp-for="@Model.OrderHeader.PaymentType" class="rounded-0 @plaintext"
+                          readonly="@(!isAdminOrEmployee)">
                         <span asp-validation-for="@Model.OrderHeader.PaymentType" class="text-danger"></span>
                       </div>
                     </div>
                     @if (Model.OrderHeader.DeliveryMethod.PaymentMethod.IsTransfer)
                     {
-                      <div class="mb-2 row justify-content-center">
-                        <label asp-for="@Model.OrderHeader.PaymentIntentId" class="col-sm-3 col-form-label">Transaction
-                          ID</label>
-                        <div class="col-sm-9">
-                          <input asp-for="@Model.OrderHeader.PaymentIntentId" class="form-control rounded-0">
-                          <span asp-validation-for="@Model.OrderHeader.PaymentIntentId" class="text-danger"></span>
+                      if (isAdminOrEmployee)
+                      {
+                        <div class="mb-2 row justify-content-center">
+                          <label asp-for="@Model.OrderHeader.SessionId" class="col-sm-3 col-form-label">Session
+                            ID</label>
+                          <div class="col-sm-9">
+                            <input asp-for="@Model.OrderHeader.SessionId" class="rounded-0 @plaintext" readonly>
+                            <span asp-validation-for="@Model.OrderHeader.SessionId" class="text-danger"></span>
+                          </div>
                         </div>
-                      </div>
-
+                        <div class="mb-2 row justify-content-center">
+                          <label asp-for="@Model.OrderHeader.PaymentIntentId" class="col-sm-3 col-form-label">Transaction
+                            ID</label>
+                          <div class="col-sm-9">
+                            <input asp-for="@Model.OrderHeader.PaymentIntentId" class="rounded-0 @plaintext" readonly>
+                            <span asp-validation-for="@Model.OrderHeader.PaymentIntentId" class="text-danger"></span>
+                          </div>
+                        </div>
+                      }
                       <div class="mb-2 row justify-content-center">
                         <label asp-for="@Model.OrderHeader.PaymentDate" class="col-sm-3 col-form-label">Payment
                           Date</label>
                         <div class="col-sm-9">
-                          <input asp-for="@Model.OrderHeader.PaymentDate" class="form-control rounded-0">
+                          <input asp-for="@Model.OrderHeader.PaymentDate" class="rounded-0 @plaintext" readonly>
                           <span asp-validation-for="@Model.OrderHeader.PaymentDate" class="text-danger"></span>
                         </div>
                       </div>
                     }
-                    <button type="submit" class="btn btn-warning form-control my-1">Update Order Details</button>
+                    <button type="submit" formmethod="post" class="btn btn-warning form-control my-1">Update Order
+                      Details</button>
                   </div>
 
                   <div class="col-12 col-lg-6">
