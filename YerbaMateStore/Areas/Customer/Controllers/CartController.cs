@@ -170,7 +170,6 @@ public class CartController : Controller
         {
           _unitOfWork.OrderHeader.UpdateStripePaymentId(Id, session.Id, session.PaymentIntentId);
           _unitOfWork.OrderHeader.UpdateStatus(Id, StaticDetails.StatusApproved, StaticDetails.PaymentStatusApproved);
-          orderHeader.PaymentDate = DateTime.Now;
         }
       }
       else
