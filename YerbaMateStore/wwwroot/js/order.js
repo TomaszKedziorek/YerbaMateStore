@@ -1,6 +1,10 @@
 let dataTable;
 
 $(document).ready(function () {
+  FilterButtonsActions();
+})
+
+function FilterButtonsActions() {
   var url = window.location.search;
   if (url.includes("inprocess")) {
     loadDataTable("inprocess");
@@ -17,7 +21,7 @@ $(document).ready(function () {
   else {
     loadDataTable("all");
   }
-})
+}
 
 function loadDataTable(status) {
   dataTable = $('#orderData').DataTable({
