@@ -91,6 +91,7 @@ public class OrderController : Controller
 
   [HttpPost]
   [ValidateAntiForgeryToken]
+  [Authorize(Roles = StaticDetails.Role_Admin + "," + StaticDetails.Role_Employee)]
   public IActionResult StartProcessing(OrderViewModel OrderVM)
   {
     int OrderId = OrderVM.OrderHeader.Id;
@@ -111,6 +112,7 @@ public class OrderController : Controller
 
   [HttpPost]
   [ValidateAntiForgeryToken]
+  [Authorize(Roles = StaticDetails.Role_Admin + "," + StaticDetails.Role_Employee)]
   public IActionResult ShipOrder(OrderViewModel OrderVM)
   {
     int OrderId = OrderVM.OrderHeader.Id;
@@ -144,6 +146,7 @@ public class OrderController : Controller
 
   [HttpPost]
   [ValidateAntiForgeryToken]
+  [Authorize(Roles = StaticDetails.Role_Admin + "," + StaticDetails.Role_Employee)]
   public IActionResult CancelOrder(OrderViewModel OrderVM)
   {
     int OrderId = OrderVM.OrderHeader.Id;
