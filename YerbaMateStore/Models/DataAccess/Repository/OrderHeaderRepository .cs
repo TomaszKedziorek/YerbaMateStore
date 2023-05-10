@@ -23,7 +23,7 @@ public class OrderHeaderRepository : Repository<OrderHeader>, IOrderHeaderReposi
     if (orderFromDb != null)
     {
       orderFromDb.OrderStatus = orderStatus;
-      if (orderFromDb.PaymentStatus != null)
+      if (paymentStatus != null)
       {
         orderFromDb.PaymentStatus = paymentStatus;
       }
