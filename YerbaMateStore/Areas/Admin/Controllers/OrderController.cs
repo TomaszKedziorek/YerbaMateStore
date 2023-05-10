@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using YerbaMateStore.Models.Entities;
 using YerbaMateStore.Models.Repository.IRepository;
 using YerbaMateStore.Models.Utilities;
+using YerbaMateStore.Models.ViewModels;
 
 namespace YerbaMateStore.Areas.Admin.Controllers;
 
@@ -22,6 +23,16 @@ public class OrderController : Controller
     return View();
   }
 
+  public IActionResult Details(int orderId)
+  {
+    var OrderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(o => o.Id == orderId, includeProperties: "ApplicationUser,DeliveryMethod,DeliveryMethod.PaymentMethod");
+    var YerbaMateOrderDetail = _unitOfWork.YerbaMateOrderDetail.GetAll(o => o.OrderId == orderId, includeProperties: "Product").ToList();
+    var BombillaOrderDetail = _unitOfWork.BombillaOrderDetail.GetAll(o => o.OrderId == orderId, includeProperties: "Product").ToList();
+    var CupOrderDetail = _unitOfWork.CupOrderDetail.GetAll(o => o.OrderId == orderId, includeProperties: "Product").ToList();
+
+    OrderViewModel OrderVM = new(YerbaMateOrderDetail,BombillaOrderDetail,CupOrderDetail,OrderHeader);
+    return View(OrderVM);
+  }
 
   [HttpGet]
   public IActionResult GetAll(string status)
