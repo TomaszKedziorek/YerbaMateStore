@@ -1,10 +1,12 @@
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace YerbaMateStore.Models.Utilities;
 
 public static class StaticDetails
 {
   public const string Domain = "https://localhost:7026/";
+  public static CultureInfo Culture = CultureInfo.CreateSpecificCulture("pl-PL");
   public const string Role_Individual = "Individual";
   public const string Role_Admin = "Admin";
   public const string Role_Employee = "Employee";

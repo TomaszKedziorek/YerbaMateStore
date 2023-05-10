@@ -1,3 +1,4 @@
+@using YerbaMateStore.Models.Utilities
 @model YerbaMateStore.Models.ViewModels.CupProductsViewModel
 @section HeadArea{
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/css/flag-icons.min.css" />
@@ -99,18 +100,18 @@
                           @if (product.DiscountPrice != null)
                           {
                             <li class="text-center text-danger mb-0">
-                              <h4><strike>@product.Price.ToString("0.00") zł</strike></h4>
+                              <h4><strike>@product.Price.ToString("C",StaticDetails.Culture)</strike></h4>
                             </li>
                             <li class="text-center text-success mb-0 fw-bold">
                               <h4>
-                                @(((double)product.DiscountPrice).ToString("0.00")) zł
+                                @(((double)product.DiscountPrice).ToString("C",StaticDetails.Culture))
                               </h4>
                             </li>
                           }
                           else
                           {
                             <li class="text-center text-success mb-0 fw-bold">
-                              <h4>@product.Price.ToString("0.00") zł</h4>
+                              <h4>@product.Price.ToString("C",StaticDetails.Culture)</h4>
                             </li>
                           }
                         </ul>

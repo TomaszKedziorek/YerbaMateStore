@@ -1,3 +1,4 @@
+@using YerbaMateStore.Models.Utilities
 @model YerbaMateStore.Models.ViewModels.ShoppingCartViewModel
 @{
   ViewData["Title"] = "Cart";
@@ -40,7 +41,7 @@
                     </div>
                     <div class="col-12 col-lg-6 pt-2">
                       <a asp-area="Customer" asp-controller="YerbaMate" asp-action="Details"
-                    asp-route-productId="@cart.ProductId" class="text-dark">
+                        asp-route-productId="@cart.ProductId" class="text-dark">
                         <h6><strong>@cart.Product.Brand - @cart.Product.Name</strong></h6>
                       </a>
                       <p><small>@cart.Product.Weight</small></p>
@@ -49,8 +50,10 @@
                       <div class="col-5 text-md-right pt-2">
                         <h6>
                           <strong>
-                            @(@cart.Price.ToString("0.00")) zł<span class="text-muted"> x </span> @cart.Quantity
-                            <span class="text-muted"> = </span> @((@cart.Price * cart.Quantity).ToString("0.00")) zł
+                            @(@cart.Price.ToString("C", StaticDetails.Culture))<span class="text-muted"> x </span>
+                            @cart.Quantity
+                            <span class="text-muted"> = </span> @((@cart.Price *
+                        cart.Quantity).ToString("C", StaticDetails.Culture))
                           </strong>
                         </h6>
                       </div>
@@ -80,7 +83,7 @@
                     </div>
                     <div class="col-12 col-lg-6 pt-2">
                       <a asp-area="Customer" asp-controller="Bombilla" asp-action="Details"
-                    asp-route-productId="@cart.ProductId" class="text-dark">
+                        asp-route-productId="@cart.ProductId" class="text-dark">
                         <h6><strong>@cart.Product.Name</strong></h6>
                       </a>
                       <p><small>@cart.Product.Length</small></p>
@@ -89,8 +92,10 @@
                       <div class="col-5 text-md-right pt-2">
                         <h6>
                           <strong>
-                            @(@cart.Price.ToString("0.00")) zł<span class="text-muted"> x </span> @cart.Quantity
-                            <span class="text-muted"> = </span> @((@cart.Price * cart.Quantity).ToString("0.00")) zł
+                            @(@cart.Price.ToString("C", StaticDetails.Culture))<span class="text-muted"> x </span>
+                            @cart.Quantity
+                            <span class="text-muted"> = </span> @((@cart.Price *
+                        cart.Quantity).ToString("C", StaticDetails.Culture))
                           </strong>
                         </h6>
                       </div>
@@ -129,8 +134,10 @@
                       <div class="col-5 text-md-right pt-2">
                         <h6>
                           <strong>
-                            @(@cart.Price.ToString("0.00")) zł<span class="text-muted"> x </span> @cart.Quantity
-                            <span class="text-muted"> = </span> @((@cart.Price * cart.Quantity).ToString("0.00")) zł
+                            @(@cart.Price.ToString("C", StaticDetails.Culture))<span class="text-muted"> x </span>
+                            @cart.Quantity
+                            <span class="text-muted"> = </span> @((@cart.Price *
+                        cart.Quantity).ToString("C", StaticDetails.Culture))
                           </strong>
                         </h6>
                       </div>
@@ -159,7 +166,7 @@
                     <ul class="list-group">
                       <li class="list-group-item d-flex justify-content-between bg-light text-dark fw-bold">
                         <span class=""> Total (PLN)</span>
-                        <strong class="">@Model.OrderHeader.OrderTotal.ToString("0.00") zł</strong>
+                        <strong class="">@Model.OrderHeader.OrderTotal.ToString("C",StaticDetails.Culture)</strong>
                       </li>
                     </ul>
                   </div>

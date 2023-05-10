@@ -1,5 +1,6 @@
 let dataTable;
 
+
 $(document).ready(function () {
   var url = window.location.search;
   if (url.includes("inprocess")) {
@@ -34,7 +35,7 @@ function loadDataTable(status) {
       { "data": "deliveryMethod.carrier", "width": "8%" },
       {
         "data": "null", "width": "10%", "render": function (data, type, row) {
-          var number = $.fn.dataTable.render.number(' ', ',', 2, '', ' zł').display(row.orderTotal);
+          var number = currency.format(row.orderTotal);
 
           if (row.paymentStatus == 'Approved') {
             return '<span class="text-success fw-bold">' + number + '</span>';
