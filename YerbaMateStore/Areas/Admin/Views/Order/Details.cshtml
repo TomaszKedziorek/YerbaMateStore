@@ -47,7 +47,8 @@
                       </h4>
                     </div>
 
-                    <input asp-for="@Model.OrderHeader.ApplicationUserId" value="0" hidden />
+                    <input asp-for="OrderHeader.Id" hidden readonly>
+                    <input asp-for="@Model.OrderHeader.ApplicationUserId" hidden readonly />
 
                     <div class="mb-2 row justify-content-center">
                       <label asp-for="@Model.OrderHeader.Name" class="col-sm-3 col-form-label"></label>
@@ -208,7 +209,8 @@
                         </div>
                       </div>
                     }
-                    <button type="submit" formmethod="post" class="btn btn-warning form-control my-1">Update Order
+                    <button type="submit" asp-area="Admin" asp-controller="Order" asp-action="UpdateOrderDetail"
+                      formmethod="post" class="btn btn-warning form-control my-1">Update Order
                       Details</button>
                   </div>
 
@@ -319,5 +321,4 @@
 </section>
 @section Scripts{
   <partial name="_ValidationScriptsPartial.cshtml" />
-  <partial name="_Notification" />
 }
