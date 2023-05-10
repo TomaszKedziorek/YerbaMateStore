@@ -1,5 +1,6 @@
 @using Microsoft.Extensions.Options
 @using YerbaMateStore.Models.Utilities
+@using System.Globalization
 @inject IOptions<YerbaMateStore.Models.Utilities.StripeSettings> Stripe
 @model YerbaMateStore.Models.ViewModels.OrderViewModel
 @{
@@ -10,6 +11,7 @@
     isAdminOrEmployee = true;
   }
   string plaintext = isAdminOrEmployee ? "form-control" : "form-control-plaintext";
+  var culture = CultureInfo.CreateSpecificCulture("pl-PL");
 }
 
 <section class="d-flex justify-content-center bg-light">
@@ -121,7 +123,7 @@
                     <div class="mb-2 row justify-content-center">
                       <label asp-for="@Model.OrderHeader.OrderDate" class="col-sm-3 col-form-label">Order Date</label>
                       <div class="col-sm-9">
-                        <input asp-for="@Model.OrderHeader.OrderDate" class="rounded-0 @plaintext" readonly>
+                        <input value='@Model.OrderHeader.OrderDate.ToString("dd.MM.yyyy HH:mm")' class="rounded-0 @plaintext" readonly>
                         <span asp-validation-for="@Model.OrderHeader.OrderDate" class="text-danger"></span>
                       </div>
                     </div>
@@ -199,7 +201,7 @@
                         <label asp-for="@Model.OrderHeader.PaymentDate" class="col-sm-3 col-form-label">Payment
                           Date</label>
                         <div class="col-sm-9">
-                          <input asp-for="@Model.OrderHeader.PaymentDate" class="rounded-0 @plaintext" readonly>
+                          <input value='@Model.OrderHeader.PaymentDate.ToString("dd.MM.yyyy HH:mm")' class="rounded-0 @plaintext" readonly>
                           <span asp-validation-for="@Model.OrderHeader.PaymentDate" class="text-danger"></span>
                         </div>
                       </div>
@@ -222,7 +224,7 @@
                               @cart.Product.Brand @cart.Product.Name @cart.Product.Weight</a>
                             <small class="text-muted  fw-bolder">Quantity: @cart.Quantity</small>
                           </div>
-                          <span class="text-muted fw-bolder">@((cart.Quantity * cart.Price).ToString("0.00")) zł </span>
+                          <span class="text-muted fw-bolder">@((cart.Quantity * cart.Price).ToString("C",culture))</span>
                         </li>
                       }
                       @foreach (var cart in Model.BombillaOrderDetailList)
@@ -234,7 +236,7 @@
                               @cart.Product.Name @cart.Product.Length</a>
                             <small class="text-muted fw-bolder">Quantity: @cart.Quantity</small>
                           </div>
-                          <span class="text-muted fw-bolder">@((cart.Quantity * cart.Price).ToString("0.00")) zł </span>
+                          <span class="text-muted fw-bolder">@((cart.Quantity * cart.Price).ToString("C",culture))</span>
                         </li>
                       }
                       @foreach (var cart in Model.CupOrderDetailList)
@@ -246,12 +248,12 @@
                               @cart.Product.Name @cart.Product.Volume</a>
                             <small class="text-muted fw-bolder">Quantity: @cart.Quantity</small>
                           </div>
-                          <span class="text-muted fw-bolder">@((cart.Quantity * cart.Price).ToString("0.00")) zł </span>
+                          <span class="text-muted fw-bolder">@((cart.Quantity * cart.Price).ToString("C",culture))</span>
                         </li>
                       }
                       <li class="list-group-item d-flex justify-content-between bg-light">
                         <small class="text-dark fw-bold">Order Total (PLN)</small>
-                        <strong class="text-dark fw-bold">@Model.OrderHeader.OrderTotal.ToString("0.00") zł</strong>
+                        <strong class="text-dark fw-bold">@Model.OrderHeader.OrderTotal.ToString("C",culture)</strong>
                       </li>
                       <li class="list-group-item d-flex justify-content-between bg-light">
                         <small class="text-dark fw-bold">Delivery Cost (PLN)</small>
@@ -261,7 +263,7 @@
                       <li class="list-group-item d-flex justify-content-between bg-dark rounded-bottom ">
                         <small class="text-light fw-bold">Order + Delivery (PLN)</small>
                         <strong class="text-light fw-bold"
-                          id="OrderDeliveryTotal">@Model.OrderHeader.OrderAndDeliveryTotal.ToString("0.00") zł<strong>
+                          id="OrderDeliveryTotal">@Model.OrderHeader.OrderAndDeliveryTotal.ToString("C",culture)<strong>
                       </li>
                       <input type="number" asp-for="@Model.OrderHeader.OrderTotal" hidden>
                       <input type="number" asp-for="@Model.OrderHeader.OrderAndDeliveryTotal"
