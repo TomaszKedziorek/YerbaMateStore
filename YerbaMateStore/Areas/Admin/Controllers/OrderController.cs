@@ -198,7 +198,7 @@ public class OrderController : Controller
         OrderVM.YerbaMateOrderDetailList,
         OrderVM.BombillaOrderDetailList,
         OrderVM.CupOrderDetailList);
-      Session session = StripeManager.StripePayment($"Customer/Order/PaymentConfirmation?orderId={OrderId}", $"Admin/Order/Details?orderId={OrderId}");
+      Session session = StripeManager.StripePayment($"Admin/Order/PaymentConfirmation?orderId={OrderId}", $"Admin/Order/PaymentConfirmation?orderId={OrderId}");
       _unitOfWork.OrderHeader.UpdateStripePaymentId(OrderId, session.Id, session.PaymentIntentId);
       _unitOfWork.Save();
 
@@ -217,18 +217,25 @@ public class OrderController : Controller
   {
     string userClaimsValue = UserClaims.GetUserClaimsValue(User);
     OrderHeader orderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(o => o.Id == orderId && o.ApplicationUserId == userClaimsValue, "DeliveryMethod,DeliveryMethod.PaymentMethod");
-    if (orderHeader.PaymentType == StaticDetails.PaymentTypeTransfer)
+    if (orderHeader != null)
     {
-      Session session = StripePaymentManager<OrderDetail>.GetSessionById(orderHeader.SessionId);
-      if (session.PaymentStatus.ToLower() == "paid")
+      if (orderHeader.PaymentType == StaticDetails.PaymentTypeTransfer)
       {
-        _unitOfWork.OrderHeader.UpdateStripePaymentId(orderId, orderHeader.SessionId, session.PaymentIntentId);
-        _unitOfWork.OrderHeader.UpdateStatus(orderId, StaticDetails.StatusApproved, StaticDetails.PaymentStatusApproved);
-        _unitOfWork.Save();
-        TempData["success"] = "Order has been paid successfully!";
+        Session session = StripePaymentManager<OrderDetail>.GetSessionById(orderHeader.SessionId);
+        if (session.PaymentStatus.ToLower() == "paid")
+        {
+          _unitOfWork.OrderHeader.UpdateStripePaymentId(orderId, orderHeader.SessionId, session.PaymentIntentId);
+          _unitOfWork.OrderHeader.UpdateStatus(orderId, StaticDetails.StatusApproved, StaticDetails.PaymentStatusApproved);
+          _unitOfWork.Save();
+          TempData["success"] = "Order has been paid successfully!";
+        }
       }
+      return View(orderHeader);
     }
-    return View(orderHeader);
+    else
+    {
+      return RedirectToAction("Index", "Home", new { area = "Customer" });
+    }
   }
 
   private OrderViewModel CreateOrderVM(int OrderId)
