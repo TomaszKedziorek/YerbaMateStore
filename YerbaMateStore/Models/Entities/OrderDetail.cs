@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace YerbaMateStore.Models.Entities;
 
-public abstract class OrderDetail
+public abstract class OrderDetail : IShoppingCartOrOrderDetail
 {
   public int Id { get; set; }
   [Required]
