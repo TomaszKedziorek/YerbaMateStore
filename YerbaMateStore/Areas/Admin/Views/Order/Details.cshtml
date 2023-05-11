@@ -161,7 +161,7 @@
                     </div>
 
                     <div class="mb-2 row justify-content-center">
-                      <label asp-for="@Model.OrderHeader.ShippingDate" class="col-sm-3 col-form-label">Payment
+                      <label asp-for="@Model.OrderHeader.ShippingDate" class="col-sm-3 col-form-label">Shipping
                         Date</label>
                       <div class="col-sm-9">
                         <input value='@Model.OrderHeader.ShippingDate.ToString("dd.MM.yyyy HH:mm")'
@@ -313,7 +313,7 @@
                     Model.OrderHeader.PaymentStatus
                     == StaticDetails.PaymentStatusPending)
                     {
-                      <button type="submit" class="btn btn-success form-control my-1">Pay Now</button>
+                      <button type="submit" asp-area="Admin" asp-controller="Order" asp-action="PayNow" class="btn btn-success form-control my-1">Pay Now</button>
                     }
                   </div>
 
