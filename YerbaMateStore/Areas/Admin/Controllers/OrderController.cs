@@ -59,6 +59,7 @@ public class OrderController : Controller
     return Json(new { data = orderHeaderList });
   }
 
+  [HttpGet]
   public IActionResult Details(int orderId)
   {
     OrderViewModel OrderVM = CreateOrderVM(orderId);
