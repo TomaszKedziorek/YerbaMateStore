@@ -29,7 +29,16 @@ public class OrderController : Controller
   [HttpGet]
   public IActionResult GetAll(string status)
   {
-    IEnumerable<OrderHeader> orderHeaderList = _unitOfWork.OrderHeader.GetAll(includeProperties: "ApplicationUser,DeliveryMethod,DeliveryMethod.PaymentMethod");
+    IEnumerable<OrderHeader> orderHeaderList;
+    if (User.IsInRole(StaticDetails.Role_Admin) || User.IsInRole(StaticDetails.Role_Employee))
+    {
+      orderHeaderList = _unitOfWork.OrderHeader.GetAll(includeProperties: "ApplicationUser,DeliveryMethod,DeliveryMethod.PaymentMethod");
+    }
+    else
+    {
+      string userClaimValue = UserClaims.GetUserClaimsValue(User);
+      orderHeaderList = _unitOfWork.OrderHeader.GetAll(o => o.ApplicationUserId == userClaimValue, includeProperties: "ApplicationUser,DeliveryMethod,DeliveryMethod.PaymentMethod");
+    }
     switch (status)
     {
       case "pending":
