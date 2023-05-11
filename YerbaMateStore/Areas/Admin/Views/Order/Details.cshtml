@@ -219,9 +219,12 @@
                         </div>
                       </div>
                     }
-                    <button type="submit" asp-area="Admin" asp-controller="Order" asp-action="UpdateOrderDetail"
-                      formmethod="post" class="btn btn-warning form-control my-1">Update Order
-                      Details</button>
+                    @if (isAdminOrEmployee)
+                    {
+                      <button type="submit" asp-area="Admin" asp-controller="Order" asp-action="UpdateOrderDetail"
+                        formmethod="post" class="btn btn-warning form-control my-1">Update Order
+                        Details</button>
+                    }
                   </div>
 
                   <div class="col-12 col-lg-6">
@@ -240,6 +243,7 @@
                             <a asp-area="Customer" asp-controller="YerbaMate" asp-action="Details"
                               asp-route-productId="@cart.ProductId" class="my-0 h6 text-dark fw-bolder">
                               @cart.Product.Brand @cart.Product.Name @cart.Product.Weight</a>
+                            <br>
                             <small class="text-muted  fw-bolder">Quantity: @cart.Quantity</small>
                           </div>
                           <span class="text-muted fw-bolder">@((cart.Quantity * cart.Price).ToString("C", culture))</span>
@@ -252,6 +256,7 @@
                             <a asp-area="Customer" asp-controller="Bombilla" asp-action="Details"
                               asp-route-productId="@cart.ProductId" class="my-0 h6 text-dark fw-bolder">
                               @cart.Product.Name @cart.Product.Length</a>
+                            <br>
                             <small class="text-muted fw-bolder">Quantity: @cart.Quantity</small>
                           </div>
                           <span class="text-muted fw-bolder">@((cart.Quantity * cart.Price).ToString("C", culture))</span>
@@ -264,6 +269,7 @@
                             <a asp-area="Customer" asp-controller="Cup" asp-action="Details"
                               asp-route-productId="@cart.ProductId" class="my-0 h6 text-dark fw-bolder">
                               @cart.Product.Name @cart.Product.Volume</a>
+                            <br>
                             <small class="text-muted fw-bolder">Quantity: @cart.Quantity</small>
                           </div>
                           <span class="text-muted fw-bolder">@((cart.Quantity * cart.Price).ToString("C", culture))</span>
@@ -313,7 +319,8 @@
                     Model.OrderHeader.PaymentStatus
                     == StaticDetails.PaymentStatusPending)
                     {
-                      <button type="submit" asp-area="Admin" asp-controller="Order" asp-action="PayNow" class="btn btn-success form-control my-1">Pay Now</button>
+                      <button type="submit" asp-area="Admin" asp-controller="Order" asp-action="PayNow"
+                        class="btn btn-success form-control my-1">Pay Now</button>
                     }
                   </div>
 
