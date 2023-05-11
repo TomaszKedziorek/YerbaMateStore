@@ -198,7 +198,7 @@ public class OrderController : Controller
         OrderVM.YerbaMateOrderDetailList,
         OrderVM.BombillaOrderDetailList,
         OrderVM.CupOrderDetailList);
-      Session session = StripeManager.StripePayment();
+      Session session = StripeManager.StripePayment($"Customer/Order/PaymentConfirmation?orderId={OrderId}", $"Admin/Order/Details?orderId={OrderId}");
       _unitOfWork.OrderHeader.UpdateStripePaymentId(OrderId, session.Id, session.PaymentIntentId);
       _unitOfWork.Save();
 
@@ -212,24 +212,24 @@ public class OrderController : Controller
     }
   }
 
-  // [HttpGet]
-  // public IActionResult PaymentConfirmation(int orderId)
-  // {
-  //   OrderHeader orderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(o => o.Id == orderId);
-  //   if (orderHeader.PaymentStatus == StaticDetails.PaymentStatusDelayedPayment)
-  //   {
-  //     var service = new SessionService();
-  //     Session session = service.Get(orderHeader.SessionId);
-  //     if (session.PaymentStatus.ToLower() == "paid")
-  //     {
-  //       _unitOfWork.OrderHeader.UpdateStripePaymentId(orderId, orderHeader.SessionId, session.PaymentIntentId);
-  //       _unitOfWork.OrderHeader.UpdateStatus(orderId, orderHeader.OrderStatus, StaticDetails.PaymentStatusApproved);
-  //       _unitOfWork.Save();
-  //     }
-  //   }
-  //   TempData["success"] = "Your order has been placed successfully!";
-  //   return View(orderId);
-  // }
+  [HttpGet]
+  public IActionResult PaymentConfirmation(int orderId)
+  {
+    string userClaimsValue = UserClaims.GetUserClaimsValue(User);
+    OrderHeader orderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(o => o.Id == orderId && o.ApplicationUserId == userClaimsValue, "DeliveryMethod,DeliveryMethod.PaymentMethod");
+    if (orderHeader.PaymentType == StaticDetails.PaymentTypeTransfer)
+    {
+      Session session = StripePaymentManager<OrderDetail>.GetSessionById(orderHeader.SessionId);
+      if (session.PaymentStatus.ToLower() == "paid")
+      {
+        _unitOfWork.OrderHeader.UpdateStripePaymentId(orderId, orderHeader.SessionId, session.PaymentIntentId);
+        _unitOfWork.OrderHeader.UpdateStatus(orderId, StaticDetails.StatusApproved, StaticDetails.PaymentStatusApproved);
+        _unitOfWork.Save();
+        TempData["success"] = "Order has been paid successfully!";
+      }
+    }
+    return View(orderHeader);
+  }
 
   private OrderViewModel CreateOrderVM(int OrderId)
   {

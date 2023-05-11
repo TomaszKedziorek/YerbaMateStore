@@ -62,12 +62,12 @@ div .swal2-icon-content {
   border-bottom: #59ab6e !important;
 }
 
-body,
+/* body,
 body>*,
 a,
 button {
   display: grid;
-}
+} */
 
 .form-check-input:checked {
   background-color: #59ab6e !important;

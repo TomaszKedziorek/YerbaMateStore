@@ -19,21 +19,28 @@ public class StripePaymentManager<T> where T : IShoppingCartOrOrderDetail
     CupCartOrOrderDetailList = cupCartOrOrderDetailList;
   }
 
-  public Session StripePayment()
+  public Session StripePayment(string successUrl, string cancelUrl)
   {
-    SessionCreateOptions options = StripePaymentOptions();
+    SessionCreateOptions options = StripePaymentOptions(successUrl, cancelUrl);
     SessionService service = StripePaymentService();
     Session session = service.Create(options);
     return session;
   }
 
-  private SessionService StripePaymentService()
+  public static Session GetSessionById(string sessionId)
+  {
+    SessionService service = StripePaymentService();
+    Session session = service.Get(sessionId);
+    return session;
+  }
+
+  private static SessionService StripePaymentService()
   {
     SessionService service = new SessionService();
     return service;
   }
 
-  private SessionCreateOptions StripePaymentOptions()
+  private SessionCreateOptions StripePaymentOptions(string successUrl, string cancelUrl)
   {
     //Stripe payment settings
     var domain = StaticDetails.Domain;
@@ -45,8 +52,8 @@ public class StripePaymentManager<T> where T : IShoppingCartOrOrderDetail
         },
       LineItems = new List<SessionLineItemOptions>(),
       Mode = "payment",
-      SuccessUrl = domain + $"Customer/Cart/OrderConfirmation?id={orderHeader.Id}",
-      CancelUrl = domain + "Customer/Cart/Index",
+      SuccessUrl = domain + successUrl,
+      CancelUrl = domain + cancelUrl,
     };
     options.LineItems = AddCartItemsToStripeOptionsLineItems();
     return options;

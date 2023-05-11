@@ -1,0 +1,50 @@
+@model YerbaMateStore.Models.Entities.OrderHeader
+@using YerbaMateStore.Models.Utilities
+
+@{
+  ViewData["Title"] = "Payment Confirmation";
+  string header = "";
+  string message = "";
+  string textColor = "text-dark";
+  if (Model.PaymentType == StaticDetails.PaymentTypeTransfer &&
+  Model.PaymentStatus == StaticDetails.PaymentStatusApproved)
+  {
+    header = "Order paid successfully!";
+    message = "Thank you for paying for order!";
+    textColor = "text-success";
+  }
+  else if (Model.PaymentType == StaticDetails.PaymentTypeTransfer &&
+  Model.PaymentStatus != StaticDetails.PaymentStatusApproved)
+  {
+    header = "Order not paid!";
+    message = $"To pay or cancel this order click <a style='font-size: inherit!important;' href='/Admin/Order/Details?orderId={@Model.Id}'>here.</a>";
+    textColor = "text-danger";
+  }
+  else
+  {
+    header = "Order paid on pickup!";
+    message = "Thank you for making order!";
+    textColor = "text-primary";
+  }
+}
+<section class="d-flex justify-content-center bg-light">
+  <div class="container-lg pb-5 p-3">
+    <h1 class="text-success" >@ViewData["Title"]</h1>
+    <hr />
+    <div class="row justify-content-center">
+      <div class="col-12">
+
+        <div class="container row my-2">
+
+          <div class="col-12 text-center mb-3">
+            <h2 class="@textColor text-center">@header</h2>
+            <h4 class="text-dark text-center" >@Html.Raw(message)</h4>
+          </div>
+          <partial name="_OrderOrPaymentConfirmation" />
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
