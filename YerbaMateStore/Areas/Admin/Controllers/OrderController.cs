@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Stripe;
+using Stripe.Checkout;
 using YerbaMateStore.Models.Entities;
+using YerbaMateStore.Models.Managers;
 using YerbaMateStore.Models.Repository.IRepository;
 using YerbaMateStore.Models.Utilities;
 using YerbaMateStore.Models.ViewModels;
@@ -180,6 +182,54 @@ public class OrderController : Controller
       return View("Details", OrderVM);
     }
   }
+
+  [HttpPost]
+  [ValidateAntiForgeryToken]
+  public IActionResult PayNow(OrderViewModel OrderVM)
+  {
+    int OrderId = OrderVM.OrderHeader.Id;
+    OrderVM = CreateOrderVM(OrderId);
+    // string? OrderApplicationUserId = OrderVM.OrderHeader.ApplicationUserId;
+    // string userClaimsValue = UserClaims.GetUserClaimsValue(User);
+    if (ModelState.IsValid)
+    {
+      StripePaymentManager<OrderDetail> StripeManager = new(
+        OrderVM.OrderHeader,
+        OrderVM.YerbaMateOrderDetailList,
+        OrderVM.BombillaOrderDetailList,
+        OrderVM.CupOrderDetailList);
+      Session session = StripeManager.StripePayment();
+      _unitOfWork.OrderHeader.UpdateStripePaymentId(OrderId, session.Id, session.PaymentIntentId);
+      _unitOfWork.Save();
+
+      Response.Headers.Add("Location", session.Url);
+      return new StatusCodeResult(303);
+    }
+    else
+    {
+      TempData["error"] = "Something went wrong!";
+      return View("Details", OrderVM);
+    }
+  }
+
+  // [HttpGet]
+  // public IActionResult PaymentConfirmation(int orderId)
+  // {
+  //   OrderHeader orderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(o => o.Id == orderId);
+  //   if (orderHeader.PaymentStatus == StaticDetails.PaymentStatusDelayedPayment)
+  //   {
+  //     var service = new SessionService();
+  //     Session session = service.Get(orderHeader.SessionId);
+  //     if (session.PaymentStatus.ToLower() == "paid")
+  //     {
+  //       _unitOfWork.OrderHeader.UpdateStripePaymentId(orderId, orderHeader.SessionId, session.PaymentIntentId);
+  //       _unitOfWork.OrderHeader.UpdateStatus(orderId, orderHeader.OrderStatus, StaticDetails.PaymentStatusApproved);
+  //       _unitOfWork.Save();
+  //     }
+  //   }
+  //   TempData["success"] = "Your order has been placed successfully!";
+  //   return View(orderId);
+  // }
 
   private OrderViewModel CreateOrderVM(int OrderId)
   {
