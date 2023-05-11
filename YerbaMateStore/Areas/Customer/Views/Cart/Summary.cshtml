@@ -137,6 +137,7 @@
                             <a asp-area="Customer" asp-controller="YerbaMate" asp-action="Details"
                             asp-route-productId="@cart.ProductId" class="my-0 h6 text-dark fw-bolder">
                               @cart.Product.Brand @cart.Product.Name @cart.Product.Weight</a>
+                              <br>
                             <small class="text-muted  fw-bolder">Quantity: @cart.Quantity</small>
                           </div>
                           <span class="text-muted fw-bolder">@((cart.Quantity * cart.Price).ToString("0.00")) zł </span>
@@ -149,6 +150,7 @@
                             <a asp-area="Customer" asp-controller="YerbaMate" asp-action="Details"
                             asp-route-productId="@cart.ProductId" class="my-0 h6 text-dark fw-bolder">
                               @cart.Product.Name @cart.Product.Length</a>
+                              <br>
                             <small class="text-muted fw-bolder">Quantity: @cart.Quantity</small>
                           </div>
                           <span class="text-muted fw-bolder">@((cart.Quantity * cart.Price).ToString("0.00")) zł </span>
@@ -161,6 +163,7 @@
                             <a asp-area="Customer" asp-controller="YerbaMate" asp-action="Details"
                             asp-route-productId="@cart.ProductId" class="my-0 h6 text-dark fw-bolder">
                               @cart.Product.Name @cart.Product.Volume</a>
+                              <br>
                             <small class="text-muted fw-bolder">Quantity: @cart.Quantity</small>
                           </div>
                           <span class="text-muted fw-bolder">@((cart.Quantity * cart.Price).ToString("0.00")) zł </span>
@@ -201,7 +204,6 @@
 </section>
 @section Scripts{
   <partial name="_ValidationScriptsPartial.cshtml" />
-  <partial name="_Notification" />
   <script src="/js/summary.js"></script>
   <script>
     $(document).ready(function () {

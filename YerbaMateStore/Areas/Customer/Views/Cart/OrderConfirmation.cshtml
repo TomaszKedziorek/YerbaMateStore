@@ -1,6 +1,31 @@
 @model YerbaMateStore.Models.Entities.OrderHeader
+@using YerbaMateStore.Models.Utilities
+
 @{
   ViewData["Title"] = "Order Confirmation";
+  string header = "";
+  string message = "";
+  string textColor = "text-dark";
+  if (Model.PaymentType == StaticDetails.PaymentTypeTransfer &&
+  Model.PaymentStatus == StaticDetails.PaymentStatusApproved)
+  {
+    header = "Order placed successfully!";
+    message = "Thank you for paying for order!";
+    textColor = "text-success";
+  }
+  else if (Model.PaymentType == StaticDetails.PaymentTypeTransfer &&
+  Model.OrderStatus != StaticDetails.StatusApproved)
+  {
+    header = $"Order is {Model.OrderStatus}!";
+    message = $"To pay or cancel this order click <a style='font-size: inherit!important;' href='/Admin/Order/Details?orderId={@Model.Id}'>here.</a>";
+    textColor = "text-danger";
+  }
+  else
+  {
+    header = "Order placed successfully!";
+    message = "Thank you for making order!";
+    textColor = "text-success";
+  }
 }
 <section class="d-flex justify-content-center bg-light">
   <div class="container-lg pb-5 p-3">
@@ -11,111 +36,10 @@
 
         <div class="container row my-2">
           <div class="col-12 text-center mb-3">
-            <h2 class="text-success text-center">Order Placed Successfully!</h2>
-            <h4 class="text-dark text-center">Thank you for making order!</h4>
+            <h2 class="@textColor text-center">@header</h2>
+            <h4 class="text-dark text-center" >@Html.Raw(message)</h4>
           </div>
-
-          <div class="row justify-content-center">
-            <div class="col-12 col-md-5 ">
-              <table class="table table-hover table-borderless table-striped" id="orderConfirmationTable">
-                <thead class="border-bottom">
-                  <tr class="">
-                    <td class="h5">Delivery detalis</td>
-                    <td></td>
-                  </tr>
-                </thead>
-                <tbody class="text-left">
-                  <tr>
-                    <td>Name</td>
-                    <td>@Model.Name</td>
-                  </tr>
-                  <tr>
-                    <td>Phone Number</td>
-                    <td>@Model.PhoneNumber</td>
-                  </tr>
-                  <tr>
-                    <td>Delivery Address</td>
-                    <td>
-                      <p>
-                        @Model.StreetAddress
-                        <br>
-                        @Model.City @Model.PostalCode
-                        <br>
-                        @Model.State
-                        <br>
-                        @Model.Country
-                      </p>
-                    </td>
-                  </tr>
-
-                </tbody>
-              </table>
-            </div>
-
-            <div class="col-12 col-md-5 offset-1">
-              <table class="table table-hover table-borderless table-striped" id="orderConfirmationTable">
-                <thead class="border-bottom">
-                  <tr class="">
-                    <td class="h5">Order detalis</td>
-                    <td></td>
-                  </tr>
-                </thead>
-                <tbody class="text-left">
-                  <tr>
-                    <td>Order Id</td>
-                    <td>@Model.Id</td>
-                  </tr>
-                  <tr>
-                    <td>Order Date</td>
-                    <td>@Model.OrderDate.ToString("dd.MM.yyyy HH:mm")</td>
-                  </tr>
-                  <tr>
-                    <td>Order Status</td>
-                    <td>@Model.OrderStatus</td>
-                  </tr>
-                  <tr>
-                    <td>Payment Type</td>
-                    <td>@Model.PaymentType</td>
-                  </tr>
-                  @if (Model.DeliveryMethod.PaymentMethod.IsTransfer)
-                  {
-                    <tr>
-                      <td>Order Payment Status</td>
-                      <td>@Model.PaymentStatus</td>
-                    </tr>
-                    <tr>
-                      <td>Payment Date</td>
-                      <td>@Model.PaymentDate.ToString("dd.MM.yyyy HH:mm")</td>
-                    </tr>
-                    <tr>
-                      <td>Transaction ID</td>
-                      <td>@Model.PaymentIntentId</td>
-                    </tr>
-                  }
-                  <tr class="border-top">
-                    <td>Delivery Method</td>
-                    <td>@Model.DeliveryMethod.Carrier</td>
-                  </tr>
-                  <tr>
-                    <td>Realisation time</td>
-                    <td>@Model.DeliveryMethod.DeliveryTime</td>
-                  </tr>
-                  <tr>
-                    <td>Order total</td>
-                    <td>@Model.OrderTotal.ToString("0.00") zł</td>
-                  </tr>
-                  <tr>
-                    <td>Delivery cost</td>
-                    <td>@Model.DeliveryMethod.Cost.ToString("0.00") zł</td>
-                  </tr>
-                  <tr class="table-dark">
-                    <td>Total</td>
-                    <td>@Model.OrderAndDeliveryTotal.ToString("0.00") zł</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+          <partial name="_OrderOrPaymentConfirmation"/>
 
         </div>
 
