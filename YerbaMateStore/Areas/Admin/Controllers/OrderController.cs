@@ -49,9 +49,14 @@ public class OrderController : Controller
     }
     return Json(new { data = orderHeaderList });
   }
+
   public IActionResult Details(int orderId)
   {
-    OrderViewModel OrderVM = OrderVM = CreateOrderVM(orderId);
+    OrderViewModel OrderVM = CreateOrderVM(orderId);
+    if (OrderVM.OrderHeader == null)
+    {
+      return RedirectToAction(nameof(Index));
+    }
     return View(OrderVM);
   }
 
@@ -240,11 +245,24 @@ public class OrderController : Controller
 
   private OrderViewModel CreateOrderVM(int OrderId)
   {
-    var OrderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(o => o.Id == OrderId, includeProperties: "ApplicationUser,DeliveryMethod,DeliveryMethod.PaymentMethod");
-    var YerbaMateOrderDetail = _unitOfWork.YerbaMateOrderDetail.GetAll(o => o.OrderId == OrderId, includeProperties: "Product").ToList();
-    var BombillaOrderDetail = _unitOfWork.BombillaOrderDetail.GetAll(o => o.OrderId == OrderId, includeProperties: "Product").ToList();
-    var CupOrderDetail = _unitOfWork.CupOrderDetail.GetAll(o => o.OrderId == OrderId, includeProperties: "Product").ToList();
-    OrderViewModel OrderVM = new(YerbaMateOrderDetail, BombillaOrderDetail, CupOrderDetail, OrderHeader);
-    return OrderVM;
+    if (User.IsInRole(StaticDetails.Role_Admin) || User.IsInRole(StaticDetails.Role_Employee))
+    {
+      var OrderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(o => o.Id == OrderId, includeProperties: "ApplicationUser,DeliveryMethod,DeliveryMethod.PaymentMethod");
+      var YerbaMateOrderDetail = _unitOfWork.YerbaMateOrderDetail.GetAll(o => o.OrderId == OrderId, includeProperties: "Product").ToList();
+      var BombillaOrderDetail = _unitOfWork.BombillaOrderDetail.GetAll(o => o.OrderId == OrderId, includeProperties: "Product").ToList();
+      var CupOrderDetail = _unitOfWork.CupOrderDetail.GetAll(o => o.OrderId == OrderId, includeProperties: "Product").ToList();
+      OrderViewModel OrderVM = new(YerbaMateOrderDetail, BombillaOrderDetail, CupOrderDetail, OrderHeader);
+      return OrderVM;
+    }
+    else
+    {
+      string userClaimValue = UserClaims.GetUserClaimsValue(User);
+      var OrderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(o => o.Id == OrderId && o.ApplicationUserId == userClaimValue, includeProperties: "ApplicationUser,DeliveryMethod,DeliveryMethod.PaymentMethod");
+      var YerbaMateOrderDetail = _unitOfWork.YerbaMateOrderDetail.GetAll(o => o.OrderId == OrderId && o.OrderHeader.ApplicationUserId == userClaimValue, includeProperties: "Product").ToList();
+      var BombillaOrderDetail = _unitOfWork.BombillaOrderDetail.GetAll(o => o.OrderId == OrderId && o.OrderHeader.ApplicationUserId == userClaimValue, includeProperties: "Product").ToList();
+      var CupOrderDetail = _unitOfWork.CupOrderDetail.GetAll(o => o.OrderId == OrderId && o.OrderHeader.ApplicationUserId == userClaimValue, includeProperties: "Product").ToList();
+      OrderViewModel OrderVM = new(YerbaMateOrderDetail, BombillaOrderDetail, CupOrderDetail, OrderHeader);
+      return OrderVM;
+    }
   }
 }
