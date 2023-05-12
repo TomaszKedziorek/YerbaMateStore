@@ -2,6 +2,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using YerbaMateStore.Models.Entities;
 using YerbaMateStore.Models.Repository.IRepository;
+using YerbaMateStore.Models.Utilities;
 
 namespace YerbaMateStore.Models.Managers;
 public class ShoppingCartManager<T, F> where T : class, new() where F : ShoppingCart, new()
@@ -53,6 +54,8 @@ public class ShoppingCartManager<T, F> where T : class, new() where F : Shopping
               .First(p => p.PropertyType.IsAssignableTo(typeof(IShoppingCartRepository<F>)));
     object obj = property.GetValue(_unitOfWork);
 
+    SetPriceCartForProduct(ref shoppingCart);
+
     if (shoppingCartFromDb == null)
     {
       object? result = obj.GetType().GetMethod("Add").Invoke(obj, new object[] { shoppingCart });
@@ -60,6 +63,23 @@ public class ShoppingCartManager<T, F> where T : class, new() where F : Shopping
     else
     {
       object? result = obj.GetType().GetMethod("IncrementQuantity").Invoke(obj, new object[] { shoppingCartFromDb, shoppingCart.Quantity });
+    }
+  }
+
+  private void SetPriceCartForProduct(ref F shoppingCart)
+  {
+    var ProductId = shoppingCart.GetType().GetProperty("ProductId").GetValue(shoppingCart);
+    T Product = CreateShoppingCartProduct((int)ProductId);
+    double ProductPrice = (double)Product.GetType().GetProperty("Price").GetValue(Product);
+    double? ProductDiscountPrice = (double?)Product.GetType().GetProperty("DiscountPrice").GetValue(Product);
+
+    if (ProductDiscountPrice != null)
+    {
+      shoppingCart.Price = (double)ProductDiscountPrice;
+    }
+    else
+    {
+      shoppingCart.Price = ProductPrice;
     }
   }
 }
