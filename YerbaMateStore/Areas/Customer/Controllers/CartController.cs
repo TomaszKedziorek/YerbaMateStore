@@ -195,7 +195,6 @@ public class CartController : Controller
       CartVM.YerbaMateCartList = YerbaMateCartList;
       CartVM.BombillaCartList = BombillaCartList;
       CartVM.CupCartList = CupCartList;
-      CartVM.SetPrices();
     }
     if (addDeliveryMethodList)
     {

@@ -31,7 +31,6 @@ public class ShoppingCartViewModel
     BombillaCartList = bombillaCartList;
     CupCartList = cupCartList;
     OrderHeader = new();
-    SetPrices();
     CalculateTotalPrice();
     CheckIfCartIsEmpty();
   }
@@ -43,22 +42,6 @@ public class ShoppingCartViewModel
     : this(yerbaMateCartList, bombillaCartList, cupCartList)
   {
     DeliveryMethodList = deliveryMethodList;
-  }
-
-  public void SetPrices()
-  {
-    foreach (var cart in YerbaMateCartList)
-    {
-      cart.Price = (double)(cart.Product.DiscountPrice == null ? cart.Product.Price : cart.Product.DiscountPrice);
-    }
-    foreach (var cart in BombillaCartList)
-    {
-      cart.Price = (double)(cart.Product.DiscountPrice == null ? cart.Product.Price : cart.Product.DiscountPrice);
-    }
-    foreach (var cart in CupCartList)
-    {
-      cart.Price = (double)(cart.Product.DiscountPrice == null ? cart.Product.Price : cart.Product.DiscountPrice);
-    }
   }
 
   private void CalculateTotalPrice()
