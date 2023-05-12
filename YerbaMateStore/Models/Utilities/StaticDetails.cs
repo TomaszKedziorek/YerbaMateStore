@@ -23,4 +23,7 @@ public static class StaticDetails
 
   public const string PaymentTypeTransfer = "Transefr";
   public const string PaymentTypeOnPickup = "On Pickup";
+
+  public const string SessionCartCount = "SessionShoppingCartCount";
+  public const string SessionCartTotal = "SessionShoppingCartTotal";
 }
