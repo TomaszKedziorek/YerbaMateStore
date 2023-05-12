@@ -8,6 +8,13 @@ public class UserClaims
   {
     ClaimsIdentity? claimsIdentity = (ClaimsIdentity)user.Identity;
     Claim? claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-    return claim.Value;
+    if (claim != null)
+    {
+      return claim.Value;
+    }
+    else
+    {
+      return null;
+    }
   }
 }

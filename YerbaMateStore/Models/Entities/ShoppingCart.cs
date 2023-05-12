@@ -14,7 +14,6 @@ public abstract class ShoppingCart : IShoppingCartOrOrderDetail
   [ForeignKey("ApplicationUserId")]
   [ValidateNever]
   public ApplicationUser ApplicationUser { get; set; }
-  [NotMapped]
   [ValidateNever]
   public double Price { get; set; }
 }

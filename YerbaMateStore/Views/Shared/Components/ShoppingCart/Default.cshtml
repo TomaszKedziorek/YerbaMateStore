@@ -1,0 +1,10 @@
+@model YerbaMateStore.Models.ViewModels.CartButtonViewModel
+
+<a class="text-decoration-none" asp-area="Customer" asp-controller="Cart" asp-action="Index">
+  <span class="text-dark">
+    <span class="text-dark align-middle" id="AllProductsInCartCount">@Model.AllProductsInCartCount</span>
+    <span class="badge rounded-pill bg-success text-dark align-middle"
+      id="TotalPriceForProductsInCart">@Model.TotalPriceForProductsInCart</span>
+    <i class="bi bi-basket2-fill text-dark h2 align-middle"></i>
+  </span>
+</a>

@@ -5,6 +5,8 @@ function AddToCart(url) {
     success: function (data) {
       if (data.success) {
         toastr.success(data.message);
+        $("#TotalPriceForProductsInCart").html(data.totalPriceForProductsInCart);
+        $("#AllProductsInCartCount").html(data.allProductsInCartCount);
       }
       else {
         toastr.error(data.message);

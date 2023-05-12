@@ -1,7 +1,12 @@
 ﻿@using YerbaMateStore.Models.Utilities
+@using Microsoft.AspNetCore.Http
+@* @inject IHttpContextAccessor httpContextAccessor *@
 @{
   bool isAdmin = User.IsInRole(StaticDetails.Role_Admin) ? true : false;
   bool isEmployee = User.IsInRole(StaticDetails.Role_Employee) ? true : false;
+  @* int? productsCountInCartInt = httpContextAccessor.HttpContext.Session.GetInt32(StaticDetails.SessionCartCount); *@
+  @* string? totalForProductsInCartDouble =
+httpContextAccessor.HttpContext.Session.GetString(StaticDetails.SessionCartTotal); *@
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -55,9 +60,9 @@ https://templatemo.com/tm-559-zay-shop
                     Management</a>
                   <div class="dropdown-menu ms-2">
                     <a class="nav-link dropdown-item bg" asp-area="Admin" asp-controller="YerbaMate"
-                    asp-action="Index">Yerba Mate</a>
+                      asp-action="Index">Yerba Mate</a>
                     <a class="nav-link dropdown-item" asp-area="Admin" asp-controller="Bombilla"
-                    asp-action="Index">Bombilla</a>
+                      asp-action="Index">Bombilla</a>
                     <a class="nav-link dropdown-item" asp-area="Admin" asp-controller="Cup" asp-action="Index">Gourds -
                       Mates</a>
                   </div>
@@ -74,15 +79,16 @@ https://templatemo.com/tm-559-zay-shop
                     role="button">Delivery/Payments Methods</a>
                   <div class="dropdown-menu ms-2">
                     <a class="nav-link dropdown-item bg" asp-area="Admin" asp-controller="DeliveryMethod"
-                    asp-action="Index">DeliveryMethod</a>
+                      asp-action="Index">DeliveryMethod</a>
                     <a class="nav-link dropdown-item" asp-area="Admin" asp-controller="PaymentMethod"
-                    asp-action="Index">Payment Method</a>
+                      asp-action="Index">Payment Method</a>
                   </div>
                 </li>
               </ul>
             </div>
           }
-          <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="text-decoration-none text-light">Manage Order</a>
+          <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="text-decoration-none text-light">Manage
+            Order</a>
         </div>
         <div class="d-flex ">
           <partial name="_LoginPartial" />
@@ -128,13 +134,7 @@ https://templatemo.com/tm-559-zay-shop
         </div>
 
         <div class="navbar align-self-center d-inline-flex  bg-light rounded-1 border border-secondary py-0 px-1">
-          <a class="text-decoration-none" asp-area="Customer" asp-controller="Cart" asp-action="Index">
-            <span class="text-dark">
-              <span class="text-dark align-middle">123.00zł</span>
-              <span class="badge rounded-pill bg-success text-dark align-middle">127</span>
-              <i class="bi bi-basket2-fill text-dark h2 align-middle"></i>
-            </span>
-          </a>
+          @await Component.InvokeAsync("ShoppingCart")
         </div>
       </div>
     </div>
