@@ -5,11 +5,11 @@ using YerbaMateStore.Models.Repository.IRepository;
 using YerbaMateStore.Models.Utilities;
 
 namespace YerbaMateStore.Models.Managers;
-public class ShoppingCartManager<T, F> where T : class, new() where F : ShoppingCart, new()
+public class ShoppingCartManager<T, F> : SessionManager where T : class, new() where F : ShoppingCart, new()
 {
   private readonly IUnitOfWork _unitOfWork;
 
-  public ShoppingCartManager(IUnitOfWork unitOfWork)
+  public ShoppingCartManager(IUnitOfWork unitOfWork) : base(unitOfWork)
   {
     _unitOfWork = unitOfWork;
   }
@@ -82,4 +82,5 @@ public class ShoppingCartManager<T, F> where T : class, new() where F : Shopping
       shoppingCart.Price = ProductPrice;
     }
   }
+
 }
