@@ -41,7 +41,7 @@ public class Program
     EmailSenderAccessData emailAccessData = builder.Configuration.GetSection("EmailSender").Get<EmailSenderAccessData>();
     StripeSettings stripeSettings = builder.Configuration.GetSection("Stripe").Get<StripeSettings>();
     builder.Services.AddSingleton(adminData);
-    
+
     builder.Services.AddSingleton(emailAccessData);
     builder.Services.ConfigureApplicationCookie(options =>
     {
@@ -57,6 +57,14 @@ public class Program
       options.SignIn.RequireConfirmedEmail = true;
       options.SignIn.RequireConfirmedAccount = true;
     });
+    builder.Services.AddDistributedMemoryCache();
+    builder.Services.AddSession(options =>
+    {
+      options.IdleTimeout = TimeSpan.FromMinutes(100);
+      options.Cookie.HttpOnly = true;
+      options.Cookie.IsEssential = true;
+    });
+
     var app = builder.Build();
 
     // Configure the HTTP request pipeline.
@@ -76,6 +84,7 @@ public class Program
     StripeConfiguration.ApiKey = stripeSettings.SecretKey;
 
     app.UseAuthorization();
+    app.UseSession();
     app.MapRazorPages();
     app.MapControllerRoute(
         name: "default",
