@@ -8,6 +8,7 @@ using YerbaMateStore.Models.Managers;
 using YerbaMateStore.Models.Repository.IRepository;
 using YerbaMateStore.Models.Utilities;
 using YerbaMateStore.Models.ViewModels;
+using YerbaMateStore.ViewComponents;
 
 namespace YerbaMateStore.Controllers;
 [Area("Customer")]
@@ -53,6 +54,7 @@ public class YerbaMateController : Controller
           i => i.ApplicationUserId == userClaimsValue && i.ProductId == shoppingCart.ProductId);
       _shoppingCartManager.AddOrIncrement(shoppingCart, shoppingCartFromDb);
       _unitOfWork.Save();
+      _shoppingCartManager.SetCartSessionValues(HttpContext.Session, userClaimsValue);
 
       TempData["success"] = "Product added to cart!";
       return RedirectToAction(nameof(Index));
@@ -69,8 +71,8 @@ public class YerbaMateController : Controller
   public IActionResult AddToCart(int productId)
   {
     YerbaMateShoppingCart shoppingCart = _shoppingCartManager.CreateShoppingCart(productId, 1);
-      string userClaimsValue = UserClaims.GetUserClaimsValue(User);
-      shoppingCart.ApplicationUserId = userClaimsValue;
+    string userClaimsValue = UserClaims.GetUserClaimsValue(User);
+    shoppingCart.ApplicationUserId = userClaimsValue;
 
     if (shoppingCart.Product != null)
     {
@@ -78,8 +80,16 @@ public class YerbaMateController : Controller
           i => i.ApplicationUserId == userClaimsValue && i.ProductId == shoppingCart.ProductId);
       _shoppingCartManager.AddOrIncrement(shoppingCart, shoppingCartFromDb);
       _unitOfWork.Save();
+      _shoppingCartManager.SetCartSessionValues(HttpContext.Session, userClaimsValue);
+      var sessionCartValues = _shoppingCartManager.GetSessionValues(HttpContext.Session);
 
-      return Json(new { success = true, message = "Product added to cart!" });
+      return Json(new
+      {
+        success = true,
+        message = "Product added to cart!",
+        allProductsInCartCount= sessionCartValues.AllProductsInCartCount,
+        totalPriceForProductsInCart = sessionCartValues.TotalPriceForProductsInCart
+      });
     }
     else
     {

@@ -48,6 +48,7 @@ public class CupController : Controller
         i => i.ApplicationUserId == userClaimsValue && i.ProductId == shoppingCart.ProductId);
       _shoppingCartManager.AddOrIncrement(shoppingCart, shoppingCartFromDb);
       _unitOfWork.Save();
+      _shoppingCartManager.SetCartSessionValues(HttpContext.Session, userClaimsValue);
 
       TempData["success"] = "Product added to cart!";
       return RedirectToAction(nameof(Index));
@@ -72,8 +73,16 @@ public class CupController : Controller
           i => i.ApplicationUserId == userClaimsValue && i.ProductId == shoppingCart.ProductId);
       _shoppingCartManager.AddOrIncrement(shoppingCart, shoppingCartFromDb);
       _unitOfWork.Save();
+      _shoppingCartManager.SetCartSessionValues(HttpContext.Session, userClaimsValue);
+      var sessionCartValues = _shoppingCartManager.GetSessionValues(HttpContext.Session);
 
-      return Json(new { success = true, message = "Product added to cart!" });
+      return Json(new
+      {
+        success = true,
+        message = "Product added to cart!",
+        allProductsInCartCount = sessionCartValues.AllProductsInCartCount,
+        totalPriceForProductsInCart = sessionCartValues.TotalPriceForProductsInCart
+      });
     }
     else
     {

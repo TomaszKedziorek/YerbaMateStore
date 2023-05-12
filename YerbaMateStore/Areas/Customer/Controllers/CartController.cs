@@ -14,10 +14,12 @@ public class CartController : Controller
 {
   private readonly IUnitOfWork _unitOfWork;
   public ShoppingCartViewModel CartVM { get; set; }
+  private SessionManager _sessionManager;
 
   public CartController(IUnitOfWork unitOfWork)
   {
     _unitOfWork = unitOfWork;
+    _sessionManager = new(unitOfWork);
   }
 
   public IActionResult Index()
@@ -32,6 +34,8 @@ public class CartController : Controller
     var cart = _unitOfWork.ShoppingCart.GetFirstOrDefault(c => c.Id == cartId);
     _unitOfWork.ShoppingCart.IncrementQuantity(cart, 1);
     _unitOfWork.Save();
+    string userClaimsValue = UserClaims.GetUserClaimsValue(User);
+    _sessionManager.SetCartSessionValues(HttpContext.Session, userClaimsValue);
     return Redirect(nameof(Index));
   }
   public IActionResult MinusOne(int cartId)
@@ -46,6 +50,8 @@ public class CartController : Controller
       _unitOfWork.ShoppingCart.DecrementQuantity(cart, 1);
     }
     _unitOfWork.Save();
+    string userClaimsValue = UserClaims.GetUserClaimsValue(User);
+    _sessionManager.SetCartSessionValues(HttpContext.Session, userClaimsValue);
     return Redirect(nameof(Index));
   }
 
@@ -54,6 +60,8 @@ public class CartController : Controller
     var cart = _unitOfWork.ShoppingCart.GetFirstOrDefault(c => c.Id == cartId);
     _unitOfWork.ShoppingCart.Remove(cart);
     _unitOfWork.Save();
+    string userClaimsValue = UserClaims.GetUserClaimsValue(User);
+    _sessionManager.SetCartSessionValues(HttpContext.Session, userClaimsValue);
     return Redirect(nameof(Index));
   }
 
@@ -133,12 +141,14 @@ public class CartController : Controller
         Response.Headers.Add("Location", session.Url);
         orderManager.CleanShoppingCartButNotSaveYet();
         _unitOfWork.Save();
+        _sessionManager.CleanSession(HttpContext.Session);
         return new StatusCodeResult(303);
       }
       else
       {
         orderManager.CleanShoppingCartButNotSaveYet();
         _unitOfWork.Save();
+        _sessionManager.CleanSession(HttpContext.Session);
         return RedirectToAction(nameof(OrderConfirmation), new { OrderId });
       }
     }
