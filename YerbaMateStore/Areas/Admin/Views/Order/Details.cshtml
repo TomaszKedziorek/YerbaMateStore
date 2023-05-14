@@ -10,6 +10,8 @@
     isAdminOrEmployee = true;
   }
   string plaintext = isAdminOrEmployee ? "form-control" : "form-control-plaintext";
+  string userClaimsValue = UserClaims.GetUserClaimsValue(User);
+  bool isUserOrder = Model.OrderHeader.ApplicationUserId == userClaimsValue ? true : false;
 }
 
 <section class="d-flex justify-content-center bg-light">
@@ -321,7 +323,7 @@
                     }
                     @if (Model.OrderHeader.PaymentType == StaticDetails.PaymentTypeTransfer &&
                     Model.OrderHeader.PaymentStatus
-                    == StaticDetails.PaymentStatusPending)
+                    == StaticDetails.PaymentStatusPending && isUserOrder)
                     {
                       <button type="submit" asp-area="Admin" asp-controller="Order" asp-action="PayNow"
                         class="btn btn-success form-control my-1">Pay Now</button>
