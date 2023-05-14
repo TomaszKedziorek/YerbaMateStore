@@ -17,7 +17,7 @@ public class SessionManager
   {
     var shoppingaCart = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userClaimsValue);
     int SessionCartCount = shoppingaCart.Sum(u => u.Quantity);
-    string SessionCartTotal = Math.Round(shoppingaCart.Sum(u => u.Price * u.Quantity), 2).ToString();
+    string SessionCartTotal = Math.Round(shoppingaCart.Sum(u => u.Price * u.Quantity), 2).ToString("C", StaticDetails.Culture);
     if (httpContextSession != null)
     {
       httpContextSession.SetInt32(StaticDetails.SessionCartCount, SessionCartCount);
@@ -44,7 +44,8 @@ public class SessionManager
     }
     else
     {
-      CartButtonVM = new(0, 0);
+      double cartTotal = 0;
+      CartButtonVM = new(0, cartTotal.ToString("C", StaticDetails.Culture));
     }
     return CartButtonVM;
   }

@@ -9,12 +9,6 @@ public class CartButtonViewModel
   {
   }
 
-  public CartButtonViewModel(int totalPriceForProductsInCart, double allProductsInCartCount)
-  {
-    TotalPriceForProductsInCart = totalPriceForProductsInCart;
-    AllProductsInCartCount = allProductsInCartCount.ToString("0.00") + "zł";
-  }
-  
   public CartButtonViewModel(int totalPriceForProductsInCart, string allProductsInCartCount)
   {
     TotalPriceForProductsInCart = totalPriceForProductsInCart;
