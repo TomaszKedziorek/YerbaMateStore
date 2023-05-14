@@ -255,17 +255,17 @@
                         </li>
                       }
                       <li class="list-group-item d-flex justify-content-between bg-light">
-                        <small class="text-dark fw-bold">Order Total (PLN)</small>
+                        <small class="text-dark fw-bold">Order Total (@StaticDetails.Currency)</small>
                         <strong
                           class="text-dark fw-bold">@Model.OrderHeader.OrderTotal.ToString("C",StaticDetails.Culture)</strong>
                       </li>
                       <li class="list-group-item d-flex justify-content-between bg-light">
-                        <small class="text-dark fw-bold">Delivery Cost (PLN)</small>
+                        <small class="text-dark fw-bold">Delivery Cost (@StaticDetails.Currency)</small>
                         <strong
                           class="text-dark fw-bold">@Model.OrderHeader.DeliveryMethod.Cost.ToString("C",StaticDetails.Culture)</strong>
                       </li>
                       <li class="list-group-item d-flex justify-content-between bg-dark rounded-bottom ">
-                        <small class="text-light fw-bold">Order + Delivery (PLN)</small>
+                        <small class="text-light fw-bold">Order + Delivery (@StaticDetails.Currency)</small>
                         <strong class="text-light fw-bold"
                           id="OrderDeliveryTotal">@Model.OrderHeader.OrderAndDeliveryTotal.ToString("C",StaticDetails.Culture)<strong>
                       </li>
