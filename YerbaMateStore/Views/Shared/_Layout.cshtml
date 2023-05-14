@@ -55,9 +55,9 @@ https://templatemo.com/tm-559-zay-shop
                     Management</a>
                   <div class="dropdown-menu ms-2">
                     <a class="nav-link dropdown-item bg" asp-area="Admin" asp-controller="YerbaMate"
-                    asp-action="Index">Yerba Mate</a>
+                      asp-action="Index">Yerba Mate</a>
                     <a class="nav-link dropdown-item" asp-area="Admin" asp-controller="Bombilla"
-                    asp-action="Index">Bombilla</a>
+                      asp-action="Index">Bombilla</a>
                     <a class="nav-link dropdown-item" asp-area="Admin" asp-controller="Cup" asp-action="Index">Gourds -
                       Mates</a>
                   </div>
@@ -74,15 +74,16 @@ https://templatemo.com/tm-559-zay-shop
                     role="button">Delivery/Payments Methods</a>
                   <div class="dropdown-menu ms-2">
                     <a class="nav-link dropdown-item bg" asp-area="Admin" asp-controller="DeliveryMethod"
-                    asp-action="Index">DeliveryMethod</a>
+                      asp-action="Index">DeliveryMethod</a>
                     <a class="nav-link dropdown-item" asp-area="Admin" asp-controller="PaymentMethod"
-                    asp-action="Index">Payment Method</a>
+                      asp-action="Index">Payment Method</a>
                   </div>
                 </li>
               </ul>
             </div>
           }
-          <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="text-decoration-none text-light">Manage Order</a>
+          <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="text-decoration-none text-light">Manage
+            Order</a>
         </div>
         <div class="d-flex ">
           <partial name="_LoginPartial" />
@@ -250,6 +251,15 @@ https://templatemo.com/tm-559-zay-shop
   @* <script src="/js/zayTemplateJs/bootstrap.bundle.min.js"></script> *@
   <script src="/js/zayTemplateJs/templatemo.js"></script>
   <script src="/js/custom.js"></script>
+  <script src="/js/cultureCurrency.js"></script>
+  <script>
+    let Locales = '@(StaticDetails.Locales)';
+    let Currency = '@(StaticDetails.Currency)';
+    currency = Intl.NumberFormat(Locales, {
+      style: 'currency',
+      currency: Currency,
+    });
+  </script>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   @await RenderSectionAsync("Scripts", required: false)
