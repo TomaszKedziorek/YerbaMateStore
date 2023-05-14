@@ -1,7 +1,6 @@
 using Stripe.Checkout;
 using YerbaMateStore.Models.Entities;
 using YerbaMateStore.Models.Utilities;
-using YerbaMateStore.Models.ViewModels;
 
 namespace YerbaMateStore.Models.Managers;
 public class StripePaymentManager<T> where T : IShoppingCartOrOrderDetail
@@ -65,6 +64,7 @@ public class StripePaymentManager<T> where T : IShoppingCartOrOrderDetail
     CreateStripeSessionLineItemOptions(ref LineItems, YerbaMateCartOrOrderDetailList, "Brand", "Name");
     CreateStripeSessionLineItemOptions(ref LineItems, BombillaCartOrOrderDetailList, "Name", "Length");
     CreateStripeSessionLineItemOptions(ref LineItems, CupCartOrOrderDetailList, "Name", "Volume");
+    CreateStripeSessionLineItemOptionsForOrderDelivery(ref LineItems);
     return LineItems;
   }
 
@@ -80,7 +80,7 @@ public class StripePaymentManager<T> where T : IShoppingCartOrOrderDetail
         PriceData = new SessionLineItemPriceDataOptions
         {
           UnitAmount = (int)(item.Price * 100),//this value is int, represent decimal price 20.00->2000
-          Currency = "pln",
+          Currency = StaticDetails.Currency.ToLower(),
           ProductData = new SessionLineItemPriceDataProductDataOptions
           {
             Name = $"{FirstProperty} {SecondProperty}",
@@ -91,4 +91,27 @@ public class StripePaymentManager<T> where T : IShoppingCartOrOrderDetail
       LineItems.Add(sessionLineItem);
     }
   }
+
+  private void CreateStripeSessionLineItemOptionsForOrderDelivery(ref List<SessionLineItemOptions> LineItems)
+  {
+    double orderHeaderDeliveryMethodCost = orderHeader.DeliveryMethod.Cost;
+    if (orderHeaderDeliveryMethodCost > 0)
+    {
+      var sessionLineItem = new SessionLineItemOptions
+      {
+        PriceData = new SessionLineItemPriceDataOptions
+        {
+          UnitAmount = (int)(orderHeaderDeliveryMethodCost * 100),//this value is int, represent decimal price 20.00->2000
+          Currency = StaticDetails.Currency.ToLower(),
+          ProductData = new SessionLineItemPriceDataProductDataOptions
+          {
+            Name = $"Delivery:  {orderHeader.DeliveryMethod.Carrier}",
+          }
+        },
+        Quantity = 1
+      };
+      LineItems.Add(sessionLineItem);
+    }
+  }
+
 }
