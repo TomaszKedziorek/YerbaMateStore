@@ -1,4 +1,6 @@
 @model YerbaMateStore.Models.Entities.OrderHeader
+@using YerbaMateStore.Models.Utilities
+
 
 <div class="row justify-content-center">
   <div class="col-12 col-md-5 ">
@@ -87,15 +89,15 @@
         </tr>
         <tr>
           <td>Order total</td>
-          <td>@Model.OrderTotal.ToString("0.00") zł</td>
+          <td>@Model.OrderTotal.ToString("C",StaticDetails.Culture)</td>
         </tr>
         <tr>
           <td>Delivery cost</td>
-          <td>@Model.DeliveryMethod.Cost.ToString("0.00") zł</td>
+          <td>@Model.DeliveryMethod.Cost.ToString("C",StaticDetails.Culture)</td>
         </tr>
         <tr class="table-dark">
           <td>Total</td>
-          <td>@Model.OrderAndDeliveryTotal.ToString("0.00") zł</td>
+          <td>@Model.OrderAndDeliveryTotal.ToString("C",StaticDetails.Culture)</td>
         </tr>
       </tbody>
     </table>
