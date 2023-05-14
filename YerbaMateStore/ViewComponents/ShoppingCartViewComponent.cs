@@ -24,6 +24,7 @@ public class ShoppingCartViewComponent : ViewComponent
 
     if (userClaimsValue != null)
     {
+      _sessionManager.SetCartSessionValues(HttpContext.Session, userClaimsValue);
       CartButtonVM = _sessionManager.GetSessionValues(HttpContext.Session);
     }
     else
