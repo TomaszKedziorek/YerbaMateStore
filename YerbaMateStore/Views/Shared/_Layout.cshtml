@@ -250,6 +250,15 @@ https://templatemo.com/tm-559-zay-shop
   @* <script src="/js/zayTemplateJs/bootstrap.bundle.min.js"></script> *@
   <script src="/js/zayTemplateJs/templatemo.js"></script>
   <script src="/js/custom.js"></script>
+  <script src="/js/cultureCurrency.js"></script>
+  <script>
+    let Locales = '@(StaticDetails.Locales)';
+    let Currency = '@(StaticDetails.Currency)';
+    currency = Intl.NumberFormat(Locales, {
+      style: 'currency',
+      currency: Currency,
+    });
+  </script>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   @await RenderSectionAsync("Scripts", required: false)

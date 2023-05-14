@@ -1,3 +1,4 @@
+@using YerbaMateStore.Models.Utilities
 @using Microsoft.Extensions.Options
 @inject IOptions<YerbaMateStore.Models.Utilities.StripeSettings> Stripe
 @model YerbaMateStore.Models.ViewModels.ShoppingCartViewModel
@@ -112,8 +113,8 @@
                               id="@method.Id" value="@method.Id"
                               onclick="AddDeliveryCostToOrderTotal(@method.Cost,@Model.OrderHeader.OrderTotal)">
                             <label class="form-check-label fw-bolder" for="@method.Id">
-                              @method.Carrier, @method.PaymentMethod.Name.ToLower() (cost: @method.Cost.ToString("0.00")
-                              zł)
+                              @method.Carrier, @method.PaymentMethod.Name.ToLower() (cost:
+                              @method.Cost.ToString("C",StaticDetails.Culture))
                             </label>
 
                             <small>delivery: @method.DeliveryTime</small>
@@ -135,12 +136,13 @@
                         <li class="list-group-item d-flex justify-content-between">
                           <div>
                             <a asp-area="Customer" asp-controller="YerbaMate" asp-action="Details"
-                            asp-route-productId="@cart.ProductId" class="my-0 h6 text-dark fw-bolder">
+                              asp-route-productId="@cart.ProductId" class="my-0 h6 text-dark fw-bolder">
                               @cart.Product.Brand @cart.Product.Name @cart.Product.Weight</a>
                               <br>
                             <small class="text-muted  fw-bolder">Quantity: @cart.Quantity</small>
                           </div>
-                          <span class="text-muted fw-bolder">@((cart.Quantity * cart.Price).ToString("0.00")) zł </span>
+                          <span class="text-muted fw-bolder">@((cart.Quantity *
+                          cart.Price).ToString("C", StaticDetails.Culture)) </span>
                         </li>
                       }
                       @foreach (var cart in Model.BombillaCartList)
@@ -148,12 +150,13 @@
                         <li class="list-group-item d-flex justify-content-between">
                           <div>
                             <a asp-area="Customer" asp-controller="YerbaMate" asp-action="Details"
-                            asp-route-productId="@cart.ProductId" class="my-0 h6 text-dark fw-bolder">
+                              asp-route-productId="@cart.ProductId" class="my-0 h6 text-dark fw-bolder">
                               @cart.Product.Name @cart.Product.Length</a>
                               <br>
                             <small class="text-muted fw-bolder">Quantity: @cart.Quantity</small>
                           </div>
-                          <span class="text-muted fw-bolder">@((cart.Quantity * cart.Price).ToString("0.00")) zł </span>
+                          <span class="text-muted fw-bolder">@((cart.Quantity *
+                          cart.Price).ToString("C", StaticDetails.Culture)) </span>
                         </li>
                       }
                       @foreach (var cart in Model.CupCartList)
@@ -161,20 +164,22 @@
                         <li class="list-group-item d-flex justify-content-between">
                           <div>
                             <a asp-area="Customer" asp-controller="YerbaMate" asp-action="Details"
-                            asp-route-productId="@cart.ProductId" class="my-0 h6 text-dark fw-bolder">
+                              asp-route-productId="@cart.ProductId" class="my-0 h6 text-dark fw-bolder">
                               @cart.Product.Name @cart.Product.Volume</a>
                               <br>
                             <small class="text-muted fw-bolder">Quantity: @cart.Quantity</small>
                           </div>
-                          <span class="text-muted fw-bolder">@((cart.Quantity * cart.Price).ToString("0.00")) zł </span>
+                          <span class="text-muted fw-bolder">@((cart.Quantity *
+                          cart.Price).ToString("C", StaticDetails.Culture)) </span>
                         </li>
                       }
                       <li class="list-group-item d-flex justify-content-between bg-light">
-                        <small class="text-dark fw-bold">Order Total (PLN)</small>
-                        <strong class="text-dark fw-bold">@Model.OrderHeader.OrderTotal.ToString("0.00") zł</strong>
+                        <small class="text-dark fw-bold">Order Total (@StaticDetails.Currency)</small>
+                        <strong
+                          class="text-dark fw-bold">@Model.OrderHeader.OrderTotal.ToString("C",StaticDetails.Culture)</strong>
                       </li>
                       <li class="list-group-item d-flex justify-content-between bg-dark rounded-bottom ">
-                        <small class="text-light fw-bold">Order + Delivery (PLN)</small>
+                        <small class="text-light fw-bold">Order + Delivery (@StaticDetails.Currency)</small>
                         <strong class="text-light fw-bold" id="OrderDeliveryTotal"><strong>
                       </li>
                       <input type="number" asp-for="@Model.OrderHeader.OrderTotal" hidden>

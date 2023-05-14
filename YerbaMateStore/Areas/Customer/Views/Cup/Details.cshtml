@@ -1,4 +1,4 @@
-@using YerbaMateStore.Models.Entities
+@using YerbaMateStore.Models.Utilities
 @model YerbaMateStore.Models.Entities.CupShoppingCart
 
 @section HeadArea{
@@ -42,13 +42,14 @@
             <p>
               @if (Model.Product.DiscountPrice != null)
               {
-                <span class="h4 text-success fw-bold">@(((double)Model.Product.DiscountPrice).ToString("0.00"))
-                  zł</span>
-                <span class="h5 text-danger"><strike>@Model.Product.Price.ToString("0.00") zł</strike></span>
+                <span
+                  class="h4 text-success fw-bold">@(((double)Model.Product.DiscountPrice).ToString("C", StaticDetails.Culture))</span>
+                <span
+                  class="h5 text-danger"><strike>@Model.Product.Price.ToString("C",StaticDetails.Culture)</strike></span>
               }
               else
               {
-                <span class="h4 text-success">@Model.Product.Price.ToString("0.00") zł</span>
+                <span class="h4 text-success">@Model.Product.Price.ToString("C",StaticDetails.Culture)</span>
               }
             </p>
             <ul class="list-inline mb-0">

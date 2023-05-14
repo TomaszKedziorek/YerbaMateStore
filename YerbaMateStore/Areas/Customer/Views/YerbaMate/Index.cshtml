@@ -1,3 +1,4 @@
+@using YerbaMateStore.Models.Utilities
 @model YerbaMateStore.Models.ViewModels.YerbaMateProductsViewModel
 @section HeadArea{
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/css/flag-icons.min.css" />
@@ -27,7 +28,7 @@
                   {
                     <li class="ms-2">
                       <a class="text-decoration-none d-flex justify-content-between" asp-controller="YerbaMate"
-                      asp-action="Index" asp-route-country="@country.Name">
+                        asp-action="Index" asp-route-country="@country.Name">
                         <span>@country.Name</span>
                         <span class="fi fi-@country.CountryIsoAlfa2Code"></span>
                       </a>
@@ -44,7 +45,7 @@
                   {
                     <li class="ms-2">
                       <a class="text-decoration-none d-flex justify-content-between" asp-controller="YerbaMate"
-                      asp-action="Index" asp-route-brand="@brand">
+                        asp-action="Index" asp-route-brand="@brand">
                         <span>@brand</span>
                       </a>
                     </li>
@@ -60,7 +61,7 @@
                   {
                     <li class="ms-2">
                       <a class="text-decoration-none d-flex justify-content-between" asp-controller="YerbaMate"
-                      asp-action="Index" asp-route-weight="@weight">
+                        asp-action="Index" asp-route-weight="@weight">
                         <span>@weight</span>
                       </a>
                     </li>
@@ -116,7 +117,7 @@
                       </div>
                       <div class="card-body">
                         <a asp-area="Customer" asp-controller="YerbaMate" asp-action="Details"
-                      asp-route-productId="@product.Id"
+                          asp-route-productId="@product.Id"
                           class="h3 text-decoration-none fw-bold stretched-link">@product.Brand - @product.Name</a>
                         <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
                           <li>@product.Brand</li>
@@ -126,18 +127,18 @@
                           @if (product.DiscountPrice != null)
                           {
                             <li class="text-center text-danger mb-0">
-                              <h4><strike>@product.Price.ToString("0.00") zł</strike></h4>
+                              <h4><strike>@product.Price.ToString("C",StaticDetails.Culture)</strike></h4>
                             </li>
                             <li class="text-center text-success mb-0 fw-bold">
                               <h4>
-                                @(((double)product.DiscountPrice).ToString("0.00")) zł
+                                @(((double)product.DiscountPrice).ToString("C", StaticDetails.Culture))
                               </h4>
                             </li>
                           }
                           else
                           {
                             <li class="text-center text-success mb-0 fw-bold">
-                              <h4>@product.Price.ToString("0.00") zł</h4>
+                              <h4>@product.Price.ToString("C",StaticDetails.Culture)</h4>
                             </li>
                           }
                         </ul>

@@ -1,5 +1,6 @@
 let dataTable;
 
+
 $(document).ready(function () {
   loadDataTable();
 })
@@ -18,7 +19,7 @@ function loadDataTable() {
       {
         "data": "price", "width": "5%", "render":
           function (data) {
-            return data + " zł";
+            return currency.format(data);
           }
       },
       {
