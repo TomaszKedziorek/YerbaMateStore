@@ -11,7 +11,7 @@ public class DbInitializer : IDbInitializer
   private readonly RoleManager<IdentityRole> _roleManager;
   private readonly AppDbContext _dbContext;
   private readonly AdminData _adminData;
-  private readonly CountrySeeder _countrySeeder;
+  private readonly DBTablesSeeder _dbTableSeeder;
 
   public DbInitializer(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager,
                        AppDbContext dbContext, AdminData adminData)
@@ -20,7 +20,7 @@ public class DbInitializer : IDbInitializer
     _roleManager = roleManager;
     _dbContext = dbContext;
     _adminData = adminData;
-    _countrySeeder = new(dbContext);
+    _dbTableSeeder = new(dbContext);
   }
 
   public void Initialize()
@@ -35,7 +35,7 @@ public class DbInitializer : IDbInitializer
     catch (Exception e)
     {
     }
-    _countrySeeder.Seed();
+    _dbTableSeeder.Seed();
 
     if (!_roleManager.RoleExistsAsync(StaticDetails.Role_Admin).GetAwaiter().GetResult())
     {
@@ -47,10 +47,10 @@ public class DbInitializer : IDbInitializer
     {
       ApplicationUser admin = new()
       {
-        UserName = "admin@test.com",
+        UserName = _adminData.Email,
         Email = _adminData.Email,
         Name = "Thomas Smith",
-        PhoneNumber = "678 345 129",
+        PhoneNumber = "123 465 789",
         EmailConfirmed = true
       };
       _userManager.CreateAsync(admin, _adminData.Password).GetAwaiter().GetResult();
