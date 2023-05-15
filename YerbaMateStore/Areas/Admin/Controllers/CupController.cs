@@ -63,7 +63,7 @@ public class CupController : Controller
         }
         foreach (IFormFile file in files)
         {
-          Image<Cup> productImage = new CupImage();
+          Image productImage = new CupImage();
           productManager.SaveFile(ref productImage, file);
           productVM.Product.Images.Add((CupImage)productImage);
         }

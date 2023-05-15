@@ -63,7 +63,7 @@ public class BombillaController : Controller
         }
         foreach (IFormFile file in files)
         {
-          Image<Bombilla> productImage = new BombillaImage();
+          Image productImage = new BombillaImage();
           productManager.SaveFile(ref productImage, file);
           productVM.Product.Images.Add((BombillaImage)productImage);
         }
