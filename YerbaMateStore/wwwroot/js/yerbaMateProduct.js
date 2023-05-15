@@ -11,6 +11,7 @@ function loadDataTable() {
       url: '/Admin/YerbaMate/GetAll'
     },
     responsive: true,
+    pageLength: 50,
     columns: [
       { "data": "id", "width": "5%" },
       { "data": "name", "width": "15%" },
