@@ -51,6 +51,11 @@ public class DbInitializer : IDbInitializer
         Email = _adminData.Email,
         Name = "Thomas Smith",
         PhoneNumber = "123 465 789",
+        Country = "Polska",
+        State = "Małopolska",
+        City = "Kraków",
+        StreetAddress = "Kólewska 12",
+        PostalCode = "xx-xxx",
         EmailConfirmed = true
       };
       _userManager.CreateAsync(admin, _adminData.Password).GetAwaiter().GetResult();

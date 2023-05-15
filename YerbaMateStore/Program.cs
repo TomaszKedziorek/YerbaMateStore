@@ -64,6 +64,9 @@ public class Program
       options.Cookie.HttpOnly = true;
       options.Cookie.IsEssential = true;
     });
+    builder.Services.AddControllers()
+                    .AddJsonOptions(options =>
+                   options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
     var app = builder.Build();
 
