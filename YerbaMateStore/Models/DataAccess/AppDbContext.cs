@@ -11,6 +11,7 @@ public class AppDbContext : IdentityDbContext<IdentityUser>
   public DbSet<Bombilla> Bombilla { get; set; }
   public DbSet<Cup> Cup { get; set; }
   public DbSet<Country> Countries { get; set; }
+  public DbSet<Image> Images { get; set; }
   public DbSet<YerbaMateImage> YerbaMateImages { get; set; }
   public DbSet<BombillaImage> BombillaImages { get; set; }
   public DbSet<CupImage> CupImages { get; set; }

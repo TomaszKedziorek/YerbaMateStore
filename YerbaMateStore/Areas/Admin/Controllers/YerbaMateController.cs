@@ -63,7 +63,7 @@ public class YerbaMateController : Controller
         }
         foreach (IFormFile file in files)
         {
-          Image<YerbaMate> productImage = new YerbaMateImage();
+          Image productImage = new YerbaMateImage();
           productManager.SaveFile(ref productImage, file);
           productVM.Product.Images.Add((YerbaMateImage)productImage);
         }

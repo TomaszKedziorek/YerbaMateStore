@@ -47,6 +47,11 @@ public class DBTablesSeeder
         _dbContext.DeliveryMethod.AddRange(GetDeliveryMethod());
         _dbContext.SaveChanges();
       }
+      if (!_dbContext.Images.Any())
+      {
+        _dbContext.Images.AddRange(GetImages());
+        _dbContext.SaveChanges();
+      }
     }
   }
 
@@ -267,5 +272,32 @@ public class DBTablesSeeder
       new PaymentMethod(){Name="Cash/Card",IsTransfer = false},
      };
     return PaymentMethodList;
+  }
+
+  private IEnumerable<Image> GetImages()
+  {
+    IEnumerable<Image> ImageList = new List<Image>()
+    {
+      new YerbaMateImage(){ProductId=1,ImageUrl="/images/products/YerbaMate-1/daef074b-d47c-45ed-8e49-753cca091818.png"},
+      new YerbaMateImage(){ProductId=1,ImageUrl="/images/products/YerbaMate-1/58941a1e-69fa-412b-9589-538f072c3aa5.png"},
+      new YerbaMateImage(){ProductId=3,ImageUrl="/images/products/YerbaMate-3/cff6c47c-8e58-42a9-8bd0-8b47b5bb6c1d.png"},
+      new YerbaMateImage(){ProductId=3,ImageUrl="/images/products/YerbaMate-3/4cfd97e7-3c41-4851-b013-ec7934c6ec7c.png"},
+      new YerbaMateImage(){ProductId=4,ImageUrl="/images/products/YerbaMate-4/7dbd0c95-38fe-48b3-9e16-45eb92bfddef.png"},
+      new YerbaMateImage(){ProductId=5,ImageUrl="/images/products/YerbaMate-5/a0f34979-4ca8-4a36-b565-ea4196047d01.png"},
+      new YerbaMateImage(){ProductId=5,ImageUrl="/images/products/YerbaMate-5/798b5fa0-2b0d-4b98-a4b6-f1167a842944.png"},
+      new YerbaMateImage(){ProductId=7,ImageUrl="/images/products/YerbaMate-7/550d48a6-2573-48e1-ba3e-a114958805da.png"},
+      new YerbaMateImage(){ProductId=8,ImageUrl="/images/products/YerbaMate-8/09c10271-92fe-475c-b1d0-6052e0bc303e.png"},
+      new YerbaMateImage(){ProductId=6,ImageUrl="/images/products/YerbaMate-6/00254fde-9d36-4c43-9875-971dfbb8a172.png"},
+      new YerbaMateImage(){ProductId=2,ImageUrl="/images/products/YerbaMate-2/0b0eb485-f429-472c-b4cc-52a82f574ff4.png"},
+      new YerbaMateImage(){ProductId=2,ImageUrl="/images/products/YerbaMate-2/c0bdebb0-38b7-48e5-b825-afd254bb3422.png"},
+      new BombillaImage(){ProductId=1,ImageUrl="/images/products/Bombilla-1/969312b7-53e8-4f00-b7b5-691a01608e29.png"},
+      new BombillaImage(){ProductId=2,ImageUrl="/images/products/Bombilla-2/7db8beed-9b08-4772-878c-9ebbc919aea0.png"},
+      new BombillaImage(){ProductId=3,ImageUrl="/images/products/Bombilla-3/0b5b0ea5-1543-457a-912e-121f9eba9fd6.png"},
+      new CupImage(){ProductId=1,ImageUrl="/images/products/Cup-1/9e584713-20f8-4819-b577-c522be512388.png"},
+      new CupImage(){ProductId=1,ImageUrl="/images/products/Cup-1/c1d43369-220e-4581-b9f2-14289d207b06.png"},
+      new CupImage(){ProductId=2,ImageUrl="/images/products/Cup-2/5fb2bc25-2451-41fc-8557-1ed441f0a2ac.png"},
+      new CupImage(){ProductId=3,ImageUrl="/images/products/Cup-3/b2fe922a-c3d5-406b-aa9a-d157def92a1f.png"}
+     };
+    return ImageList;
   }
 }

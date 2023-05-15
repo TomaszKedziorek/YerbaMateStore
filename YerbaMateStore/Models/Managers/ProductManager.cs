@@ -18,7 +18,7 @@ public class ProductManager<T> where T : class, new()
     productDirectoryName = typeof(T).Name;
   }
 
-  public void SaveFile(ref Image<T> productImage, IFormFile file)
+  public void SaveFile(ref Image productImage, IFormFile file)
   {
     string extension = Path.GetExtension(file.FileName);
     string fileName = Guid.NewGuid().ToString() + extension;
@@ -36,7 +36,8 @@ public class ProductManager<T> where T : class, new()
       file.CopyTo(fileStream);
     }
 
-    productImage.ProductId = Convert.ToInt32(Id);
+    var productImageProductId = productImage.GetType().GetProperty("ProductId");
+    productImageProductId.SetValue(productImage, Convert.ToInt32(Id));
     productImage.ImageUrl = @$"{separationChar}{productPath}{separationChar}{fileName}";
   }
 
@@ -55,7 +56,7 @@ public class ProductManager<T> where T : class, new()
     }
   }
 
-  public void DeleteFile(Image<T> imageToDelete)
+  public void DeleteFile(Image imageToDelete)
   {
     if (!string.IsNullOrEmpty(imageToDelete.ImageUrl))
     {
