@@ -18,9 +18,13 @@ function loadDataTable() {
       { "data": "brand", "width": "10%" },
       { "data": "weight", "width": "5%" },
       {
-        "data": "price", "width": "5%", "render":
-          function (data) {
-            return currency.format(data);
+        "data": "null", "width": "5%", "render":
+          function (data, type, row) {
+            if (row.discountPrice == null) {
+              return currency.format(row.price);
+            } else {
+              return currency.format(row.discountPrice);
+            }
           }
       },
       {
