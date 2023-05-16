@@ -1,6 +1,13 @@
 # YerbaMateStore
 This is a test online store.
-It was created using ASP.NET MVC, Entity Framework and free template: [Zay Shop Template](https://templatemo.com/tm-559-zay-shop)
+It was created using ASP.NET MVC, Entity Framework and free template: [Zay Shop Template](https://templatemo.com/tm-559-zay-shop).
+
+Other third-party components are:
+- [DataTable](https://datatables.net/)
+- [toastr notifications](https://github.com/CodeSeven/toastr)
+- [sweetalert2 popup](https://sweetalert2.github.io/)
+- [slick carousel](https://kenwheeler.github.io/slick/)
+- [Stripe payments](https://stripe.com/)
 
 ## Functionalities
 The YerbaMateStore application allows to make fictitious purchases three types of products: yerba mate, bombilla (straw with strainer) and cup for drinking.
