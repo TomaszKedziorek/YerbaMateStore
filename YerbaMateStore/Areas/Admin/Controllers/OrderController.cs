@@ -206,8 +206,6 @@ public class OrderController : Controller
   {
     int OrderId = OrderVM.OrderHeader.Id;
     OrderVM = CreateOrderVM(OrderId);
-    // string? OrderApplicationUserId = OrderVM.OrderHeader.ApplicationUserId;
-    // string userClaimsValue = UserClaims.GetUserClaimsValue(User);
     if (ModelState.IsValid)
     {
       if (StaticDetails.StripePaymentEnabled)
