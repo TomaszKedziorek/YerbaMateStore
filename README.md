@@ -21,3 +21,8 @@ Every actions related to the user's account (e.g. registery, log in , forgt pass
 ## Payment and Delivery
 The application supports two types of payment: online transfer and offline payment (e.g. payment on pickup). All payment methods are linked to the delivery method. Both are managed by an Admin or an Employee.
 Yerba Mate Store application uses Stripe Online Payment, so to testing payment one need to use testing cards data - see [Stripe Testing](https://stripe.com/docs/testing)
+
+By default Stripe Payments are disabled, but the application in this state pretends payment success or failure, and user may choose one these two.
+
+To Enabled Stripe Payments go to /YerbaMateStore/Models/Utilities/StaticDetails.cs and change StripePaymentEnabled to true.
+
