@@ -5,6 +5,7 @@ namespace YerbaMateStore.Models.Utilities;
 
 public static class StaticDetails
 {
+  public const bool StripePaymentEnabled = true;
   public const string Domain = "https://localhost:7026/";
   public static string Locales = "pl-PL";
   public static string Currency = "PLN";

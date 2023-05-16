@@ -1,0 +1,41 @@
+@using YerbaMateStore.Models.Utilities
+@model YerbaMateStore.Models.ViewModels.OnlinePaymentsDisabledViewModel
+
+@{
+  ViewData["Title"] = "Stripe Payments are disabled";
+}
+<section class="d-flex justify-content-center bg-light">
+  <div class="container-lg pb-5 p-3">
+    <h1 class="text-danger">@ViewData["Title"]</h1>
+    <hr />
+    <div class="row justify-content-center">
+      <div class="col-12">
+        <div class="container row my-2">
+          <div class="col-12 mb-3">
+            <h2 class="text-dark text-sart">Lets pretend that payment were:</h2>
+          </div>
+          <div class="row ">
+            <div class="col-6 col-md-5 col-lg-2">
+              <form method="post">
+                <input hidden asp-for="@Model.OrderId">
+                <input hidden asp-for="@Model.OrderStatus" value="@StaticDetails.StatusPending">
+                <input hidden asp-for="@Model.PaymentStatus" value="@StaticDetails.PaymentStatusPending">
+                <button type="submit" class="btn btn-lg btn-danger">Unsuccessful</button>
+              </form>
+            </div>
+
+            <div class="col-6 col-md-5 col-lg-2">
+              <form method="post">
+                <input hidden asp-for="@Model.OrderId">
+                <input hidden asp-for="@Model.OrderStatus" value="@StaticDetails.StatusApproved">
+                <input hidden asp-for="@Model.PaymentStatus" value="@StaticDetails.PaymentStatusApproved">
+                <button type="submit" class="btn btn-lg btn-success">Succesful</button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>

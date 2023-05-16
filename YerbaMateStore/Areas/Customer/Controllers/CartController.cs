@@ -126,7 +126,7 @@ public class CartController : Controller
 
       int OrderId = CartVM.OrderHeader.Id;
 
-      if (CartVM.OrderHeader.DeliveryMethod.PaymentMethod.IsTransfer)
+      if (CartVM.OrderHeader.DeliveryMethod.PaymentMethod.IsTransfer && StaticDetails.StripePaymentEnabled)
       {
         //Stripe payment
         StripePaymentManager<ShoppingCart> StripeManager = new(
@@ -143,6 +143,12 @@ public class CartController : Controller
         _unitOfWork.Save();
         _sessionManager.CleanSession(HttpContext.Session);
         return new StatusCodeResult(303);
+      }
+      else if (CartVM.OrderHeader.DeliveryMethod.PaymentMethod.IsTransfer && !StaticDetails.StripePaymentEnabled)
+      {
+        orderManager.CleanShoppingCartButNotSaveYet();
+        _unitOfWork.Save();
+        return RedirectToAction(nameof(OnlinePaymentDisabled), new { OrderId });
       }
       else
       {
@@ -169,11 +175,14 @@ public class CartController : Controller
     {
       if (orderHeader.PaymentType == StaticDetails.PaymentTypeTransfer)
       {
-        Session session = StripePaymentManager<ShoppingCart>.GetSessionById(orderHeader.SessionId);
-        if (session.PaymentStatus.ToLower() == "paid")
+        if (StaticDetails.StripePaymentEnabled && orderHeader.PaymentIntentId == null)
         {
-          _unitOfWork.OrderHeader.UpdateStripePaymentId(orderId, session.Id, session.PaymentIntentId);
-          _unitOfWork.OrderHeader.UpdateStatus(orderId, StaticDetails.StatusApproved, StaticDetails.PaymentStatusApproved);
+          Session session = StripePaymentManager<ShoppingCart>.GetSessionById(orderHeader.SessionId);
+          if (session.PaymentStatus.ToLower() == "paid")
+          {
+            _unitOfWork.OrderHeader.UpdateStripePaymentId(orderId, session.Id, session.PaymentIntentId);
+            _unitOfWork.OrderHeader.UpdateStatus(orderId, StaticDetails.StatusApproved, StaticDetails.PaymentStatusApproved);
+          }
         }
       }
       else
@@ -190,6 +199,56 @@ public class CartController : Controller
       return RedirectToAction("Index", "Home");
     }
   }
+
+  [HttpGet]
+  public IActionResult OnlinePaymentDisabled(int orderId)
+  {
+    if (!StaticDetails.StripePaymentEnabled)
+    {
+      string userClaimsValue = UserClaims.GetUserClaimsValue(User);
+      OrderHeader orderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(o => o.Id == orderId && o.ApplicationUserId == userClaimsValue, "DeliveryMethod,DeliveryMethod.PaymentMethod");
+      OnlinePaymentsDisabledViewModel paymentsDisabledVM = new(orderId, orderHeader.OrderStatus, orderHeader.PaymentStatus);
+      return View(paymentsDisabledVM);
+    }
+    else
+    {
+      return RedirectToAction("Index", "Home");
+    }
+  }
+
+  [HttpPost]
+  [ValidateAntiForgeryToken]
+  public IActionResult OnlinePaymentDisabled(OnlinePaymentsDisabledViewModel paymentsDisabledVM)
+  {
+    if (!StaticDetails.StripePaymentEnabled)
+    {
+      string userClaimsValue = UserClaims.GetUserClaimsValue(User);
+      int orderId = paymentsDisabledVM.OrderId;
+      OrderHeader orderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(o => o.Id == orderId && o.ApplicationUserId == userClaimsValue, "DeliveryMethod,DeliveryMethod.PaymentMethod");
+      if (ModelState.IsValid)
+      {
+        if (paymentsDisabledVM.PaymentStatus == StaticDetails.PaymentStatusApproved)
+        {
+          string sessionId = Guid.NewGuid().ToString();
+          string paymentIntentId = Guid.NewGuid().ToString();
+          _unitOfWork.OrderHeader.UpdateStripePaymentId(orderId, sessionId, paymentIntentId);
+          _unitOfWork.OrderHeader.UpdateStatus(orderId, paymentsDisabledVM.OrderStatus, paymentsDisabledVM.PaymentStatus);
+          _unitOfWork.Save();
+          _sessionManager.CleanSession(HttpContext.Session);
+        }
+        return RedirectToAction(nameof(OrderConfirmation), new { orderId });
+      }
+      else
+      {
+        return View(paymentsDisabledVM);
+      }
+    }
+    else
+    {
+      return RedirectToAction("Index", "Home");
+    }
+  }
+
 
   private ShoppingCartViewModel CreateCartVM(string userClaimsValue, ShoppingCartViewModel CartVM = null, bool addDeliveryMethodList = false)
   {
