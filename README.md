@@ -49,9 +49,7 @@ If one do not want to test this feature just leave Stripe Payments Disabled:
 /YerbaMateStore/Models/Utilities/StaticDetails. StripePaymentEnabled=false
 
 Next step is to build this application by typing in terminal:
- - dotnet run
- or
+
  - dotnet run --project YerbaMateStore/YerbaMateStore.csproj 
 
- -dotnet run --project 
 
