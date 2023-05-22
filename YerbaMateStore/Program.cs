@@ -24,7 +24,14 @@ public class Program
     var mvcBuilder = builder.Services.AddRazorPages();
     //Allow refresz cshtml,css,js at runtime
     if (builder.Environment.IsDevelopment())
+    {
       mvcBuilder.AddRazorRuntimeCompilation();
+      StaticDetails.Domain = "https://localhost:7026/";
+    }
+    else
+    {
+      StaticDetails.Domain = "https://yerbamatestore.azurewebsites.net/";
+    }
 
     string connectionString = builder.Configuration.GetConnectionString("YerbaMateStoreDbConnsectionString");
     builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
@@ -41,8 +48,8 @@ public class Program
     EmailSenderAccessData emailAccessData = builder.Configuration.GetSection("EmailSender").Get<EmailSenderAccessData>();
     StripeSettings stripeSettings = builder.Configuration.GetSection("Stripe").Get<StripeSettings>();
     builder.Services.AddSingleton(adminData);
-
     builder.Services.AddSingleton(emailAccessData);
+
     builder.Services.ConfigureApplicationCookie(options =>
     {
       options.LoginPath = $"/Identity/Account/Login";
