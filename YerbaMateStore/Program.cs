@@ -27,8 +27,8 @@ public class Program
       mvcBuilder.AddRazorRuntimeCompilation();
 
     string connectionString = builder.Configuration.GetConnectionString("YerbaMateStoreDbConnsectionString");
-    ServerVersion serverVersion = ServerVersion.AutoDetect(connectionString);
-    builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(connectionString, serverVersion));
+    builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
+
     builder.Services.AddIdentity<IdentityUser, IdentityRole>()
                     .AddDefaultTokenProviders()
                     .AddEntityFrameworkStores<AppDbContext>()
