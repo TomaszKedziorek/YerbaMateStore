@@ -219,7 +219,9 @@
                         </div>
                       </div>
                     }
-                    @if (isAdminOrEmployee)
+                    @if (isAdminOrEmployee
+                    && Model.OrderHeader.OrderStatus != StaticDetails.StatusShipped
+                    && Model.OrderHeader.OrderStatus != StaticDetails.StatusCancelled)
                     {
                       <button type="submit" asp-area="Admin" asp-controller="Order" asp-action="UpdateOrderDetail"
                         formmethod="post" class="btn btn-warning form-control my-1">Update Order
