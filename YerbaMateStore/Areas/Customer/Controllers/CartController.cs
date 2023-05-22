@@ -70,7 +70,10 @@ public class CartController : Controller
   {
     string userClaimsValue = UserClaims.GetUserClaimsValue(User);
     CartVM = CreateCartVM(userClaimsValue, addDeliveryMethodList: true);
-
+    if (CartVM.IsCartEmpty)
+    {
+      return RedirectToAction("Index","Home");
+    }
     CartVM.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Id == userClaimsValue);
     CartVM.OrderHeader.Name = CartVM.OrderHeader.ApplicationUser.Name;
     CartVM.OrderHeader.PhoneNumber = CartVM.OrderHeader.ApplicationUser.PhoneNumber;
