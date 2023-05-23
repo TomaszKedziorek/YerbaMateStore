@@ -48,13 +48,14 @@ public class DbInitializer : IDbInitializer
       ApplicationUser admin = new()
       {
         UserName = _adminData.Email,
+        LockoutEnabled = false,
         Email = _adminData.Email,
         Name = "Thomas Smith",
         PhoneNumber = "123 465 789",
         Country = "Polska",
         State = "Małopolska",
         City = "Kraków",
-        StreetAddress = "Kólewska 12",
+        StreetAddress = "Kólewska x",
         PostalCode = "xx-xxx",
         EmailConfirmed = true
       };
