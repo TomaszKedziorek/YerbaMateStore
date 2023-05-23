@@ -32,21 +32,23 @@
 
 <body>
   <!-- Start Top Nav -->
-  <nav class="navbar navbar-expand bg-dark navbar-light d-block" id="_nav_top">
+  <nav class="navbar navbar-expand bg-dark navbar-light d-block py-1" id="_nav_top">
     <div class="container text-light">
       <div class="w-100 d-flex justify-content-between">
         <div class="d-flex ">
           @if (isAdmin)
           {
             <a asp-area="Identity" asp-page="/Account/Register" class="text-decoration-none text-light">Create User</a>
+            <a asp-area="Admin" asp-controller="UsersManager" asp-action="Index"
+              class="text-decoration-none text-light ms-1">Manage Users</a>
           }
           @if (isAdmin || isEmployee)
           {
             <div class="flex-fill">
               <ul class="nav navbar-nav d-flex">
                 <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle text-light" data-bs-toggle="dropdown" href="#" role="button">Products
-                    Management</a>
+                  <a class="nav-link dropdown-toggle text-light" data-bs-toggle="dropdown" href="#" role="button">Manage
+                    Products</a>
                   <div class="dropdown-menu ms-2">
                     <a class="nav-link dropdown-item bg" asp-area="Admin" asp-controller="YerbaMate"
                       asp-action="Index">Yerba Mate</a>
@@ -65,7 +67,7 @@
               <ul class="nav navbar-nav d-flex">
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle text-light" data-bs-toggle="dropdown" href="#"
-                    role="button">Delivery/Payments Methods</a>
+                    role="button">Manage Delivery/Payments</a>
                   <div class="dropdown-menu ms-2">
                     <a class="nav-link dropdown-item bg" asp-area="Admin" asp-controller="DeliveryMethod"
                       asp-action="Index">DeliveryMethod</a>
@@ -76,8 +78,12 @@
               </ul>
             </div>
           }
-          <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="text-decoration-none text-light">Manage
-            Order</a>
+          @if (User.Identity.IsAuthenticated)
+          {
+            <a asp-area="Admin" asp-controller="Order" asp-action="Index"
+              class="text-decoration-none text-light ms-1">Manage
+              Order</a>
+          }
         </div>
         <div class="d-flex ">
           <partial name="_LoginPartial" />
