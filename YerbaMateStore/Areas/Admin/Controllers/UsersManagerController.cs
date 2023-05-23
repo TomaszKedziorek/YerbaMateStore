@@ -1,9 +1,6 @@
-using System.Globalization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using YerbaMateStore.Models.Entities;
 using YerbaMateStore.Models.Repository.IRepository;
 using YerbaMateStore.Models.Utilities;
 
