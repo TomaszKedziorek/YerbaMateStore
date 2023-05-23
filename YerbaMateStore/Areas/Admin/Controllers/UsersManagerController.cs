@@ -7,7 +7,7 @@ using YerbaMateStore.Models.Utilities;
 namespace YerbaMateStore.Areas.Admin.Controllers;
 
 [Area("Admin")]
-[Authorize]
+[Authorize(Roles = StaticDetails.Role_Admin)]
 public class UsersManagerController : Controller
 {
   private readonly IUnitOfWork _unitOfWork;
