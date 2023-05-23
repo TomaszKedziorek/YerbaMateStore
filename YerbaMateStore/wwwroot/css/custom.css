@@ -39,14 +39,18 @@ div .swal2-icon-content {
 }
 
 #_nav_top * {
-  font-size: 0.98em !important;
+  font-size: 0.98em;
   padding-top: 0;
   padding-bottom: 0;
 }
 
-.dropdown-menu>a:hover {
-  /* color: #59ab6e !important; */
-  background-color: #bcbcbc !important;
+#_nav_top a:hover,
+button#logout:hover {
+  color: #59ab6e !important;
+}
+
+a.nav-link.dropdown-item:hover {
+  background-color: #212934 !important;
 }
 
 .nav-tabs {
@@ -61,13 +65,6 @@ div .swal2-icon-content {
   background-color: #59ab6e !important;
   border-bottom: #59ab6e !important;
 }
-
-/* body,
-body>*,
-a,
-button {
-  display: grid;
-} */
 
 .form-check-input:checked {
   background-color: #59ab6e !important;
