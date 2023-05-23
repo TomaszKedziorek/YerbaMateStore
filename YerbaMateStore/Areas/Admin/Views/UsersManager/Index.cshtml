@@ -1,0 +1,97 @@
+@section HeadArea{
+  <link rel="stylesheet" href="//cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+}
+@{
+  ViewData["Title"] = "User Manager";
+  var status = Context.Request.Query["status"];
+  var textDarkClass = "text-dark";
+  var activeClass = "active text-white bg-success rounded-2";
+  var admins = textDarkClass;
+  var employees = textDarkClass;
+  var individuals = textDarkClass;
+  var suspended = textDarkClass;
+  var inactive = textDarkClass;
+  var all = textDarkClass;
+  switch (status)
+  {
+    case "admins":
+      admins = activeClass;
+      break;
+    case "employees":
+      employees = activeClass;
+      break;
+    case "individuals":
+      individuals = activeClass;
+      break;
+    case "suspended":
+      suspended = activeClass;
+      break;
+    case "inactive":
+      inactive = activeClass;
+      break;
+    default:
+      all = activeClass;
+      break;
+  }
+}
+<section class="bg-light d-flex justify-content-center">
+  <div class="container-lg pb-5 p-3">
+    <h1 class="text-success">@ViewData["Title"]</h1>
+    <hr />
+
+    <div class="row justify-content-center">
+      <div class="col-12">
+        <div class="row text-end mb-3">
+
+          <div class="col-12">
+            <ul class="list-inline shop-top-menu">
+              <li class="list-inline-item @all">
+                <a asp-area="Admin" asp-controller="UsersManager" asp-action="Index" asp-route-status="all"
+                  class="text-dark text-decoration-none btn btn-outline-success "> All </a>
+              </li>
+              <li class="list-inline-item @individuals">
+                <a asp-area="Admin" asp-controller="UsersManager" asp-action="Index" asp-route-status="individuals"
+                  class="text-dark text-decoration-none btn btn-outline-success ">Individuals</a>
+              </li>
+              <li class="list-inline-item @employees">
+                <a asp-area="Admin" asp-controller="UsersManager" asp-action="Index" asp-route-status="employees"
+                  class="text-dark text-decoration-none btn btn-outline-success ">Employees</a>
+              </li>
+              <li class="list-inline-item @admins">
+                <a asp-area="Admin" asp-controller="UsersManager" asp-action="Index" asp-route-status="admins"
+                  class="text-dark text-decoration-none btn btn-outline-success ">Admins</a>
+              </li>
+              <li class="list-inline-item @inactive">
+                <a asp-area="Admin" asp-controller="UsersManager" asp-action="Index" asp-route-status="inactive"
+                  class="text-dark text-decoration-none btn btn-outline-success ">Inactive</a>
+              </li>
+              <li class="list-inline-item @suspended">
+                <a asp-area="Admin" asp-controller="UsersManager" asp-action="Index" asp-route-status="suspended"
+                  class="text-dark text-decoration-none btn btn-outline-success ">Suspended</a>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+        <table id="usersData" class="table table-hover">
+          <thead>
+            <tr class="bg-dark text-light border-secondary">
+              <th>Role</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Email Confirmed</th>
+              <th>Is Suspended</th>
+              <th>Lockout End</th>
+              <th></th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+@section Scripts{
+  <script src="~/js/usersManager.js"></script>
+  <script src="~/js/deleteProduct.js"></script>
+  <script src="//cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+}
