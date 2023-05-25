@@ -1,5 +1,5 @@
 # YerbaMateStore
-This is a test online store.
+This is a test online store. [https://yerbamatestore.azurewebsites.net](https://yerbamatestore.azurewebsites.net)
 It was created using ASP.NET MVC, Entity Framework and free template: [Zay Shop Template](https://templatemo.com/tm-559-zay-shop).
 
 Other third-party components are:
